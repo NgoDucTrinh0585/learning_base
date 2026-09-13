@@ -1,1352 +1,1346 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Learning Base</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learning Base</title>
 
-    <!-- FAVICON: Sách mở + Ngôi sao, Gradient Tím-Hồng (SVG nội tuyến, không tải mạng) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23ffffff' stroke-width='3' stroke-dasharray='8 6'/%3E%3Cline x1='50' y1='8' x2='50' y2='20' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='50' y1='80' x2='50' y2='92' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='8' y1='50' x2='20' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='80' y1='50' x2='92' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23ffffff' stroke-width='3' stroke-dasharray='8 6'/%3E%3Cline x1='50' y1='8' x2='50' y2='20' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='50' y1='80' x2='50' y2='92' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='8' y1='50' x2='20' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='80' y1='50' x2='92' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
 
-    <!-- KHÔNG còn tailwindcss & lucide CDN nữa → khởi động nhanh hơn rất nhiều -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root {
+    --base: #0e0a1e;
+    --glass-bg: rgba(37, 31, 69, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --glass-blur: 18px;
+    --vio: #8b5cf6; --vio-l: #c4b5fd;
+    --pink: #f472b6; --pink-l: #fbcfe8;
+    --text: #e2e8f0; --muted: #94a3b8; --faint: #475569;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--base); color: var(--text);
+    display: flex; flex-direction: row;
+    background-image:
+        radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(244, 114, 182, 0.06) 0%, transparent 50%);
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.4); border-radius: 99px; }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --base: #0e0a1e;
-            --glass-bg: rgba(37, 31, 69, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-            --glass-blur: 18px;
-            --vio: #8b5cf6;
-            --vio-l: #c4b5fd;
-            --pink: #f472b6;
-            --pink-l: #fbcfe8;
-            --text: #e2e8f0;
-            --muted: #94a3b8;
-            --faint: #475569;
-        }
-
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
-        }
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--base);
-            color: var(--text);
-            display: flex;
-            flex-direction: row;
-            background-image: radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 70% 80%, rgba(244, 114, 182, 0.06) 0%, transparent 50%);
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.4);
-            border-radius: 99px;
-        }
-
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-        }
-
-        .glass-light {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        #sidebar {
-            width: 272px;
-            min-width: 272px;
-            margin: 12px 0 12px 12px;
-            height: calc(100vh - 24px);
-            border-radius: 24px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: var(--glass-shadow);
-            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                min-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                margin 0.35s ease;
-            z-index: 40;
-            position: relative;
-        }
-
-        body.sidebar-collapsed #sidebar {
-            width: 0 !important;
-            min-width: 0 !important;
-            margin-left: 0 !important;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        @media (max-width: 767px) {
-            #sidebar {
-                position: fixed;
-                left: 12px;
-                top: 12px;
-                height: calc(100vh - 24px);
-                transform: translateX(calc(-100% - 24px));
-                transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
-                z-index: 50;
-            }
-            body.sidebar-open #sidebar {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            body.sidebar-open #sidebarBackdrop {
-                opacity: 1 !important;
-                pointer-events: auto !important;
-            }
-        }
-
-        .sidebar-header {
-            padding: 20px 18px 14px;
-            background: linear-gradient(160deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.02) 60%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        #mainArea {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            padding: 12px 12px 12px 8px;
-            gap: 10px;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        #headerCard {
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            height: 52px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 14px;
-            gap: 10px;
-            box-shadow: var(--glass-shadow);
-        }
-
-        #iframeWrapper {
-            flex: 1;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            display: none;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-        }
-        #iframeWrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        #welcomeState {
-            flex: 1;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            position: relative;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .glow-vio {
-            position: absolute;
-            width: 380px;
-            height: 380px;
-            border-radius: 9999px;
-            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, transparent 65%);
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-        .glow-pink {
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            border-radius: 9999px;
-            background: radial-gradient(ellipse, rgba(244, 114, 182, 0.10) 0%, transparent 65%);
-            top: 60%;
-            left: 65%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-
-        .welcome-logo {
-            width: 68px;
-            height: 68px;
-            border-radius: 22px;
-            background: rgba(139, 92, 246, 0.15);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
-            margin-bottom: 24px;
-        }
-
-        .gdiv {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), rgba(244, 114, 182, 0.4), transparent);
-            margin: 24px 0;
-            width: 100%;
-            max-width: 280px;
-        }
-
-        .stat-pill {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            padding: 10px 22px;
-            border-radius: 16px;
-            background: rgba(139, 92, 246, 0.08);
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-        }
-
-        .app-item {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            border-radius: 14px;
-            border: 1px solid transparent;
-            cursor: grab;
-            text-align: left;
-            color: var(--muted);
-            transition: all 0.18s ease;
-            position: relative;
-            background: transparent;
-            user-select: none;
-        }
-        .app-item:hover {
-            background: rgba(139, 92, 246, 0.10);
-            border-color: rgba(139, 92, 246, 0.2);
-            color: var(--text);
-            backdrop-filter: blur(4px);
-        }
-        .app-item.active {
-            background: rgba(139, 92, 246, 0.18);
-            backdrop-filter: blur(8px);
-            border-color: rgba(139, 92, 246, 0.3);
-            color: var(--text);
-            box-shadow: 0 2px 16px rgba(139, 92, 246, 0.12);
-        }
-        .app-item:active {
-            cursor: grabbing;
-        }
-        .app-item.drag-over {
-            border-color: rgba(139, 92, 246, 0.6);
-            background: rgba(139, 92, 246, 0.15);
-            transform: scale(1.01);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
-        }
-        .app-item.dragging {
-            opacity: 0.4;
-            transform: scale(0.96);
-        }
-        .app-actions {
-            opacity: 0;
-            transition: opacity 0.15s ease;
-            display: flex;
-            gap: 2px;
-        }
-        .app-item:hover .app-actions {
-            opacity: 1;
-        }
-        .app-item.dragging .app-actions {
-            opacity: 0 !important;
-            pointer-events: none;
-        }
-
-        .app-item .drag-handle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--faint);
-            opacity: 0.3;
-            transition: opacity 0.2s;
-            margin-right: 4px;
-            flex-shrink: 0;
-        }
-        .app-item:hover .drag-handle {
-            opacity: 0.7;
-        }
-        .app-item:active .drag-handle {
-            opacity: 1;
-        }
-
-        .icon-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 7px;
-            border-radius: 11px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.18s ease;
-            backdrop-filter: blur(4px);
-        }
-        .icon-btn:hover {
-            background: rgba(139, 92, 246, 0.14);
-            border-color: rgba(139, 92, 246, 0.3);
-            color: var(--vio-l);
-        }
-        .icon-btn.danger:hover {
-            background: rgba(239, 68, 68, 0.12);
-            border-color: rgba(239, 68, 68, 0.25);
-            color: #f87171;
-        }
-
-        .bc-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 12px 4px 8px;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.18s ease;
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .bc-home:hover {
-            background: rgba(139, 92, 246, 0.10);
-            border-color: rgba(139, 92, 246, 0.2);
-            color: var(--vio-l);
-        }
-
-        .app-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 10px 3px 7px;
-            border-radius: 9999px;
-            background: rgba(139, 92, 246, 0.15);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            max-width: 220px;
-            overflow: hidden;
-        }
-
-        .ver-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            background: rgba(139, 92, 246, 0.12);
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            color: var(--vio-l);
-            text-transform: uppercase;
-        }
-
-        .live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 11px;
-            border-radius: 9999px;
-            background: rgba(16, 185, 129, 0.08);
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            color: #34d399;
-        }
-        .live-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 9999px;
-            background: #10b981;
-            position: relative;
-            display: inline-flex;
-        }
-        .live-dot::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 9999px;
-            background: #10b981;
-            opacity: 0.7;
-            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-        @keyframes ping {
-            75%,
-            100% {
-                transform: scale(2.2);
-                opacity: 0;
-            }
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .add-btn {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            padding: 11px 16px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(244, 114, 182, 0.2));
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
-        }
-        .add-btn:hover {
-            opacity: 0.88;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 28px rgba(139, 92, 246, 0.35);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .add-btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-pri {
-            padding: 8px 20px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(139, 92, 246, 0.2));
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.2);
-        }
-        .btn-pri:hover {
-            opacity: 0.88;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-sec {
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted);
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            cursor: pointer;
-            transition: all 0.18s;
-        }
-        .btn-sec:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        .btn-danger {
-            padding: 8px 18px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            background: rgba(220, 38, 38, 0.25);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(248, 113, 113, 0.15);
-            cursor: pointer;
-            transition: all 0.18s;
-            box-shadow: 0 2px 12px rgba(220, 38, 38, 0.15);
-        }
-        .btn-danger:hover {
-            opacity: 0.85;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.25);
-            border-color: rgba(248, 113, 113, 0.3);
-        }
-
-        .modal-card {
-            background: rgba(37, 31, 69, 0.7);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.03);
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            font-size: 13px;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.18s, box-shadow 0.18s;
-            font-family: inherit;
-        }
-        .modal-input:focus {
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
-        }
-        .modal-input::placeholder {
-            color: #475569;
-        }
-
-        .mlabel {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--faint);
-        }
-
-        .slabel {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--faint);
-            padding: 0 4px;
-        }
-
-        .toast {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 16px;
-            border-radius: 16px;
-            background: rgba(37, 31, 69, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        #sidebarBackdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 45;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        @media (max-width: 767px) {
-            #sidebar {
-                border-radius: 20px;
-                left: 8px;
-                top: 8px;
-                height: calc(100vh - 16px);
-            }
-            #mainArea {
-                padding: 8px;
-            }
-            #headerCard {
-                border-radius: 16px;
-                height: 48px;
-                padding: 0 10px;
-            }
-            #welcomeState {
-                border-radius: 16px;
-                padding: 24px;
-            }
-            #iframeWrapper {
-                border-radius: 16px;
-            }
-        }
-
-        /* ═══ ĐỒNG HỒ ═══ */
-        .clock-center {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 16px;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
-            font-size: 14px;
-            font-weight: 800;
-            color: #f0f0ff;
-            letter-spacing: 0.05em;
-            transition: all 0.2s;
-        }
-        .clock-center svg {
-            color: #c4b5fd;
-        }
-        .clock-center:hover {
-            background: rgba(255, 255, 255, 0.16);
-            border-color: rgba(139, 92, 246, 0.3);
-            box-shadow: 0 0 28px rgba(139, 92, 246, 0.25);
-        }
-        @media (max-width: 767px) {
-            .clock-center {
-                font-size: 12px;
-                padding: 2px 10px;
-                gap: 5px;
-            }
-            .clock-center svg {
-                width: 14px;
-                height: 14px;
-            }
-        }
-    </style>
+#sidebar {
+    width: 272px; min-width: 272px;
+    margin: 12px 0 12px 12px;
+    height: calc(100vh - 24px);
+    border-radius: 24px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    display: flex; flex-direction: column;
+    overflow: hidden; flex-shrink: 0;
+    box-shadow: var(--glass-shadow);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        min-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.25s ease, margin 0.35s ease;
+    z-index: 40; position: relative;
+}
+body.sidebar-collapsed #sidebar {
+    width: 0 !important; min-width: 0 !important;
+    margin-left: 0 !important; opacity: 0; pointer-events: none;
+}
+@media (max-width: 767px) {
+    #sidebar {
+        position: fixed; left: 12px; top: 12px;
+        height: calc(100vh - 24px);
+        transform: translateX(calc(-100% - 24px));
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+        z-index: 50;
+    }
+    body.sidebar-open #sidebar { transform: translateX(0); opacity: 1; }
+    body.sidebar-open #sidebarBackdrop { opacity: 1 !important; pointer-events: auto !important; }
+}
+.sidebar-header {
+    padding: 20px 18px 14px;
+    background: linear-gradient(160deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.02) 60%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+#mainArea {
+    flex: 1; display: flex; flex-direction: column;
+    min-width: 0; padding: 12px 12px 12px 8px;
+    gap: 10px; height: 100vh; overflow: hidden;
+}
+#headerCard {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px; height: 52px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 14px; gap: 10px; box-shadow: var(--glass-shadow);
+}
+#iframeWrapper {
+    flex: 1; border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    display: none; background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(4px);
+}
+#iframeWrapper iframe { width: 100%; height: 100%; border: none; display: block; }
+#welcomeState {
+    flex: 1; border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 40px;
+    position: relative; box-shadow: var(--glass-shadow);
+}
+.glow-vio {
+    position: absolute; width: 380px; height: 380px;
+    border-radius: 9999px;
+    background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, transparent 65%);
+    top: 40%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
+}
+.glow-pink {
+    position: absolute; width: 250px; height: 250px;
+    border-radius: 9999px;
+    background: radial-gradient(ellipse, rgba(244, 114, 182, 0.10) 0%, transparent 65%);
+    top: 60%; left: 65%; transform: translate(-50%, -50%); pointer-events: none;
+}
+.welcome-logo {
+    width: 68px; height: 68px; border-radius: 22px;
+    background: rgba(139, 92, 246, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    margin-bottom: 24px;
+}
+.gdiv {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), rgba(244, 114, 182, 0.4), transparent);
+    margin: 24px 0; width: 100%; max-width: 280px;
+}
+.stat-pill {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 3px; padding: 10px 22px; border-radius: 16px;
+    background: rgba(139, 92, 246, 0.08);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+}
+.app-item {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-radius: 14px;
+    border: 1px solid transparent; cursor: grab;
+    text-align: left; color: var(--muted);
+    transition: all 0.18s ease; position: relative;
+    background: transparent; user-select: none;
+}
+.app-item:hover {
+    background: rgba(139, 92, 246, 0.10);
+    border-color: rgba(139, 92, 246, 0.2);
+    color: var(--text); backdrop-filter: blur(4px);
+}
+.app-item.active {
+    background: rgba(139, 92, 246, 0.18);
+    backdrop-filter: blur(8px);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: var(--text);
+    box-shadow: 0 2px 16px rgba(139, 92, 246, 0.12);
+}
+.app-item:active { cursor: grabbing; }
+.app-item.drag-over {
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(139, 92, 246, 0.15);
+    transform: scale(1.01);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+.app-item.dragging { opacity: 0.4; transform: scale(0.96); }
+.app-actions { opacity: 0; transition: opacity 0.15s ease; display: flex; gap: 2px; }
+.app-item:hover .app-actions { opacity: 1; }
+.app-item.dragging .app-actions { opacity: 0 !important; pointer-events: none; }
+.app-item .drag-handle {
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--faint); opacity: 0.3; transition: opacity 0.2s;
+    margin-right: 4px; flex-shrink: 0;
+}
+.app-item:hover .drag-handle { opacity: 0.7; }
+.app-item:active .drag-handle { opacity: 1; }
+.icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 7px; border-radius: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--muted); cursor: pointer;
+    transition: all 0.18s ease; backdrop-filter: blur(4px);
+}
+.icon-btn:hover {
+    background: rgba(139, 92, 246, 0.14);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: var(--vio-l);
+}
+.icon-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}
+.bc-home {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px 4px 8px; border-radius: 9999px;
+    border: 1px solid transparent; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.03em;
+    color: var(--muted); cursor: pointer;
+    transition: all 0.18s ease;
+    background: rgba(255, 255, 255, 0.02);
+}
+.bc-home:hover {
+    background: rgba(139, 92, 246, 0.10);
+    border-color: rgba(139, 92, 246, 0.2);
+    color: var(--vio-l);
+}
+.app-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px 3px 7px; border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    max-width: 220px; overflow: hidden;
+}
+.ver-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px; border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.12);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.1em; color: var(--vio-l);
+    text-transform: uppercase;
+}
+.live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 11px; border-radius: 9999px;
+    background: rgba(16, 185, 129, 0.08);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.06em; color: #34d399;
+}
+.live-dot {
+    width: 7px; height: 7px; border-radius: 9999px;
+    background: #10b981; position: relative; display: inline-flex;
+}
+.live-dot::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: 9999px; background: #10b981;
+    opacity: 0.7;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.add-btn {
+    width: 100%; display: flex; align-items: center; justify-content: center;
+    gap: 7px; padding: 11px 16px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(244, 114, 182, 0.2));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #fff; font-size: 12px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+}
+.add-btn:hover {
+    opacity: 0.88; transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(139, 92, 246, 0.35);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.add-btn:active { transform: scale(0.98); }
+.btn-pri {
+    padding: 8px 20px; border-radius: 12px;
+    font-size: 12px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(139, 92, 246, 0.2));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    cursor: pointer; transition: all 0.2s ease;
+    box-shadow: 0 2px 12px rgba(139, 92, 246, 0.2);
+}
+.btn-pri:hover {
+    opacity: 0.88; transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.btn-sec {
+    padding: 8px 16px; border-radius: 12px;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer; transition: all 0.18s;
+}
+.btn-sec:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+.btn-danger {
+    padding: 8px 18px; border-radius: 12px;
+    font-size: 12px; font-weight: 700; color: #fff;
+    background: rgba(220, 38, 38, 0.25);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(248, 113, 113, 0.15);
+    cursor: pointer; transition: all 0.18s;
+    box-shadow: 0 2px 12px rgba(220, 38, 38, 0.15);
+}
+.btn-danger:hover {
+    opacity: 0.85; transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.25);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+.modal-card {
+    background: rgba(37, 31, 69, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+.modal-input {
+    width: 100%; padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px; font-size: 13px;
+    color: var(--text); outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: inherit;
+}
+.modal-input:focus {
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+}
+.modal-input::placeholder { color: #475569; }
+.mlabel {
+    display: block; margin-bottom: 7px;
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--faint);
+}
+.slabel {
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--faint); padding: 0 4px;
+}
+.toast {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 16px; border-radius: 16px;
+    background: rgba(37, 31, 69, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px; font-weight: 600;
+    color: var(--text);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+#sidebarBackdrop {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 45; opacity: 0;
+    pointer-events: none; transition: opacity 0.3s;
+}
+@media (max-width: 767px) {
+    #sidebar { border-radius: 20px; left: 8px; top: 8px; height: calc(100vh - 16px); }
+    #mainArea { padding: 8px; }
+    #headerCard { border-radius: 16px; height: 48px; padding: 0 10px; }
+    #welcomeState { border-radius: 16px; padding: 24px; }
+    #iframeWrapper { border-radius: 16px; }
+}
+.clock-center {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 16px; border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+    font-size: 14px; font-weight: 800;
+    color: #f0f0ff; letter-spacing: 0.05em;
+    transition: all 0.2s;
+}
+.clock-center svg { color: #c4b5fd; }
+.clock-center:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 28px rgba(139, 92, 246, 0.25);
+}
+@media (max-width: 767px) {
+    .clock-center { font-size: 12px; padding: 2px 10px; gap: 5px; }
+    .clock-center svg { width: 14px; height: 14px; }
+}
+.sync-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 9999px;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    color: #94a3b8;
+    transition: all 0.3s;
+}
+.sync-badge.ok {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #34d399;
+}
+.sync-badge.saving {
+    background: rgba(139, 92, 246, 0.12);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: #c4b5fd;
+}
+.sync-badge.err {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}
+.env-warning {
+    display: none;
+    margin: 10px 12px 0;
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+    font-size: 10px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+</style>
 </head>
 <body>
 
-    <!-- BACKDROP mobile -->
-    <div id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+<div id="sidebarBackdrop" onclick="toggleSidebar()"></div>
 
-    <!-- ══════ SIDEBAR ══════ -->
-    <aside id="sidebar">
-        <div class="sidebar-header">
-            <div style="display:flex;align-items:center;gap:12px;user-select:none;">
-                <div style="width:40px;height:40px;border-radius:14px;background:rgba(139,92,246,0.2);backdrop-filter:blur(8px);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(139,92,246,0.2);">
-                    <!-- LOGO SVG VẼ TAY: Quả địa cầu -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-size:13px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:#e2e8f0;line-height:1.2;">Learning Base</div>
-                    <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f472b6;margin-top:2px;">Hệ sinh thái học tập</div>
-                </div>
-            </div>
-        </div>
-
-        <div style="flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:16px;">
-            <div>
-                <div class="slabel" style="margin-bottom:10px;">Thư viện cá nhân</div>
-                <nav id="appList" style="display:flex;flex-direction:column;gap:4px;"></nav>
-            </div>
-        </div>
-
-        <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.05);">
-            <button class="add-btn" onclick="openAddModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                Thêm Ứng Dụng Mới
-            </button>
-        </div>
-    </aside>
-
-    <!-- ══════ MAIN AREA ══════ -->
-    <div id="mainArea">
-
-        <!-- HEADER -->
-        <div id="headerCard">
-            <!-- Bên trái -->
-            <div style="display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;flex:1;">
-                <button class="icon-btn" onclick="toggleSidebar()" title="Ẩn/Hiện Cột Trái">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-                    </svg>
-                </button>
-
-                <nav style="display:flex;align-items:center;gap:6px;overflow:hidden;user-select:none;">
-                    <button class="bc-home" onclick="goHome()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                        <span>Base</span>
-                    </button>
-                    <span style="color:#334155;font-size:12px;flex-shrink:0;">/</span>
-                    <div id="currentAppName" style="display:flex;align-items:center;gap:6px;overflow:hidden;">
-                        <span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>
-                    </div>
-                </nav>
-            </div>
-
-            <!-- GIỮA – ĐỒNG HỒ -->
-            <div style="display:flex;align-items:center;justify-content:center;flex:1;">
-                <div class="clock-center" id="clockDisplay">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <span id="clockTime">00:00</span>
-                </div>
-            </div>
-
-            <!-- Bên phải -->
-            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex:1;justify-content:flex-end;">
-                <div id="activeIndicator" class="live-badge" style="display:none;">
-                    <span class="live-dot"></span>
-                    <span>LIVE</span>
-                </div>
-                <div class="ver-badge" id="verBadgeDesktop">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 3l1.9 5.8 5.8 1.9-5.8 1.9L12 18.4l-1.9-5.8L4.3 10.7l5.8-1.9z"/>
-                    </svg>
-                    <span>v2.3</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- WELCOME -->
-        <div id="welcomeState">
-            <div class="glow-vio"></div>
-            <div class="glow-pink"></div>
-
-            <div class="welcome-logo" style="position:relative;z-index:1;">
-                <!-- LOGO SVG VẼ TAY: Địa cầu xoay -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 60s linear infinite;">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="2" y1="12" x2="22" y2="12"/>
+<aside id="sidebar">
+    <div class="sidebar-header">
+        <div style="display:flex;align-items:center;gap:12px;user-select:none;">
+            <div style="width:40px;height:40px;border-radius:14px;background:rgba(139,92,246,0.2);backdrop-filter:blur(8px);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(139,92,246,0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                 </svg>
             </div>
-
-            <h2 id="currentDateDisplay" style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.02em;background:linear-gradient(135deg,#c4b5fd,#e2e8f0 40%,#fbcfe8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1;">
-                Đang tải...
-            </h2>
-
-            <div class="gdiv" style="position:relative;z-index:1;"></div>
-
-            <div style="max-width:340px;position:relative;z-index:1;">
-                <p id="quoteEn" style="font-size:12px;font-weight:700;font-style:italic;line-height:1.6;color:#c4b5fd;">"..."</p>
-                <p id="quoteVi" style="font-size:11px;font-weight:500;font-style:italic;color:#475569;margin-top:8px;line-height:1.5;">(đang tải...)</p>
-                <span id="quoteAuthor" style="font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#334155;display:block;margin-top:12px;">— ...</span>
-            </div>
-
-            <div style="display:flex;gap:10px;margin-top:32px;position:relative;z-index:1;">
-                <div class="stat-pill">
-                    <span id="statAppCount" style="font-size:18px;font-weight:900;color:#a78bfa;">0</span>
-                    <span style="font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#475569;">Ứng Dụng</span>
-                </div>
-                <div class="stat-pill">
-                    <span style="font-size:18px;font-weight:900;color:#f9a8d4;">Local</span>
-                    <span style="font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#475569;">Lưu trữ</span>
-                </div>
+            <div>
+                <div style="font-size:13px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:#e2e8f0;line-height:1.2;">Learning Base</div>
+                <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f472b6;margin-top:2px;">Hệ sinh thái học tập</div>
             </div>
         </div>
-
-        <!-- IFRAME -->
-        <div id="iframeWrapper">
-            <iframe id="appFrame" src="" allow="clipboard-write"></iframe>
+        <div class="env-warning" id="envWarning">
+            ⚠ Bạn đang mở bằng <b>file://</b>. Đồng bộ trong iframe sẽ bị chặn. Hãy chạy qua local server (VD: <code>python -m http.server 8000</code>).
         </div>
     </div>
 
-    <!-- ══════ MODAL: THÊM ══════ -->
-    <div id="addModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
-        <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                        <line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
-                    </svg>Thêm Ứng Dụng
-                </span>
-                <button class="icon-btn" onclick="closeAddModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
+    <div style="flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:16px;">
+        <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px;margin-bottom:10px;">
+                <div class="slabel">Thư viện cá nhân</div>
+                <div class="sync-badge" id="syncBadge"><span id="syncBadgeText">Đang tải…</span></div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:16px;">
-                <div><label class="mlabel">Biểu tượng (Emoji)</label><input class="modal-input" id="appEmoji" placeholder="📚  📝  💡  🎯"></div>
-                <div><label class="mlabel">Tên ứng dụng</label><input class="modal-input" id="appName" placeholder="Ví dụ: Luyện Đề Cambridge"></div>
-                <div>
-                    <label class="mlabel">Đường dẫn tệp tin</label>
-                    <input class="modal-input" id="appPath" placeholder="Exam.html hoặc index.html">
-                    <p style="font-size:10px;color:#334155;margin-top:6px;">Tệp phải nằm cùng thư mục với Dashboard.</p>
-                </div>
-            </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-                <button class="btn-sec" onclick="closeAddModal()">Hủy</button>
-                <button class="btn-pri" onclick="saveNewApp()">Lưu Ứng Dụng</button>
-            </div>
+            <nav id="appList" style="display:flex;flex-direction:column;gap:4px;"></nav>
         </div>
     </div>
 
-    <!-- ══════ MODAL: SỬA ══════ -->
-    <div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
-        <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                    </svg>Chỉnh Sửa
-                </span>
-                <button class="icon-btn" onclick="closeEditModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:16px;">
-                <input type="hidden" id="editAppId">
-                <div><label class="mlabel">Biểu tượng</label><input class="modal-input" id="editAppEmoji" placeholder="📚  📝  💡"></div>
-                <div><label class="mlabel">Tên ứng dụng</label><input class="modal-input" id="editAppName"></div>
-                <div><label class="mlabel">Đường dẫn</label><input class="modal-input" id="editAppPath"></div>
-            </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-                <button class="btn-sec" onclick="closeEditModal()">Hủy</button>
-                <button class="btn-pri" onclick="saveEditApp()">Lưu Thay Đổi</button>
-            </div>
-        </div>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.05);">
+        <button class="add-btn" onclick="openAddModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Thêm Ứng Dụng Mới
+        </button>
     </div>
+</aside>
 
-    <!-- ══════ MODAL: XÓA ══════ -->
-    <div id="deleteConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
-        <div class="modal-card" style="width:100%;max-width:360px;padding:28px;text-align:center;">
-            <div style="width:56px;height:56px;border-radius:9999px;background:rgba(185,28,28,0.15);border:1px solid rgba(248,113,113,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+<div id="mainArea">
+    <div id="headerCard">
+        <div style="display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;flex:1;">
+            <button class="icon-btn" onclick="toggleSidebar()" title="Ẩn/Hiện Cột Trái">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
                 </svg>
+            </button>
+            <nav style="display:flex;align-items:center;gap:6px;overflow:hidden;user-select:none;">
+                <button class="bc-home" onclick="goHome()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <span>Base</span>
+                </button>
+                <span style="color:#334155;font-size:12px;flex-shrink:0;">/</span>
+                <div id="currentAppName" style="display:flex;align-items:center;gap:6px;overflow:hidden;">
+                    <span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>
+                </div>
+            </nav>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;flex:1;">
+            <div class="clock-center" id="clockDisplay">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span id="clockTime">00:00</span>
             </div>
-            <h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:#e2e8f0;margin-bottom:8px;">Xóa Ứng Dụng</h3>
-            <p id="deleteConfirmText" style="font-size:12px;color:#94a3b8;line-height:1.5;"></p>
-            <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;">
-                <button class="btn-sec" onclick="closeDeleteModal()">Hủy</button>
-                <button class="btn-danger" id="btnConfirmDelete">Xác Nhận Xóa</button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex:1;justify-content:flex-end;">
+            <div id="activeIndicator" class="live-badge" style="display:none;">
+                <span class="live-dot"></span><span>LIVE</span>
+            </div>
+            <div class="ver-badge" id="verBadgeDesktop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3l1.9 5.8 5.8 1.9-5.8 1.9L12 18.4l-1.9-5.8L4.3 10.7l5.8-1.9z"/>
+                </svg>
+                <span>v3.1</span>
             </div>
         </div>
     </div>
 
-    <!-- TOASTS -->
-    <div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:70;display:flex;flex-direction:column;gap:8px;"></div>
+    <div id="welcomeState">
+        <div class="glow-vio"></div>
+        <div class="glow-pink"></div>
 
-    <script>
-        /* ══════════════════════════════════════════════════
-           1) BỘ ICON SVG VẼ TAY – KHÔNG TẢI TỪ MẠNG
-           ══════════════════════════════════════════════════ */
-        const SVG_PATHS = {
-            edit:  '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
-            trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
-            alert: '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-            check: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
-        };
+        <div class="welcome-logo" style="position:relative;z-index:1;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 60s linear infinite;">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+        </div>
 
-        function svgIcon(name, size = 16, color = 'currentColor', extra = '') {
-            return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +
-                   '" viewBox="0 0 24 24" fill="none" stroke="' + color +
-                   '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;' + extra + '">' +
-                   (SVG_PATHS[name] || '') + '</svg>';
-        }
+        <h2 id="currentDateDisplay" style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.02em;background:linear-gradient(135deg,#c4b5fd,#e2e8f0 40%,#fbcfe8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1;">
+            Đang tải...
+        </h2>
 
-        /* ══════════════════════════════════════════════════
-           2) DỮ LIỆU ỨNG DỤNG
-           ══════════════════════════════════════════════════ */
-        // ⚠️ ĐÂY LÀ BIẾN BỊ THIẾU TRƯỚC ĐÂY → KHIẾN TOÀN BỘ SCRIPT LỖI
-        //    và nút "Thêm ứng dụng" không hoạt động.
-        const defaultApps = [];
+        <div class="gdiv" style="position:relative;z-index:1;"></div>
 
-        let userApps;
-        try {
-            userApps = JSON.parse(localStorage.getItem('my_learning_hub_apps'));
-            if (!Array.isArray(userApps)) userApps = defaultApps.slice();
-        } catch (err) {
-            userApps = defaultApps.slice();
-        }
+        <div style="max-width:340px;position:relative;z-index:1;">
+            <p id="quoteEn" style="font-size:12px;font-weight:700;font-style:italic;line-height:1.6;color:#c4b5fd;">"..."</p>
+            <p id="quoteVi" style="font-size:11px;font-weight:500;font-style:italic;color:#475569;margin-top:8px;line-height:1.5;">(đang tải...)</p>
+            <span id="quoteAuthor" style="font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#334155;display:block;margin-top:12px;">— ...</span>
+        </div>
 
-        let currentActiveAppId = null;
-        let dragIndex = null;
+        <div style="display:flex;gap:10px;margin-top:32px;position:relative;z-index:1;">
+            <div class="stat-pill">
+                <span id="statAppCount" style="font-size:18px;font-weight:900;color:#a78bfa;">0</span>
+                <span style="font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#475569;">Ứng Dụng</span>
+            </div>
+            <div class="stat-pill">
+                <span style="font-size:18px;font-weight:900;color:#f9a8d4;">Cloud</span>
+                <span style="font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#475569;">Lưu trữ</span>
+            </div>
+        </div>
+    </div>
 
-        const quotes = [
-            { en: "The beautiful thing about learning is that no one can take it away from you.", vi: "Điều tuyệt vời của việc học là không ai có thể lấy nó đi khỏi bạn.", author: "B.B. King" },
-            { en: "Success is the sum of small efforts, repeated day in and day out.", vi: "Thành công là tổng của những nỗ lực nhỏ, lặp đi lặp lại mỗi ngày.", author: "Robert Collier" },
-            { en: "It always seems impossible until it's done.", vi: "Mọi thứ đều có vẻ bất khả thi cho đến khi nó được hoàn thành.", author: "Nelson Mandela" },
-            { en: "Believe you can and you're halfway there.", vi: "Hãy tin rằng bạn có thể, và bạn đã đi được nửa chặng đường.", author: "Theodore Roosevelt" },
-            { en: "Live as if you were to die tomorrow. Learn as if you were to live forever.", vi: "Sống như thể bạn sẽ chết vào ngày mai. Học như thể bạn sẽ sống mãi mãi.", author: "Mahatma Gandhi" },
-            { en: "Education is the passport to the future.", vi: "Giáo dục là tấm hộ chiếu cho tương lai.", author: "Malcolm X" },
-            { en: "Do not wait for opportunities, create them yourself.", vi: "Đừng chờ đợi cơ hội, hãy tự tạo ra chúng.", author: "Chris Grosser" }
-        ];
+    <div id="iframeWrapper">
+        <iframe id="appFrame" src="" allow="clipboard-write"></iframe>
+    </div>
+</div>
 
-        function updateDate() {
-            const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-            const now = new Date();
-            const el = document.getElementById('currentDateDisplay');
-            if (el) el.textContent =
-                days[now.getDay()] + ', ' +
-                String(now.getDate()).padStart(2, '0') + '/' +
-                String(now.getMonth() + 1).padStart(2, '0') + '/' +
-                now.getFullYear();
-        }
+<!-- MODAL: THÊM -->
+<div id="addModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
+    <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    <line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
+                </svg>Thêm Ứng Dụng
+            </span>
+            <button class="icon-btn" onclick="closeAddModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            <div><label class="mlabel">Biểu tượng (Emoji)</label><input class="modal-input" id="appEmoji" placeholder="📚  📝  💡  🎯"></div>
+            <div><label class="mlabel">Tên ứng dụng</label><input class="modal-input" id="appName" placeholder="Ví dụ: Luyện Đề Cambridge"></div>
+            <div>
+                <label class="mlabel">Đường dẫn tệp tin</label>
+                <input class="modal-input" id="appPath" placeholder="Exam.html hoặc index.html">
+                <p style="font-size:10px;color:#334155;margin-top:6px;">Tệp phải nằm cùng thư mục với Dashboard.</p>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
+            <button class="btn-sec" onclick="closeAddModal()">Hủy</button>
+            <button class="btn-pri" onclick="saveNewApp()">Lưu Ứng Dụng</button>
+        </div>
+    </div>
+</div>
 
-        function loadRandomQuote() {
-            const q = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quoteEn').textContent = '"' + q.en + '"';
-            document.getElementById('quoteVi').textContent = '(' + q.vi + ')';
-            document.getElementById('quoteAuthor').textContent = '— ' + q.author;
-        }
+<!-- MODAL: SỬA -->
+<div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
+    <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>Chỉnh Sửa
+            </span>
+            <button class="icon-btn" onclick="closeEditModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            <input type="hidden" id="editAppId">
+            <div><label class="mlabel">Biểu tượng</label><input class="modal-input" id="editAppEmoji" placeholder="📚  📝  💡"></div>
+            <div><label class="mlabel">Tên ứng dụng</label><input class="modal-input" id="editAppName"></div>
+            <div><label class="mlabel">Đường dẫn</label><input class="modal-input" id="editAppPath"></div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
+            <button class="btn-sec" onclick="closeEditModal()">Hủy</button>
+            <button class="btn-pri" onclick="saveEditApp()">Lưu Thay Đổi</button>
+        </div>
+    </div>
+</div>
 
-        function toggleSidebar() {
-            if (window.innerWidth >= 768) document.body.classList.toggle('sidebar-collapsed');
-            else document.body.classList.toggle('sidebar-open');
-        }
+<!-- MODAL: XÓA -->
+<div id="deleteConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
+    <div class="modal-card" style="width:100%;max-width:360px;padding:28px;text-align:center;">
+        <div style="width:56px;height:56px;border-radius:9999px;background:rgba(185,28,28,0.15);border:1px solid rgba(248,113,113,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+        </div>
+        <h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:#e2e8f0;margin-bottom:8px;">Xóa Ứng Dụng</h3>
+        <p id="deleteConfirmText" style="font-size:12px;color:#94a3b8;line-height:1.5;"></p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:24px;">
+            <button class="btn-sec" onclick="closeDeleteModal()">Hủy</button>
+            <button class="btn-danger" id="btnConfirmDelete">Xác Nhận Xóa</button>
+        </div>
+    </div>
+</div>
 
-        function goHome() {
-            loadRandomQuote();
-            updateDate();
-            document.getElementById('welcomeState').style.display = 'flex';
-            document.getElementById('iframeWrapper').style.display = 'none';
-            document.getElementById('currentAppName').innerHTML =
-                '<span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>';
-            document.getElementById('activeIndicator').style.display = 'none';
-            document.getElementById('appFrame').src = '';
-            currentActiveAppId = null;
-            document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
-        }
+<div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:70;display:flex;flex-direction:column;gap:8px;"></div>
 
-        /* ══════════════════════════════════════════════════
-           3) KÉO – THẢ SẮP XẾP
-           ══════════════════════════════════════════════════ */
-        function handleDragStart(e) {
-            const item = e.target.closest('.app-item');
-            if (!item) return;
-            if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) {
-                e.preventDefault();
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   A) FIREBASE INIT
+   ══════════════════════════════════════════════════════ */
+const firebaseConfig = {
+    apiKey: "AIzaSyDExTCzqNMwKLTHCG92W2HGzKrkXlA_MlM",
+    authDomain: "learning-base-5d0a0.firebaseapp.com",
+    projectId: "learning-base-5d0a0",
+    storageBucket: "learning-base-5d0a0.firebasestorage.app",
+    messagingSenderId: "625524211306",
+    appId: "1:625524211306:web:ce52abe790b22becb45413",
+    measurementId: "G-9MHL89068V"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+db.enablePersistence({ synchronizeTabs: true }).catch(err => console.warn("Persistence:", err.code));
+
+const APPS_DOC  = db.collection("learning_data").doc("user_apps");
+const FIELD_DOC = db.collection("learning_data").doc("user_fields");
+
+/* ══════════════════════════════════════════════════════
+   B) SVG ICONS
+   ══════════════════════════════════════════════════════ */
+const SVG_PATHS = {
+    edit:  '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+    trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+    alert: '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    check: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+};
+function svgIcon(name, size, color, extra) {
+    size = size || 16; color = color || 'currentColor'; extra = extra || '';
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +
+           '" viewBox="0 0 24 24" fill="none" stroke="' + color +
+           '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;' + extra + '">' +
+           (SVG_PATHS[name] || '') + '</svg>';
+}
+function escapeHtml(str) {
+    return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* ══════════════════════════════════════════════════════
+   C) STATE
+   ══════════════════════════════════════════════════════ */
+const LS_APPS = 'my_learning_hub_apps_v3';
+const LS_FIELDS = 'my_learning_hub_fields_v3';
+
+let userApps = [];
+try {
+    const cached = JSON.parse(localStorage.getItem(LS_APPS));
+    if (Array.isArray(cached)) userApps = cached;
+} catch (e) {}
+
+let fieldState = {};
+try {
+    const f = JSON.parse(localStorage.getItem(LS_FIELDS));
+    if (f && typeof f === 'object') fieldState = f;
+} catch (e) {}
+
+let currentActiveAppId = null;
+let dragIndex = null;
+let cloudAppsLoaded = false;
+let cloudFieldsLoaded = false;
+let currentFieldObserver = null;
+let currentIframeDoc = null;
+
+const quotes = [
+    { en: "The beautiful thing about learning is that no one can take it away from you.", vi: "Điều tuyệt vời của việc học là không ai có thể lấy nó đi khỏi bạn.", author: "B.B. King" },
+    { en: "Success is the sum of small efforts, repeated day in and day out.", vi: "Thành công là tổng của những nỗ lực nhỏ, lặp đi lặp lại mỗi ngày.", author: "Robert Collier" },
+    { en: "It always seems impossible until it's done.", vi: "Mọi thứ đều có vẻ bất khả thi cho đến khi nó được hoàn thành.", author: "Nelson Mandela" },
+    { en: "Believe you can and you're halfway there.", vi: "Hãy tin rằng bạn có thể, và bạn đã đi được nửa chặng đường.", author: "Theodore Roosevelt" },
+    { en: "Live as if you were to die tomorrow. Learn as if you were to live forever.", vi: "Sống như thể bạn sẽ chết vào ngày mai. Học như thể bạn sẽ sống mãi mãi.", author: "Mahatma Gandhi" },
+    { en: "Education is the passport to the future.", vi: "Giáo dục là tấm hộ chiếu cho tương lai.", author: "Malcolm X" },
+    { en: "Do not wait for opportunities, create them yourself.", vi: "Đừng chờ đợi cơ hội, hãy tự tạo ra chúng.", author: "Chris Grosser" }
+];
+
+/* ══════════════════════════════════════════════════════
+   D) SYNC BADGE
+   ══════════════════════════════════════════════════════ */
+let savingTimeout = null;
+function setSyncBadge(state, text) {
+    const b = document.getElementById('syncBadge');
+    const t = document.getElementById('syncBadgeText');
+    if (!b || !t) return;
+    b.classList.remove('ok', 'saving', 'err');
+    if (state) b.classList.add(state);
+    t.textContent = text;
+}
+function flashSaving() {
+    setSyncBadge('saving', 'Đang lưu…');
+    clearTimeout(savingTimeout);
+    savingTimeout = setTimeout(() => setSyncBadge('ok', '☁ Đã đồng bộ'), 700);
+}
+
+/* ══════════════════════════════════════════════════════
+   E) LOCAL PERSIST
+   ══════════════════════════════════════════════════════ */
+function saveAppsLocal() {
+    try { localStorage.setItem(LS_APPS, JSON.stringify(userApps)); } catch (e) {}
+}
+function saveFieldsLocal() {
+    try { localStorage.setItem(LS_FIELDS, JSON.stringify(fieldState)); } catch (e) {}
+}
+
+/* ══════════════════════════════════════════════════════
+   F) CLOUD WRITES
+   ══════════════════════════════════════════════════════ */
+function saveAppsCloud() {
+    if (!cloudAppsLoaded) return;
+    flashSaving();
+    APPS_DOC.set({
+        list: userApps,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => setSyncBadge('ok', '☁ Đã đồng bộ'))
+      .catch(err => {
+          console.error('Lỗi lưu apps:', err);
+          setSyncBadge('err', 'Lỗi đồng bộ');
+      });
+}
+function persistApps() {
+    saveAppsLocal();
+    saveAppsCloud();
+}
+
+// Ghi 1 field lên cloud
+const pendingFieldWrites = {};
+function saveField(key, value) {
+    fieldState[key] = value;
+    saveFieldsLocal();
+
+    clearTimeout(pendingFieldWrites[key]);
+    pendingFieldWrites[key] = setTimeout(() => {
+        flashSaving();
+        const update = {};
+        update[key] = value;
+        update.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+        FIELD_DOC.set(update, { merge: true })
+            .then(() => setSyncBadge('ok', '☁ Đã đồng bộ'))
+            .catch(err => {
+                console.error('Lỗi lưu field:', err);
+                setSyncBadge('err', 'Lỗi đồng bộ');
+            });
+    }, 400);
+}
+
+/* ══════════════════════════════════════════════════════
+   G) LISTEN CLOUD - APPS LIST
+   ══════════════════════════════════════════════════════ */
+APPS_DOC.onSnapshot(function (doc) {
+    if (doc.metadata && doc.metadata.hasPendingWrites) return;
+
+    if (doc.exists) {
+        const data = doc.data();
+        const cloudList = Array.isArray(data.list) ? data.list : [];
+
+        if (!cloudAppsLoaded) {
+            cloudAppsLoaded = true;
+            if (cloudList.length === 0 && userApps.length > 0) {
+                saveAppsCloud();
+                renderApps();
                 return;
             }
-            dragIndex = parseInt(item.dataset.index, 10);
-            item.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', String(dragIndex));
-            e.dataTransfer.dropEffect = 'move';
-        }
-
-        function handleDragEnd(e) {
-            const item = e.target.closest('.app-item');
-            if (item) item.classList.remove('dragging');
-            document.querySelectorAll('.app-item.drag-over').forEach(el => el.classList.remove('drag-over'));
-            dragIndex = null;
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            const target = e.target.closest('.app-item');
-            if (target && !target.classList.contains('dragging')) target.classList.add('drag-over');
-        }
-
-        function handleDragLeave(e) {
-            const target = e.target.closest('.app-item');
-            if (target) target.classList.remove('drag-over');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            const target = e.target.closest('.app-item');
-            if (!target) return;
-            target.classList.remove('drag-over');
-
-            const dropIdx = parseInt(target.dataset.index, 10);
-            if (dragIndex === null || dragIndex === dropIdx || isNaN(dropIdx)) return;
-
-            const [moved] = userApps.splice(dragIndex, 1);
-            userApps.splice(dropIdx, 0, moved);
-
-            localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
-
-            const activeId = currentActiveAppId;
+            if (cloudList.length > 0) {
+                userApps = cloudList;
+                saveAppsLocal();
+            }
             renderApps();
-            if (activeId) {
-                const activeEl = document.querySelector('.app-item[data-id="' + activeId + '"]');
-                if (activeEl) activeEl.classList.add('active');
-                currentActiveAppId = activeId;
-            }
-
-            showToast('✅ Đã sắp xếp lại thứ tự ứng dụng!', 'success');
+            return;
         }
 
-        /* ══════════════════════════════════════════════════
-           4) RENDER DANH SÁCH ỨNG DỤNG
-           ══════════════════════════════════════════════════ */
-        function renderApps() {
-            const list = document.getElementById('appList');
-            list.innerHTML = '';
-
-            if (userApps.length === 0) {
-                const empty = document.createElement('div');
-                empty.style.cssText = 'padding:18px 10px;text-align:center;font-size:11px;color:#475569;font-style:italic;line-height:1.6;';
-                empty.textContent = 'Chưa có ứng dụng nào. Bấm "Thêm Ứng Dụng Mới" ở dưới nhé!';
-                list.appendChild(empty);
-            }
-
-            userApps.forEach((app, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'app-item' + (app.id === currentActiveAppId ? ' active' : '');
-                btn.draggable = true;
-                btn.dataset.index = idx;
-                btn.dataset.id = app.id;
-
-                btn.innerHTML =
-                    '<div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1;min-width:0;">' +
-                        '<span class="drag-handle" style="font-size:12px;">⠿</span>' +
-                        '<span style="font-size:20px;flex-shrink:0;line-height:1;user-select:none;">' + app.emoji + '</span>' +
-                        '<div style="overflow:hidden;min-width:0;">' +
-                            '<div style="font-size:12px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + app.name + '</div>' +
-                            '<div style="font-size:10px;color:#475569;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">' + app.path + '</div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="app-actions">' +
-                        '<button class="icon-btn edit-btn" title="Sửa" style="padding:5px;border-radius:9px;">' +
-                            svgIcon('edit', 12) +
-                        '</button>' +
-                        '<button class="icon-btn danger del-btn" title="Xóa" style="padding:5px;border-radius:9px;">' +
-                            svgIcon('trash', 12) +
-                        '</button>' +
-                    '</div>';
-
-                btn.querySelector('.edit-btn').addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    openEditModal(app.id);
-                });
-                btn.querySelector('.del-btn').addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    askDeleteApp(app.id, app.name);
-                });
-
-                btn.addEventListener('dragstart', handleDragStart);
-                btn.addEventListener('dragend', handleDragEnd);
-                btn.addEventListener('dragover', handleDragOver);
-                btn.addEventListener('dragleave', handleDragLeave);
-                btn.addEventListener('drop', handleDrop);
-
-                btn.addEventListener('click', (e) => {
-                    if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) return;
-                    if (btn.classList.contains('dragging')) return;
-                    activateApp(app.id, app.path, btn, app.name, app.emoji);
-                });
-
-                list.appendChild(btn);
-            });
-
-            document.getElementById('statAppCount').textContent = userApps.length;
+        // Cập nhật realtime nếu cloud khác local
+        if (JSON.stringify(cloudList) !== JSON.stringify(userApps)) {
+            userApps = cloudList;
+            saveAppsLocal();
+            renderApps();
         }
+    } else {
+        if (!cloudAppsLoaded) {
+            cloudAppsLoaded = true;
+            if (userApps.length > 0) saveAppsCloud();
+            renderApps();
+        }
+    }
+}, err => {
+    console.warn('Apps listener error:', err);
+    cloudAppsLoaded = true;
+    setSyncBadge('err', 'Offline');
+    renderApps();
+});
 
-        function activateApp(id, path, el, name, emoji) {
-            currentActiveAppId = id;
-            document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
-            if (el) el.classList.add('active');
+/* ══════════════════════════════════════════════════════
+   H) LISTEN CLOUD - FIELDS STATE
+   ══════════════════════════════════════════════════════ */
+FIELD_DOC.onSnapshot(function (doc) {
+    if (doc.metadata && doc.metadata.hasPendingWrites) return;
+    if (!doc.exists) {
+        cloudFieldsLoaded = true;
+        return;
+    }
+    const data = doc.data();
+    // Merge vào local (cloud thắng)
+    let changed = false;
+    for (const k in data) {
+        if (k === 'updatedAt') continue;
+        if (fieldState[k] !== data[k]) {
+            fieldState[k] = data[k];
+            changed = true;
+        }
+    }
+    if (changed) {
+        saveFieldsLocal();
+        applyFieldsToIframe();
+    }
+    if (!cloudFieldsLoaded) {
+        cloudFieldsLoaded = true;
+        setSyncBadge('ok', '☁ Đã đồng bộ');
+    }
+}, err => console.warn('Fields listener error:', err));
 
+/* ══════════════════════════════════════════════════════
+   I) IFRAME FIELD SCANNER (tự động lưu MỌI thứ)
+   ══════════════════════════════════════════════════════ */
+const SKIP_TYPES = ['file', 'submit', 'button', 'reset', 'image', 'password', 'hidden'];
+function isField(el) {
+    if (!el || !el.tagName) return false;
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'textarea' || tag === 'select') return true;
+    if (tag !== 'input') return false;
+    if (SKIP_TYPES.indexOf(el.type) !== -1) {
+        // Cho phép override nếu có data-save-key
+        return el.dataset && el.dataset.saveKey ? true : false;
+    }
+    return true;
+}
+function collectFields(root) {
+    if (!root) return [];
+    return Array.prototype.filter.call(
+        root.querySelectorAll('input, textarea, select'),
+        isField
+    );
+}
+
+// Sinh key ổn định: appId::key
+function makeFieldKey(el, index) {
+    const appId = currentActiveAppId || 'app';
+    let localKey;
+    if (el.dataset && el.dataset.saveKey) localKey = 'sk:' + el.dataset.saveKey;
+    else if (el.id) localKey = 'id:' + el.id;
+    else if (el.name) {
+        if (el.type === 'radio' || el.type === 'checkbox')
+            localKey = 'nm:' + el.name + '|v:' + (el.value || '');
+        else
+            localKey = 'nm:' + el.name;
+    }
+    else {
+        const tag = el.tagName.toLowerCase();
+        const type = el.type || '';
+        localKey = 'pos:' + tag + '|' + type + '|' + index;
+    }
+    return appId + '::' + localKey;
+}
+
+// Đọc giá trị
+function readValue(el) {
+    if (el.type === 'checkbox') return !!el.checked;
+    if (el.type === 'radio')    return el.checked ? el.value : undefined;
+    if (el.tagName.toLowerCase() === 'select' && el.multiple) {
+        return Array.prototype.map.call(el.selectedOptions, o => o.value);
+    }
+    return el.value;
+}
+
+// Ghi giá trị vào element
+function writeValue(el, val) {
+    if (val === undefined || val === null) return;
+    const tag = el.tagName.toLowerCase();
+    if (el.type === 'checkbox') {
+        const b = !!val;
+        if (el.checked !== b) el.checked = b;
+    } else if (el.type === 'radio') {
+        const b = (el.value === val);
+        if (el.checked !== b) el.checked = b;
+    } else if (tag === 'select' && el.multiple && Array.isArray(val)) {
+        Array.prototype.forEach.call(el.options, o => {
+            o.selected = val.indexOf(o.value) !== -1;
+        });
+    } else {
+        if (el.value !== val) el.value = val;
+    }
+}
+
+// Áp toàn bộ state cloud → iframe
+function applyFieldsToIframe() {
+    if (!currentIframeDoc) return;
+    try {
+        const iframeDoc = currentIframeDoc;
+        const fields = collectFields(iframeDoc);
+        const active = iframeDoc.activeElement;
+
+        fields.forEach((el, index) => {
+            const key = makeFieldKey(el, index);
+            if (!el.dataset._lbKey) el.dataset._lbKey = key;
+
+            // Không ghi đè ô đang focus (tránh nhảy con trỏ)
+            if (active && active === el) return;
+
+            const val = fieldState[key];
+            if (val !== undefined) {
+                writeValue(el, val);
+            } else if (el.type === 'radio') {
+                // Nếu cloud không có giá trị → bỏ tích
+                if (el.checked) el.checked = false;
+            }
+        });
+    } catch (e) {
+        console.warn('[LB] applyFieldsToIframe:', e);
+    }
+}
+
+// Bind event lên iframe
+function bindIframe() {
+    if (currentFieldObserver) { currentFieldObserver.disconnect(); currentFieldObserver = null; }
+    currentIframeDoc = null;
+
+    const iframe = document.getElementById('appFrame');
+    if (!iframe) return;
+
+    try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!doc) return;
+        currentIframeDoc = doc;
+
+        // Handler cho input/change
+        const handler = function (e) {
+            const el = e.target;
+            if (!isField(el)) return;
+            const fields = collectFields(doc);
+            const index = fields.indexOf(el);
+            if (index < 0) return;
+            const key = makeFieldKey(el, index);
+            el.dataset._lbKey = key;
+            const val = readValue(el);
+            if (val === undefined) return;
+            saveField(key, val);
+        };
+
+        doc.addEventListener('change', handler, true);
+        doc.addEventListener('input',  handler, true);
+
+        // MutationObserver bắt field mới thêm
+        currentFieldObserver = new MutationObserver(function (mutations) {
+            let hasNew = false;
+            for (let i = 0; i < mutations.length && !hasNew; i++) {
+                const added = mutations[i].addedNodes;
+                for (let j = 0; j < added.length; j++) {
+                    const n = added[j];
+                    if (n.nodeType !== 1) continue;
+                    if (n.matches && n.matches('input, textarea, select')) { hasNew = true; break; }
+                    if (n.querySelector && n.querySelector('input, textarea, select')) { hasNew = true; break; }
+                }
+            }
+            if (hasNew) applyFieldsToIframe();
+        });
+        currentFieldObserver.observe(doc.body || doc.documentElement, {
+            childList: true, subtree: true
+        });
+
+        // Áp state hiện có ngay lập tức
+        applyFieldsToIframe();
+
+    } catch (e) {
+        console.warn('[LB] Không thể truy cập iframe (khác origin?):', e);
+    }
+}
+
+/* ══════════════════════════════════════════════════════
+   J) POSTMESSAGE API CHO APP CON (LBSync)
+   ══════════════════════════════════════════════════════ */
+window.addEventListener('message', function (e) {
+    const d = e.data;
+    if (!d || typeof d !== 'object') return;
+    const appId = currentActiveAppId || 'app';
+
+    // App con yêu cầu lưu custom state
+    if (d.type === 'LB_SAVE' && typeof d.key === 'string') {
+        const key = appId + '::custom::' + d.key;
+        saveField(key, d.value);
+    }
+
+    // App con yêu cầu đọc custom state
+    if (d.type === 'LB_LOAD' && typeof d.key === 'string') {
+        const key = appId + '::custom::' + d.key;
+        const source = e.source;
+        if (source && source.postMessage) {
+            source.postMessage({
+                type: 'LB_VALUE',
+                key: d.key,
+                value: fieldState[key]
+            }, '*');
+        }
+    }
+});
+
+/* ══════════════════════════════════════════════════════
+   K) NGÀY / GIỜ / QUOTE / SIDEBAR
+   ══════════════════════════════════════════════════════ */
+function updateDate() {
+    const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    const now = new Date();
+    const el = document.getElementById('currentDateDisplay');
+    if (el) el.textContent =
+        days[now.getDay()] + ', ' +
+        String(now.getDate()).padStart(2, '0') + '/' +
+        String(now.getMonth() + 1).padStart(2, '0') + '/' +
+        now.getFullYear();
+}
+function loadRandomQuote() {
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quoteEn').textContent = '"' + q.en + '"';
+    document.getElementById('quoteVi').textContent = '(' + q.vi + ')';
+    document.getElementById('quoteAuthor').textContent = '— ' + q.author;
+}
+function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    const el = document.getElementById('clockTime');
+    if (el) el.textContent = time;
+}
+function toggleSidebar() {
+    if (window.innerWidth >= 768) document.body.classList.toggle('sidebar-collapsed');
+    else document.body.classList.toggle('sidebar-open');
+}
+function goHome() {
+    loadRandomQuote();
+    updateDate();
+    document.getElementById('welcomeState').style.display = 'flex';
+    document.getElementById('iframeWrapper').style.display = 'none';
+    document.getElementById('currentAppName').innerHTML =
+        '<span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>';
+    document.getElementById('activeIndicator').style.display = 'none';
+    document.getElementById('appFrame').src = 'about:blank';
+    currentActiveAppId = null;
+    currentIframeDoc = null;
+    if (currentFieldObserver) { currentFieldObserver.disconnect(); currentFieldObserver = null; }
+    document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
+}
+
+/* ══════════════════════════════════════════════════════
+   L) RENDER APPS
+   ══════════════════════════════════════════════════════ */
+function renderApps() {
+    const list = document.getElementById('appList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    if (userApps.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'padding:18px 10px;text-align:center;font-size:11px;color:#475569;font-style:italic;line-height:1.6;';
+        empty.textContent = 'Chưa có ứng dụng nào. Bấm "Thêm Ứng Dụng Mới" ở dưới nhé!';
+        list.appendChild(empty);
+    }
+
+    userApps.forEach((app, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'app-item' + (app.id === currentActiveAppId ? ' active' : '');
+        btn.draggable = true;
+        btn.dataset.index = idx;
+        btn.dataset.id = app.id;
+
+        btn.innerHTML =
+            '<div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1;min-width:0;">' +
+                '<span class="drag-handle" style="font-size:12px;">⠿</span>' +
+                '<span style="font-size:20px;flex-shrink:0;line-height:1;user-select:none;">' + escapeHtml(app.emoji) + '</span>' +
+                '<div style="overflow:hidden;min-width:0;">' +
+                    '<div style="font-size:12px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(app.name) + '</div>' +
+                    '<div style="font-size:10px;color:#475569;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">' + escapeHtml(app.path) + '</div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="app-actions">' +
+                '<button class="icon-btn edit-btn" title="Sửa" style="padding:5px;border-radius:9px;">' + svgIcon('edit', 12) + '</button>' +
+                '<button class="icon-btn danger del-btn" title="Xóa" style="padding:5px;border-radius:9px;">' + svgIcon('trash', 12) + '</button>' +
+            '</div>';
+
+        btn.querySelector('.edit-btn').addEventListener('click', ev => {
+            ev.stopPropagation();
+            openEditModal(app.id);
+        });
+        btn.querySelector('.del-btn').addEventListener('click', ev => {
+            ev.stopPropagation();
+            askDeleteApp(app.id, app.name);
+        });
+
+        btn.addEventListener('dragstart', handleDragStart);
+        btn.addEventListener('dragend', handleDragEnd);
+        btn.addEventListener('dragover', handleDragOver);
+        btn.addEventListener('dragleave', handleDragLeave);
+        btn.addEventListener('drop', handleDrop);
+
+        btn.addEventListener('click', e => {
+            if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) return;
+            if (btn.classList.contains('dragging')) return;
+            activateApp(app.id, app.path, btn, app.name, app.emoji);
+        });
+
+        list.appendChild(btn);
+    });
+
+    document.getElementById('statAppCount').textContent = userApps.length;
+}
+
+function activateApp(id, path, el, name, emoji) {
+    currentActiveAppId = id;
+    document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    document.getElementById('currentAppName').innerHTML =
+        '<span class="app-chip">' +
+            '<span style="font-size:14px;flex-shrink:0;line-height:1;user-select:none;">' + escapeHtml(emoji || '💡') + '</span>' +
+            '<span style="font-size:11px;font-weight:700;color:#c4b5fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(name) + '</span>' +
+        '</span>';
+    document.getElementById('activeIndicator').style.display = 'inline-flex';
+
+    if (window.innerWidth >= 768) document.body.classList.add('sidebar-collapsed');
+    else document.body.classList.remove('sidebar-open');
+
+    document.getElementById('welcomeState').style.display = 'none';
+    document.getElementById('iframeWrapper').style.display = 'block';
+    document.getElementById('appFrame').src = path;
+}
+
+/* ══════════════════════════════════════════════════════
+   M) DRAG & DROP
+   ══════════════════════════════════════════════════════ */
+function handleDragStart(e) {
+    const item = e.target.closest('.app-item');
+    if (!item) return;
+    if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) {
+        e.preventDefault(); return;
+    }
+    dragIndex = parseInt(item.dataset.index, 10);
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', String(dragIndex));
+}
+function handleDragEnd(e) {
+    const item = e.target.closest('.app-item');
+    if (item) item.classList.remove('dragging');
+    document.querySelectorAll('.app-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+    dragIndex = null;
+}
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const target = e.target.closest('.app-item');
+    if (target && !target.classList.contains('dragging')) target.classList.add('drag-over');
+}
+function handleDragLeave(e) {
+    const target = e.target.closest('.app-item');
+    if (target) target.classList.remove('drag-over');
+}
+function handleDrop(e) {
+    e.preventDefault();
+    const target = e.target.closest('.app-item');
+    if (!target) return;
+    target.classList.remove('drag-over');
+    const dropIdx = parseInt(target.dataset.index, 10);
+    if (dragIndex === null || dragIndex === dropIdx || isNaN(dropIdx)) return;
+    const moved = userApps.splice(dragIndex, 1)[0];
+    userApps.splice(dropIdx, 0, moved);
+    persistApps();
+    renderApps();
+    showToast('✅ Đã sắp xếp lại thứ tự!');
+}
+
+/* ══════════════════════════════════════════════════════
+   N) MODALS
+   ══════════════════════════════════════════════════════ */
+function openAddModal() {
+    document.getElementById('addModal').style.display = 'flex';
+    setTimeout(() => document.getElementById('appName').focus(), 60);
+}
+function closeAddModal() {
+    document.getElementById('addModal').style.display = 'none';
+    ['appEmoji', 'appName', 'appPath'].forEach(id => document.getElementById(id).value = '');
+}
+function openEditModal(id) {
+    const app = userApps.find(a => a.id === id);
+    if (!app) return;
+    document.getElementById('editAppId').value = app.id;
+    document.getElementById('editAppEmoji').value = app.emoji;
+    document.getElementById('editAppName').value = app.name;
+    document.getElementById('editAppPath').value = app.path;
+    document.getElementById('editModal').style.display = 'flex';
+    setTimeout(() => document.getElementById('editAppName').focus(), 60);
+}
+function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+
+function saveEditApp() {
+    const id = document.getElementById('editAppId').value;
+    const emoji = document.getElementById('editAppEmoji').value.trim() || '💡';
+    const name = document.getElementById('editAppName').value.trim();
+    const path = document.getElementById('editAppPath').value.trim();
+    if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
+    const i = userApps.findIndex(a => a.id === id);
+    if (i !== -1) {
+        userApps[i] = Object.assign({}, userApps[i], { emoji, name, path });
+        persistApps();
+        renderApps();
+        if (currentActiveAppId === id) {
             document.getElementById('currentAppName').innerHTML =
                 '<span class="app-chip">' +
-                    '<span style="font-size:14px;flex-shrink:0;line-height:1;user-select:none;">' + (emoji || '💡') + '</span>' +
-                    '<span style="font-size:11px;font-weight:700;color:#c4b5fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</span>' +
+                    '<span style="font-size:14px;flex-shrink:0;">' + escapeHtml(emoji) + '</span>' +
+                    '<span style="font-size:11px;font-weight:700;color:#c4b5fd;">' + escapeHtml(name) + '</span>' +
                 '</span>';
-            document.getElementById('activeIndicator').style.display = 'inline-flex';
-
-            if (window.innerWidth >= 768) document.body.classList.add('sidebar-collapsed');
-            else document.body.classList.remove('sidebar-open');
-
-            document.getElementById('welcomeState').style.display = 'none';
-            document.getElementById('iframeWrapper').style.display = 'block';
             document.getElementById('appFrame').src = path;
         }
+        closeEditModal();
+        showToast('Đã lưu thay đổi!');
+    }
+}
 
-        /* ══════════════════════════════════════════════════
-           5) MODALS
-           ══════════════════════════════════════════════════ */
-        function openAddModal() {
-            document.getElementById('addModal').style.display = 'flex';
-            setTimeout(() => document.getElementById('appName').focus(), 60);
-        }
+function askDeleteApp(id, name) {
+    document.getElementById('deleteConfirmText').textContent = 'Xóa "' + name + '" khỏi thư viện cá nhân?';
+    document.getElementById('deleteConfirmModal').style.display = 'flex';
+    document.getElementById('btnConfirmDelete').onclick = function () {
+        userApps = userApps.filter(a => a.id !== id);
+        persistApps();
+        renderApps();
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+        showToast('Đã xóa ứng dụng!', 'error');
+        if (currentActiveAppId === id) goHome();
+    };
+}
+function closeDeleteModal() { document.getElementById('deleteConfirmModal').style.display = 'none'; }
 
-        function closeAddModal() {
+function saveNewApp() {
+    const emoji = document.getElementById('appEmoji').value.trim() || '💡';
+    const name = document.getElementById('appName').value.trim();
+    const path = document.getElementById('appPath').value.trim();
+    if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
+    userApps.push({ id: 'app-' + Date.now(), emoji, name, path });
+    persistApps();
+    renderApps();
+    closeAddModal();
+    showToast('Đã thêm ứng dụng!');
+}
+
+/* ══════════════════════════════════════════════════════
+   O) TOAST
+   ══════════════════════════════════════════════════════ */
+function showToast(msg, type) {
+    type = type || 'success';
+    const c = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.style.cssText = 'opacity:0;transform:translateY(8px);';
+    const col = type === 'error' ? '#f87171' : '#34d399';
+    const ico = type === 'error' ? 'alert' : 'check';
+    t.innerHTML = svgIcon(ico, 16, col) + '<span>' + msg + '</span>';
+    c.appendChild(t);
+    requestAnimationFrame(() => {
+        t.style.transition = 'all 0.3s ease';
+        t.style.opacity = '1';
+        t.style.transform = 'translateY(0)';
+    });
+    setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateY(-8px)';
+        setTimeout(() => t.remove(), 300);
+    }, 3000);
+}
+
+/* ══════════════════════════════════════════════════════
+   P) BOOT
+   ══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
+    renderApps();
+    loadRandomQuote();
+    updateDate();
+    updateClock();
+    setInterval(updateDate, 60000);
+    setInterval(updateClock, 1000);
+
+    if (location.protocol === 'file:') {
+        const w = document.getElementById('envWarning');
+        if (w) w.style.display = 'block';
+        setSyncBadge('err', 'File://');
+    }
+
+    document.getElementById('appFrame').addEventListener('load', bindIframe);
+
+    ['addModal', 'editModal', 'deleteConfirmModal'].forEach(function (mid) {
+        const m = document.getElementById(mid);
+        m.addEventListener('click', e => { if (e.target === m) m.style.display = 'none'; });
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
             document.getElementById('addModal').style.display = 'none';
-            ['appEmoji', 'appName', 'appPath'].forEach(id => document.getElementById(id).value = '');
-        }
-
-        function openEditModal(id) {
-            const app = userApps.find(a => a.id === id);
-            if (!app) return;
-            document.getElementById('editAppId').value = app.id;
-            document.getElementById('editAppEmoji').value = app.emoji;
-            document.getElementById('editAppName').value = app.name;
-            document.getElementById('editAppPath').value = app.path;
-            document.getElementById('editModal').style.display = 'flex';
-            setTimeout(() => document.getElementById('editAppName').focus(), 60);
-        }
-
-        function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
-        }
-
-        function saveEditApp() {
-            const id = document.getElementById('editAppId').value;
-            const emoji = document.getElementById('editAppEmoji').value.trim() || '💡';
-            const name = document.getElementById('editAppName').value.trim();
-            const path = document.getElementById('editAppPath').value.trim();
-            if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
-
-            const i = userApps.findIndex(a => a.id === id);
-            if (i !== -1) {
-                userApps[i] = Object.assign({}, userApps[i], { emoji: emoji, name: name, path: path });
-                localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
-                renderApps();
-                if (currentActiveAppId === id) {
-                    document.getElementById('currentAppName').innerHTML =
-                        '<span class="app-chip">' +
-                            '<span style="font-size:14px;flex-shrink:0;">' + emoji + '</span>' +
-                            '<span style="font-size:11px;font-weight:700;color:#c4b5fd;">' + name + '</span>' +
-                        '</span>';
-                    document.getElementById('appFrame').src = path;
-                }
-                closeEditModal();
-                showToast('Đã lưu thay đổi!');
-            }
-        }
-
-        function askDeleteApp(id, name) {
-            document.getElementById('deleteConfirmText').textContent = 'Xóa "' + name + '" khỏi thư viện cá nhân?';
-            document.getElementById('deleteConfirmModal').style.display = 'flex';
-            document.getElementById('btnConfirmDelete').onclick = function () {
-                userApps = userApps.filter(a => a.id !== id);
-                localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
-                renderApps();
-                document.getElementById('deleteConfirmModal').style.display = 'none';
-                showToast('Đã xóa ứng dụng!', 'error');
-                goHome();
-            };
-        }
-
-        function closeDeleteModal() {
             document.getElementById('deleteConfirmModal').style.display = 'none';
         }
-
-        function saveNewApp() {
-            const emoji = document.getElementById('appEmoji').value.trim() || '💡';
-            const name = document.getElementById('appName').value.trim();
-            const path = document.getElementById('appPath').value.trim();
-            if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
-
-            userApps.push({ id: 'app-' + Date.now(), emoji: emoji, name: name, path: path });
-            localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
-            renderApps();
-            closeAddModal();
-            showToast('Đã thêm ứng dụng!');
-        }
-
-        /* ══════════════════════════════════════════════════
-           6) TOAST
-           ══════════════════════════════════════════════════ */
-        function showToast(msg, type) {
-            type = type || 'success';
-            const c = document.getElementById('toastContainer');
-            const t = document.createElement('div');
-            t.className = 'toast';
-            t.style.cssText = 'opacity:0;transform:translateY(8px);';
-            const col = type === 'error' ? '#f87171' : '#34d399';
-            const ico = type === 'error' ? 'alert' : 'check';
-            t.innerHTML = svgIcon(ico, 16, col) + '<span>' + msg + '</span>';
-            c.appendChild(t);
-
-            requestAnimationFrame(() => {
-                t.style.transition = 'all 0.3s ease';
-                t.style.opacity = '1';
-                t.style.transform = 'translateY(0)';
-            });
-            setTimeout(() => {
-                t.style.opacity = '0';
-                t.style.transform = 'translateY(-8px)';
-                setTimeout(() => t.remove(), 300);
-            }, 3000);
-        }
-
-        /* ══════════════════════════════════════════════════
-           7) ĐỒNG HỒ
-           ══════════════════════════════════════════════════ */
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-            const el = document.getElementById('clockTime');
-            if (el) el.textContent = time;
-        }
-
-        /* ══════════════════════════════════════════════════
-           8) KHỞI ĐỘNG
-           ══════════════════════════════════════════════════ */
-        document.addEventListener('DOMContentLoaded', function () {
-            renderApps();
-            loadRandomQuote();
-            updateDate();
-            updateClock();
-            setInterval(updateDate, 60000);
-            setInterval(updateClock, 1000);
-        });
-
-        // Đóng modal khi bấm nền tối
-        ['addModal', 'editModal', 'deleteConfirmModal'].forEach(function (mid) {
-            const m = document.getElementById(mid);
-            m.addEventListener('click', function (e) {
-                if (e.target === m) m.style.display = 'none';
-            });
-        });
-
-        // Phím tắt ESC để đóng modal
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                document.getElementById('addModal').style.display = 'none';
-                document.getElementById('editModal').style.display = 'none';
-                document.getElementById('deleteConfirmModal').style.display = 'none';
-            }
-        });
-    </script>
-
-    <!-- 1. Nhúng thư viện Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- 2. Hệ thống đồng bộ tự động 100% cho mọi App con -->
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyDExTCzqNMwKLTHCG92W2HGzKrkXlA_MlM",
-        authDomain: "learning-base-5d0a0.firebaseapp.com",
-        projectId: "learning-base-5d0a0",
-        storageBucket: "learning-base-5d0a0.firebasestorage.app",
-        messagingSenderId: "625524211306",
-        appId: "1:625524211306:web:ce52abe790b22becb45413",
-        measurementId: "G-9MHL89068V"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-      db.enablePersistence().catch(err => console.warn("Lỗi Offline:", err.code));
-
-      const STORAGE_DOC = db.collection("learning_data").doc("user_progress");
-      let currentCloudData = {};
-
-      function syncLessonStatus(key, isChecked) {
-        STORAGE_DOC.set({
-          [key]: isChecked,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      }
-
-      function updateIframeCheckboxes() {
-        const iframe = document.getElementById('appFrame');
-        if (!iframe || !iframe.contentDocument) return;
-
-        try {
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-          const checkboxes = iframeDoc.querySelectorAll('input[type="checkbox"]');
-
-          checkboxes.forEach((cb, index) => {
-            const uniqueKey = cb.id || cb.getAttribute('data-id') ||
-              ((typeof currentActiveAppId !== 'undefined' && currentActiveAppId ? currentActiveAppId : 'app') + '_cb_' + index);
-            if (!cb.id) cb.id = uniqueKey;
-
-            if (currentCloudData[uniqueKey] !== undefined) {
-              cb.checked = currentCloudData[uniqueKey];
-            }
-          });
-        } catch (e) {
-          console.warn("Không thể truy cập app trong iframe:", e);
-        }
-      }
-
-      STORAGE_DOC.onSnapshot((doc) => {
-        if (doc.exists) {
-          currentCloudData = doc.data();
-          updateIframeCheckboxes();
-        }
-      });
-
-      const iframeEl = document.getElementById('appFrame');
-      iframeEl.addEventListener('load', () => {
-        try {
-          const iframeDoc = iframeEl.contentDocument || iframeEl.contentWindow.document;
-
-          updateIframeCheckboxes();
-
-          iframeDoc.addEventListener('change', (e) => {
-            if (e.target.type === 'checkbox') {
-              const uniqueKey = e.target.id || e.target.getAttribute('data-id');
-              if (uniqueKey) {
-                syncLessonStatus(uniqueKey, e.target.checked);
-              }
-            }
-          });
-        } catch (e) {
-          console.warn("Không thể theo dõi sự kiện iframe:", e);
-        }
-      });
-    </script>
+    });
+});
+</script>
 
 </body>
 </html>
