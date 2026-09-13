@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Learning Base</title>
 
-    <!-- FAVICON MỚI – Sách Mở + Ngôi Sao, Gradient Tím-Hồng, thêm ?v=2 để phá cache -->
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23ffffff' stroke-width='3' stroke-dasharray='8 6'/%3E%3Cline x1='50' y1='8' x2='50' y2='20' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='50' y1='80' x2='50' y2='92' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='8' y1='50' x2='20' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='80' y1='50' x2='92' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <!-- FAVICON: Sách mở + Ngôi sao, Gradient Tím-Hồng (SVG nội tuyến, không tải mạng) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%23ffffff' stroke-width='3' stroke-dasharray='8 6'/%3E%3Cline x1='50' y1='8' x2='50' y2='20' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='50' y1='80' x2='50' y2='92' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='8' y1='50' x2='20' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3Cline x1='80' y1='50' x2='92' y2='50' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- KHÔNG còn tailwindcss & lucide CDN nữa → khởi động nhanh hơn rất nhiều -->
+
     <style>
-        /* ... toàn bộ CSS giữ nguyên ... */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
         *,
@@ -306,7 +305,6 @@
         .app-item:hover .app-actions {
             opacity: 1;
         }
-        /* khi đang kéo, ẩn nút để tránh va chạm */
         .app-item.dragging .app-actions {
             opacity: 0 !important;
             pointer-events: none;
@@ -635,7 +633,7 @@
             }
         }
 
-        /* ═══ ĐỒNG HỒ MỚI – GIỮA, SÁNG HƠN ═══ */
+        /* ═══ ĐỒNG HỒ ═══ */
         .clock-center {
             display: inline-flex;
             align-items: center;
@@ -652,7 +650,7 @@
             letter-spacing: 0.05em;
             transition: all 0.2s;
         }
-        .clock-center i {
+        .clock-center svg {
             color: #c4b5fd;
         }
         .clock-center:hover {
@@ -666,7 +664,7 @@
                 padding: 2px 10px;
                 gap: 5px;
             }
-            .clock-center i {
+            .clock-center svg {
                 width: 14px;
                 height: 14px;
             }
@@ -683,7 +681,12 @@
         <div class="sidebar-header">
             <div style="display:flex;align-items:center;gap:12px;user-select:none;">
                 <div style="width:40px;height:40px;border-radius:14px;background:rgba(139,92,246,0.2);backdrop-filter:blur(8px);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(139,92,246,0.2);">
-                    <i data-lucide="globe" style="width:18px;height:18px;color:#c4b5fd;"></i>
+                    <!-- LOGO SVG VẼ TAY: Quả địa cầu -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
                 </div>
                 <div>
                     <div style="font-size:13px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:#e2e8f0;line-height:1.2;">Learning Base</div>
@@ -701,7 +704,9 @@
 
         <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.05);">
             <button class="add-btn" onclick="openAddModal()">
-                <i data-lucide="plus" style="width:16px;height:16px;"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
                 Thêm Ứng Dụng Mới
             </button>
         </div>
@@ -715,12 +720,17 @@
             <!-- Bên trái -->
             <div style="display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;flex:1;">
                 <button class="icon-btn" onclick="toggleSidebar()" title="Ẩn/Hiện Cột Trái">
-                    <i data-lucide="menu" style="width:16px;height:16px;"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
                 </button>
 
                 <nav style="display:flex;align-items:center;gap:6px;overflow:hidden;user-select:none;">
                     <button class="bc-home" onclick="goHome()">
-                        <i data-lucide="home" style="width:12px;height:12px;flex-shrink:0;"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
                         <span>Base</span>
                     </button>
                     <span style="color:#334155;font-size:12px;flex-shrink:0;">/</span>
@@ -730,10 +740,12 @@
                 </nav>
             </div>
 
-            <!-- ═══ GIỮA – ĐỒNG HỒ ═══ -->
+            <!-- GIỮA – ĐỒNG HỒ -->
             <div style="display:flex;align-items:center;justify-content:center;flex:1;">
                 <div class="clock-center" id="clockDisplay">
-                    <i data-lucide="clock" style="width:16px;height:16px;"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
                     <span id="clockTime">00:00</span>
                 </div>
             </div>
@@ -745,7 +757,9 @@
                     <span>LIVE</span>
                 </div>
                 <div class="ver-badge" id="verBadgeDesktop">
-                    <i data-lucide="sparkles" style="width:12px;height:12px;"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3l1.9 5.8 5.8 1.9-5.8 1.9L12 18.4l-1.9-5.8L4.3 10.7l5.8-1.9z"/>
+                    </svg>
                     <span>v2.3</span>
                 </div>
             </div>
@@ -757,7 +771,12 @@
             <div class="glow-pink"></div>
 
             <div class="welcome-logo" style="position:relative;z-index:1;">
-                <i data-lucide="globe" style="width:30px;height:30px;color:#a78bfa;animation:spin 60s linear infinite;"></i>
+                <!-- LOGO SVG VẼ TAY: Địa cầu xoay -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 60s linear infinite;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
             </div>
 
             <h2 id="currentDateDisplay" style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.02em;background:linear-gradient(135deg,#c4b5fd,#e2e8f0 40%,#fbcfe8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:1;">
@@ -774,7 +793,7 @@
 
             <div style="display:flex;gap:10px;margin-top:32px;position:relative;z-index:1;">
                 <div class="stat-pill">
-                    <span id="statAppCount" style="font-size:18px;font-weight:900;color:#a78bfa;">1</span>
+                    <span id="statAppCount" style="font-size:18px;font-weight:900;color:#a78bfa;">0</span>
                     <span style="font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#475569;">Ứng Dụng</span>
                 </div>
                 <div class="stat-pill">
@@ -795,9 +814,16 @@
         <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
                 <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
-                    <i data-lucide="folder-plus" style="width:15px;height:15px;"></i>Thêm Ứng Dụng
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        <line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>
+                    </svg>Thêm Ứng Dụng
                 </span>
-                <button class="icon-btn" onclick="closeAddModal()"><i data-lucide="x" style="width:15px;height:15px;"></i></button>
+                <button class="icon-btn" onclick="closeAddModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;">
                 <div><label class="mlabel">Biểu tượng (Emoji)</label><input class="modal-input" id="appEmoji" placeholder="📚  📝  💡  🎯"></div>
@@ -820,9 +846,15 @@
         <div class="modal-card" style="width:100%;max-width:440px;padding:24px;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);">
                 <span style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#a78bfa;display:flex;align-items:center;gap:7px;">
-                    <i data-lucide="edit-3" style="width:15px;height:15px;"></i>Chỉnh Sửa
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>Chỉnh Sửa
                 </span>
-                <button class="icon-btn" onclick="closeEditModal()"><i data-lucide="x" style="width:15px;height:15px;"></i></button>
+                <button class="icon-btn" onclick="closeEditModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;">
                 <input type="hidden" id="editAppId">
@@ -841,7 +873,10 @@
     <div id="deleteConfirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);z-index:60;align-items:center;justify-content:center;padding:16px;">
         <div class="modal-card" style="width:100%;max-width:360px;padding:28px;text-align:center;">
             <div style="width:56px;height:56px;border-radius:9999px;background:rgba(185,28,28,0.15);border:1px solid rgba(248,113,113,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                <i data-lucide="alert-triangle" style="width:24px;height:24px;color:#f87171;"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
             </div>
             <h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:#e2e8f0;margin-bottom:8px;">Xóa Ứng Dụng</h3>
             <p id="deleteConfirmText" style="font-size:12px;color:#94a3b8;line-height:1.5;"></p>
@@ -856,25 +891,49 @@
     <div id="toastContainer" style="position:fixed;top:16px;right:16px;z-index:70;display:flex;flex-direction:column;gap:8px;"></div>
 
     <script>
-        let userApps = JSON.parse(localStorage.getItem('my_learning_hub_apps')) || defaultApps;
+        /* ══════════════════════════════════════════════════
+           1) BỘ ICON SVG VẼ TAY – KHÔNG TẢI TỪ MẠNG
+           ══════════════════════════════════════════════════ */
+        const SVG_PATHS = {
+            edit:  '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+            trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+            alert: '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+            check: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+        };
+
+        function svgIcon(name, size = 16, color = 'currentColor', extra = '') {
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +
+                   '" viewBox="0 0 24 24" fill="none" stroke="' + color +
+                   '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;' + extra + '">' +
+                   (SVG_PATHS[name] || '') + '</svg>';
+        }
+
+        /* ══════════════════════════════════════════════════
+           2) DỮ LIỆU ỨNG DỤNG
+           ══════════════════════════════════════════════════ */
+        // ⚠️ ĐÂY LÀ BIẾN BỊ THIẾU TRƯỚC ĐÂY → KHIẾN TOÀN BỘ SCRIPT LỖI
+        //    và nút "Thêm ứng dụng" không hoạt động.
+        const defaultApps = [];
+
+        let userApps;
+        try {
+            userApps = JSON.parse(localStorage.getItem('my_learning_hub_apps'));
+            if (!Array.isArray(userApps)) userApps = defaultApps.slice();
+        } catch (err) {
+            userApps = defaultApps.slice();
+        }
+
         let currentActiveAppId = null;
-        let dragIndex = null; // lưu index khi kéo
+        let dragIndex = null;
 
         const quotes = [
-            { en: "The beautiful thing about learning is that no one can take it away from you.", vi: "Điều tuyệt vời của việc học là không ai có thể lấy nó đi khỏi bạn.",
-                author: "B.B. King" },
-            { en: "Success is the sum of small efforts, repeated day in and day out.", vi: "Thành công là tổng của những nỗ lực nhỏ, lặp đi lặp lại mỗi ngày.",
-                author: "Robert Collier" },
-            { en: "It always seems impossible until it's done.", vi: "Mọi thứ đều có vẻ bất khả thi cho đến khi nó được hoàn thành.",
-                author: "Nelson Mandela" },
-            { en: "Believe you can and you're halfway there.", vi: "Hãy tin rằng bạn có thể, và bạn đã đi được nửa chặng đường.",
-                author: "Theodore Roosevelt" },
-            { en: "Live as if you were to die tomorrow. Learn as if you were to live forever.", vi: "Sống như thể bạn sẽ chết vào ngày mai. Học như thể bạn sẽ sống mãi mãi.",
-                author: "Mahatma Gandhi" },
-            { en: "Education is the passport to the future.", vi: "Giáo dục là tấm hộ chiếu cho tương lai.",
-                author: "Malcolm X" },
-            { en: "Do not wait for opportunities, create them yourself.", vi: "Đừng chờ đợi cơ hội, hãy tự tạo ra chúng.",
-                author: "Chris Grosser" },
+            { en: "The beautiful thing about learning is that no one can take it away from you.", vi: "Điều tuyệt vời của việc học là không ai có thể lấy nó đi khỏi bạn.", author: "B.B. King" },
+            { en: "Success is the sum of small efforts, repeated day in and day out.", vi: "Thành công là tổng của những nỗ lực nhỏ, lặp đi lặp lại mỗi ngày.", author: "Robert Collier" },
+            { en: "It always seems impossible until it's done.", vi: "Mọi thứ đều có vẻ bất khả thi cho đến khi nó được hoàn thành.", author: "Nelson Mandela" },
+            { en: "Believe you can and you're halfway there.", vi: "Hãy tin rằng bạn có thể, và bạn đã đi được nửa chặng đường.", author: "Theodore Roosevelt" },
+            { en: "Live as if you were to die tomorrow. Learn as if you were to live forever.", vi: "Sống như thể bạn sẽ chết vào ngày mai. Học như thể bạn sẽ sống mãi mãi.", author: "Mahatma Gandhi" },
+            { en: "Education is the passport to the future.", vi: "Giáo dục là tấm hộ chiếu cho tương lai.", author: "Malcolm X" },
+            { en: "Do not wait for opportunities, create them yourself.", vi: "Đừng chờ đợi cơ hội, hãy tự tạo ra chúng.", author: "Chris Grosser" }
         ];
 
         function updateDate() {
@@ -882,14 +941,17 @@
             const now = new Date();
             const el = document.getElementById('currentDateDisplay');
             if (el) el.textContent =
-                `${days[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+                days[now.getDay()] + ', ' +
+                String(now.getDate()).padStart(2, '0') + '/' +
+                String(now.getMonth() + 1).padStart(2, '0') + '/' +
+                now.getFullYear();
         }
 
         function loadRandomQuote() {
             const q = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quoteEn').textContent = `"${q.en}"`;
-            document.getElementById('quoteVi').textContent = `(${q.vi})`;
-            document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
+            document.getElementById('quoteEn').textContent = '"' + q.en + '"';
+            document.getElementById('quoteVi').textContent = '(' + q.vi + ')';
+            document.getElementById('quoteAuthor').textContent = '— ' + q.author;
         }
 
         function toggleSidebar() {
@@ -910,11 +972,12 @@
             document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
         }
 
-        // ===== DRAG & DROP HELPERS =====
+        /* ══════════════════════════════════════════════════
+           3) KÉO – THẢ SẮP XẾP
+           ══════════════════════════════════════════════════ */
         function handleDragStart(e) {
             const item = e.target.closest('.app-item');
             if (!item) return;
-            // Nếu người dùng nhấn vào nút sửa/xóa thì không kéo
             if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) {
                 e.preventDefault();
                 return;
@@ -922,8 +985,7 @@
             dragIndex = parseInt(item.dataset.index, 10);
             item.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', dragIndex);
-            // Để con trỏ hiển thị rõ ràng
+            e.dataTransfer.setData('text/plain', String(dragIndex));
             e.dataTransfer.dropEffect = 'move';
         }
 
@@ -935,12 +997,10 @@
         }
 
         function handleDragOver(e) {
-            e.preventDefault(); // cần thiết để cho phép drop
+            e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
             const target = e.target.closest('.app-item');
-            if (target && !target.classList.contains('dragging')) {
-                target.classList.add('drag-over');
-            }
+            if (target && !target.classList.contains('dragging')) target.classList.add('drag-over');
         }
 
         function handleDragLeave(e) {
@@ -955,36 +1015,38 @@
             target.classList.remove('drag-over');
 
             const dropIdx = parseInt(target.dataset.index, 10);
-            if (dragIndex === null || dragIndex === dropIdx) return;
+            if (dragIndex === null || dragIndex === dropIdx || isNaN(dropIdx)) return;
 
-            // Hoán đổi vị trí trong mảng
             const [moved] = userApps.splice(dragIndex, 1);
             userApps.splice(dropIdx, 0, moved);
 
-            // Lưu vào localStorage
             localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
 
-            // Cập nhật lại giao diện
             const activeId = currentActiveAppId;
             renderApps();
-            // Khôi phục trạng thái active nếu có
             if (activeId) {
-                const activeEl = document.querySelector(`.app-item[data-id="${activeId}"]`);
-                if (activeEl) {
-                    activeEl.classList.add('active');
-                    // Cập nhật lại currentActiveAppId (đã được set trong renderApps)
-                    // nhưng renderApps đặt lại currentActiveAppId = null, nên cần đặt lại
-                    currentActiveAppId = activeId;
-                }
+                const activeEl = document.querySelector('.app-item[data-id="' + activeId + '"]');
+                if (activeEl) activeEl.classList.add('active');
+                currentActiveAppId = activeId;
             }
 
             showToast('✅ Đã sắp xếp lại thứ tự ứng dụng!', 'success');
         }
 
-        // ===== RENDER APPS =====
+        /* ══════════════════════════════════════════════════
+           4) RENDER DANH SÁCH ỨNG DỤNG
+           ══════════════════════════════════════════════════ */
         function renderApps() {
             const list = document.getElementById('appList');
             list.innerHTML = '';
+
+            if (userApps.length === 0) {
+                const empty = document.createElement('div');
+                empty.style.cssText = 'padding:18px 10px;text-align:center;font-size:11px;color:#475569;font-style:italic;line-height:1.6;';
+                empty.textContent = 'Chưa có ứng dụng nào. Bấm "Thêm Ứng Dụng Mới" ở dưới nhé!';
+                list.appendChild(empty);
+            }
+
             userApps.forEach((app, idx) => {
                 const btn = document.createElement('div');
                 btn.className = 'app-item' + (app.id === currentActiveAppId ? ' active' : '');
@@ -992,44 +1054,49 @@
                 btn.dataset.index = idx;
                 btn.dataset.id = app.id;
 
-                btn.innerHTML = `
-                        <div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1;min-width:0;">
-                            <span class="drag-handle" style="font-size:12px;">⠿</span>
-                            <span style="font-size:20px;flex-shrink:0;line-height:1;user-select:none;">${app.emoji}</span>
-                            <div style="overflow:hidden;min-width:0;">
-                                <div style="font-size:12px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${app.name}</div>
-                                <div style="font-size:10px;color:#475569;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">${app.path}</div>
-                            </div>
-                        </div>
-                        <div class="app-actions">
-                            <button class="icon-btn edit-btn" onclick="openEditModal('${app.id}')" title="Sửa" style="padding:5px;border-radius:9px;">
-                                <i data-lucide="edit-2" style="width:12px;height:12px;"></i>
-                            </button>
-                            <button class="icon-btn danger del-btn" onclick="askDeleteApp('${app.id}','${app.name}')" title="Xóa" style="padding:5px;border-radius:9px;">
-                                <i data-lucide="trash-2" style="width:12px;height:12px;"></i>
-                            </button>
-                        </div>`;
+                btn.innerHTML =
+                    '<div style="display:flex;align-items:center;gap:8px;overflow:hidden;flex:1;min-width:0;">' +
+                        '<span class="drag-handle" style="font-size:12px;">⠿</span>' +
+                        '<span style="font-size:20px;flex-shrink:0;line-height:1;user-select:none;">' + app.emoji + '</span>' +
+                        '<div style="overflow:hidden;min-width:0;">' +
+                            '<div style="font-size:12px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + app.name + '</div>' +
+                            '<div style="font-size:10px;color:#475569;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">' + app.path + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="app-actions">' +
+                        '<button class="icon-btn edit-btn" title="Sửa" style="padding:5px;border-radius:9px;">' +
+                            svgIcon('edit', 12) +
+                        '</button>' +
+                        '<button class="icon-btn danger del-btn" title="Xóa" style="padding:5px;border-radius:9px;">' +
+                            svgIcon('trash', 12) +
+                        '</button>' +
+                    '</div>';
 
-                // Gán sự kiện drag
+                btn.querySelector('.edit-btn').addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    openEditModal(app.id);
+                });
+                btn.querySelector('.del-btn').addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    askDeleteApp(app.id, app.name);
+                });
+
                 btn.addEventListener('dragstart', handleDragStart);
                 btn.addEventListener('dragend', handleDragEnd);
                 btn.addEventListener('dragover', handleDragOver);
                 btn.addEventListener('dragleave', handleDragLeave);
                 btn.addEventListener('drop', handleDrop);
 
-                // Sự kiện click để mở app (vẫn giữ nguyên)
                 btn.addEventListener('click', (e) => {
-                    // Nếu click vào nút edit/del hoặc đang kéo thì bỏ qua
-                    if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest(
-                            '.app-actions')) return;
+                    if (e.target.closest('.edit-btn') || e.target.closest('.del-btn') || e.target.closest('.app-actions')) return;
                     if (btn.classList.contains('dragging')) return;
                     activateApp(app.id, app.path, btn, app.name, app.emoji);
                 });
 
                 list.appendChild(btn);
             });
+
             document.getElementById('statAppCount').textContent = userApps.length;
-            lucide.createIcons();
         }
 
         function activateApp(id, path, el, name, emoji) {
@@ -1037,11 +1104,11 @@
             document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
             if (el) el.classList.add('active');
 
-            document.getElementById('currentAppName').innerHTML = `
-                    <span class="app-chip">
-                        <span style="font-size:14px;flex-shrink:0;line-height:1;user-select:none;">${emoji||'💡'}</span>
-                        <span style="font-size:11px;font-weight:700;color:#c4b5fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${name}</span>
-                    </span>`;
+            document.getElementById('currentAppName').innerHTML =
+                '<span class="app-chip">' +
+                    '<span style="font-size:14px;flex-shrink:0;line-height:1;user-select:none;">' + (emoji || '💡') + '</span>' +
+                    '<span style="font-size:11px;font-weight:700;color:#c4b5fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</span>' +
+                '</span>';
             document.getElementById('activeIndicator').style.display = 'inline-flex';
 
             if (window.innerWidth >= 768) document.body.classList.add('sidebar-collapsed');
@@ -1052,13 +1119,18 @@
             document.getElementById('appFrame').src = path;
         }
 
-        /* ── MODALS ── */
-        function openAddModal() { const m = document.getElementById('addModal');
-            m.style.display = 'flex';
-            lucide.createIcons(); }
+        /* ══════════════════════════════════════════════════
+           5) MODALS
+           ══════════════════════════════════════════════════ */
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'flex';
+            setTimeout(() => document.getElementById('appName').focus(), 60);
+        }
 
-        function closeAddModal() { document.getElementById('addModal').style.display = 'none';
-            ['appEmoji', 'appName', 'appPath'].forEach(id => document.getElementById(id).value = ''); }
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+            ['appEmoji', 'appName', 'appPath'].forEach(id => document.getElementById(id).value = '');
+        }
 
         function openEditModal(id) {
             const app = userApps.find(a => a.id === id);
@@ -1068,10 +1140,12 @@
             document.getElementById('editAppName').value = app.name;
             document.getElementById('editAppPath').value = app.path;
             document.getElementById('editModal').style.display = 'flex';
-            lucide.createIcons();
+            setTimeout(() => document.getElementById('editAppName').focus(), 60);
         }
 
-        function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
 
         function saveEditApp() {
             const id = document.getElementById('editAppId').value;
@@ -1079,14 +1153,18 @@
             const name = document.getElementById('editAppName').value.trim();
             const path = document.getElementById('editAppPath').value.trim();
             if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
+
             const i = userApps.findIndex(a => a.id === id);
             if (i !== -1) {
-                userApps[i] = { ...userApps[i], emoji, name, path };
+                userApps[i] = Object.assign({}, userApps[i], { emoji: emoji, name: name, path: path });
                 localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
                 renderApps();
                 if (currentActiveAppId === id) {
                     document.getElementById('currentAppName').innerHTML =
-                        `<span class="app-chip"><span style="font-size:14px;flex-shrink:0;">${emoji}</span><span style="font-size:11px;font-weight:700;color:#c4b5fd;">${name}</span></span>`;
+                        '<span class="app-chip">' +
+                            '<span style="font-size:14px;flex-shrink:0;">' + emoji + '</span>' +
+                            '<span style="font-size:11px;font-weight:700;color:#c4b5fd;">' + name + '</span>' +
+                        '</span>';
                     document.getElementById('appFrame').src = path;
                 }
                 closeEditModal();
@@ -1095,9 +1173,9 @@
         }
 
         function askDeleteApp(id, name) {
-            document.getElementById('deleteConfirmText').textContent = `Xóa "${name}" khỏi thư viện cá nhân?`;
+            document.getElementById('deleteConfirmText').textContent = 'Xóa "' + name + '" khỏi thư viện cá nhân?';
             document.getElementById('deleteConfirmModal').style.display = 'flex';
-            document.getElementById('btnConfirmDelete').onclick = () => {
+            document.getElementById('btnConfirmDelete').onclick = function () {
                 userApps = userApps.filter(a => a.id !== id);
                 localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
                 renderApps();
@@ -1107,39 +1185,52 @@
             };
         }
 
-        function closeDeleteModal() { document.getElementById('deleteConfirmModal').style.display = 'none'; }
+        function closeDeleteModal() {
+            document.getElementById('deleteConfirmModal').style.display = 'none';
+        }
 
         function saveNewApp() {
             const emoji = document.getElementById('appEmoji').value.trim() || '💡';
             const name = document.getElementById('appName').value.trim();
             const path = document.getElementById('appPath').value.trim();
             if (!name || !path) { showToast('Điền đủ thông tin nhé!', 'error'); return; }
-            userApps.push({ id: 'app-' + Date.now(), emoji, name, path });
+
+            userApps.push({ id: 'app-' + Date.now(), emoji: emoji, name: name, path: path });
             localStorage.setItem('my_learning_hub_apps', JSON.stringify(userApps));
             renderApps();
             closeAddModal();
             showToast('Đã thêm ứng dụng!');
         }
 
-        function showToast(msg, type = 'success') {
+        /* ══════════════════════════════════════════════════
+           6) TOAST
+           ══════════════════════════════════════════════════ */
+        function showToast(msg, type) {
+            type = type || 'success';
             const c = document.getElementById('toastContainer');
             const t = document.createElement('div');
             t.className = 'toast';
             t.style.cssText = 'opacity:0;transform:translateY(8px);';
             const col = type === 'error' ? '#f87171' : '#34d399';
-            const ico = type === 'error' ? 'alert-triangle' : 'check-circle-2';
-            t.innerHTML = `<i data-lucide="${ico}" style="width:16px;height:16px;color:${col};flex-shrink:0;"></i><span>${msg}</span>`;
+            const ico = type === 'error' ? 'alert' : 'check';
+            t.innerHTML = svgIcon(ico, 16, col) + '<span>' + msg + '</span>';
             c.appendChild(t);
-            lucide.createIcons();
-            requestAnimationFrame(() => { t.style.transition = 'all 0.3s ease';
+
+            requestAnimationFrame(() => {
+                t.style.transition = 'all 0.3s ease';
                 t.style.opacity = '1';
-                t.style.transform = 'translateY(0)'; });
-            setTimeout(() => { t.style.opacity = '0';
+                t.style.transform = 'translateY(0)';
+            });
+            setTimeout(() => {
+                t.style.opacity = '0';
                 t.style.transform = 'translateY(-8px)';
-                setTimeout(() => t.remove(), 300); }, 3000);
+                setTimeout(() => t.remove(), 300);
+            }, 3000);
         }
 
-        // ═══ ĐỒNG HỒ ═══
+        /* ══════════════════════════════════════════════════
+           7) ĐỒNG HỒ
+           ══════════════════════════════════════════════════ */
         function updateClock() {
             const now = new Date();
             const time = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
@@ -1147,17 +1238,36 @@
             if (el) el.textContent = time;
         }
 
-        window.onload = () => {
+        /* ══════════════════════════════════════════════════
+           8) KHỞI ĐỘNG
+           ══════════════════════════════════════════════════ */
+        document.addEventListener('DOMContentLoaded', function () {
             renderApps();
             loadRandomQuote();
             updateDate();
-            setInterval(updateDate, 60000);
             updateClock();
+            setInterval(updateDate, 60000);
             setInterval(updateClock, 1000);
-            lucide.createIcons();
-        };
+        });
+
+        // Đóng modal khi bấm nền tối
+        ['addModal', 'editModal', 'deleteConfirmModal'].forEach(function (mid) {
+            const m = document.getElementById(mid);
+            m.addEventListener('click', function (e) {
+                if (e.target === m) m.style.display = 'none';
+            });
+        });
+
+        // Phím tắt ESC để đóng modal
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.getElementById('addModal').style.display = 'none';
+                document.getElementById('editModal').style.display = 'none';
+                document.getElementById('deleteConfirmModal').style.display = 'none';
+            }
+        });
     </script>
-    
+
     <!-- 1. Nhúng thư viện Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -1181,7 +1291,6 @@
       const STORAGE_DOC = db.collection("learning_data").doc("user_progress");
       let currentCloudData = {};
 
-      // Hàm gửi trạng thái lên Firebase
       function syncLessonStatus(key, isChecked) {
         STORAGE_DOC.set({
           [key]: isChecked,
@@ -1189,7 +1298,6 @@
         }, { merge: true });
       }
 
-      // Hàm quét và điền trạng thái checkbox vào iframe hiện tại
       function updateIframeCheckboxes() {
         const iframe = document.getElementById('appFrame');
         if (!iframe || !iframe.contentDocument) return;
@@ -1199,8 +1307,8 @@
           const checkboxes = iframeDoc.querySelectorAll('input[type="checkbox"]');
 
           checkboxes.forEach((cb, index) => {
-            // Tự động sinh ID duy nhất cho ô tích nếu chưa có: [ID_App]_[Ví_trí_ô]
-            const uniqueKey = cb.id || cb.getAttribute('data-id') || `${currentActiveAppId || 'app'}_cb_${index}`;
+            const uniqueKey = cb.id || cb.getAttribute('data-id') ||
+              ((typeof currentActiveAppId !== 'undefined' && currentActiveAppId ? currentActiveAppId : 'app') + '_cb_' + index);
             if (!cb.id) cb.id = uniqueKey;
 
             if (currentCloudData[uniqueKey] !== undefined) {
@@ -1212,7 +1320,6 @@
         }
       }
 
-      // Lắng nghe dữ liệu mới nhất từ Cloud
       STORAGE_DOC.onSnapshot((doc) => {
         if (doc.exists) {
           currentCloudData = doc.data();
@@ -1220,16 +1327,13 @@
         }
       });
 
-      // TỰ ĐỘNG BẮT SỰ KIỆN: Mỗi khi mở 1 app bất kỳ vào iframe
       const iframeEl = document.getElementById('appFrame');
       iframeEl.addEventListener('load', () => {
         try {
           const iframeDoc = iframeEl.contentDocument || iframeEl.contentWindow.document;
 
-          // Cập nhật tích xanh cho app vừa mở
           updateIframeCheckboxes();
 
-          // Lắng nghe khi bạn bấm tích chọn bài học trong app đó
           iframeDoc.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox') {
               const uniqueKey = e.target.id || e.target.getAttribute('data-id');
@@ -1243,6 +1347,6 @@
         }
       });
     </script>
-    
+
 </body>
 </html>
