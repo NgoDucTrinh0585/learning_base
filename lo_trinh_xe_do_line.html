@@ -916,19 +916,36 @@
             }
         }
 
-        // Filter levels
-        function filterLevel(level) {
+        // Filter levels — dùng cho cả click chuột lẫn gọi từ script khác
+        function filterLevel(level, btn) {
+            // Nếu không truyền btn, dùng event.target (hành vi cũ), fallback tìm theo level
+            let targetBtn = btn;
+            if (!targetBtn) {
+                try { targetBtn = (typeof event !== 'undefined' && event && event.target) ? event.target : null; }
+                catch (e) { targetBtn = null; }
+            }
+            if (!targetBtn) {
+                // fallback: tìm nút theo onclick attribute
+                const btns = document.querySelectorAll('.filter-btn');
+                for (let i = 0; i < btns.length; i++) {
+                    if ((btns[i].getAttribute('onclick') || '').indexOf("'" + level + "'") !== -1) {
+                        targetBtn = btns[i]; break;
+                    }
+                }
+            }
+
             // Update active button styling
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-cyan-500', 'text-slate-950', 'active');
-                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-cyan-500', 'text-slate-950', 'active');
+                b.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
             });
-            event.target.classList.add('bg-cyan-500', 'text-slate-950', 'active');
-            event.target.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            if (targetBtn) {
+                targetBtn.classList.add('bg-cyan-500', 'text-slate-950', 'active');
+                targetBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            }
 
             // Show/Hide sections
-            const sections = document.querySelectorAll('.level-section');
-            sections.forEach(sec => {
+            document.querySelectorAll('.level-section').forEach(sec => {
                 if (level === 'all' || sec.getAttribute('data-level') === level) {
                     sec.style.display = 'block';
                 } else {
@@ -1003,6 +1020,91 @@
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════
+         TỰ ĐỘNG LƯU FILTER + SEARCH KHI QUAY LẠI
+         (Giao tiếp với parent qua postMessage - LBSync)
+         ══════════════════════════════════════════════════════ -->
+    <script>
+    (function(){
+        // ── LBSync SDK ──
+        function lbsync_save(key, value){
+            try { parent.postMessage({type:'LB_SAVE', key:key, value:value}, '*'); } catch(e){}
+        }
+        function lbsync_load(key, cb){
+            try { parent.postMessage({type:'LB_LOAD', key:key}, '*'); } catch(e){}
+            window.addEventListener('message', function h(e){
+                if (e.data && e.data.type === 'LB_VALUE' && e.data.key === key){
+                    window.removeEventListener('message', h);
+                    cb(e.data.value);
+                }
+            });
+        }
+
+        const FILTER_KEY = 'activeFilterIdx';
+        const LEVEL_MAP  = ['all','lvl1','lvl2','lvl3','lvl4','lvl5','lvl6','lvl7'];
+        let restoringFilter = false;
+
+        function applyFilterIdx(idx){
+            const btns = document.querySelectorAll('.filter-btn');
+            if (!btns[idx]) return;
+            restoringFilter = true;
+
+            // Dùng hàm filterLevel hiện có, truyền btn trực tiếp để tránh lỗi event
+            const level = LEVEL_MAP[idx] || 'all';
+            try { filterLevel(level, btns[idx]); }
+            catch(e){
+                // Fallback nếu hàm gốc lỗi
+                document.querySelectorAll('.level-section').forEach(sec => {
+                    sec.style.display = (level === 'all' || sec.getAttribute('data-level') === level) ? 'block' : 'none';
+                });
+                btns.forEach(b => {
+                    b.classList.remove('bg-cyan-500','text-slate-950','active');
+                    b.classList.add('text-slate-400','hover:text-white','hover:bg-slate-800');
+                });
+                btns[idx].classList.add('bg-cyan-500','text-slate-950','active');
+                btns[idx].classList.remove('text-slate-400','hover:text-white','hover:bg-slate-800');
+            }
+
+            setTimeout(function(){ restoringFilter = false; }, 250);
+        }
+
+        // Chờ DOM sẵn sàng
+        function init(){
+            const btns = document.querySelectorAll('.filter-btn');
+            if (!btns.length) return;
+
+            // Ghi lại vị trí filter khi click
+            btns.forEach(function(btn, idx){
+                btn.addEventListener('click', function(){
+                    if (restoringFilter) return;
+                    lbsync_save(FILTER_KEY, idx);
+                });
+            });
+
+            // Phục hồi filter từ cloud
+            lbsync_load(FILTER_KEY, function(idx){
+                if (idx === undefined || idx === null) return;
+                if (isNaN(idx)) return;
+                applyFilterIdx(Number(idx));
+            });
+
+            // Fix ô search: parent chỉ bắn 'input', app đang nghe 'keyup'
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(){
+                    if (typeof searchTopics === 'function') searchTopics();
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
     </script>
 </body>
 </html>
