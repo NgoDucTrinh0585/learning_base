@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ Trình Học Xe Dò Line Arduino - AI Prompt & Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        arduino: {
+                            50: '#effaf8',
+                            100: '#d7f3ee',
+                            500: '#00979d',
+                            600: '#008187',
+                            700: '#00676c',
+                            800: '#005256',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00979d;
+        }
+        .checkbox-custom:checked + div {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+        .checkbox-custom:checked + div .status-badge {
+            background-color: #059669;
+            color: #ffffff;
+        }
+        .checkbox-custom:checked + div .topic-title {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-out flex items-center space-x-3 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl border border-emerald-400">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toast-message" class="font-medium text-sm">Đã chép Prompt thành công!</span>
+    </div>
+
+    <!-- Header Navbar -->
+    <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-teal-400 via-cyan-300 to-sky-400 bg-clip-text text-transparent">
+                        Lộ Trình Học Code Xe Dò Line Arduino
+                    </h1>
+                    <p class="text-xs text-slate-400">Tự học từ bản chất phần cứng đến Thuật toán PID nâng cao</p>
+                </div>
+            </div>
+
+            <!-- Quick Stats & Reset -->
+            <div class="flex items-center space-x-4 bg-slate-950/60 border border-slate-800 p-2 px-4 rounded-xl">
+                <div class="text-right">
+                    <div class="text-xs text-slate-400">Tiến độ hoàn thành</div>
+                    <div class="text-sm font-bold text-cyan-400" id="progress-percent-text">0%</div>
+                </div>
+                <div class="w-28 bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-teal-400 to-cyan-500 h-full w-0 transition-all duration-500"></div>
+                </div>
+                <button onclick="resetProgress()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition" title="Đặt lại tiến độ">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+            <div class="flex items-center space-x-2 overflow-x-auto pb-3 pt-1">
+                <button onclick="filterLevel('all')" class="filter-btn active bg-cyan-500 text-slate-950 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Tất cả bài học</button>
+                <button onclick="filterLevel('lvl1')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 1: Phần Cứng</button>
+                <button onclick="filterLevel('lvl2')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 2: Đọc Cảm Biến</button>
+                <button onclick="filterLevel('lvl3')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 3: Bang-Bang</button>
+                <button onclick="filterLevel('lvl4')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 4: Thuật Toán PID</button>
+                <button onclick="filterLevel('lvl5')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 5: Nâng Cao</button>
+                <button onclick="filterLevel('lvl6')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 6: Vượt Vật Cản</button>
+                <button onclick="filterLevel('lvl7')" class="filter-btn text-slate-400 hover:text-white hover:bg-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap shrink-0">Lvl 7: Chiến Thuật Đua</button>
+            </div>
+            
+            <div class="relative min-w-[240px] shrink-0">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500 text-sm"></i>
+                <input type="text" id="search-input" onkeyup="searchTopics()" placeholder="Tìm kiếm bài học hoặc prompt..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
+            </div>
+        </div>
+
+        <!-- COURSE CONTENT ACCORDION / LIST -->
+        <div id="course-container" class="space-y-8">
+
+            <!-- LEVEL 1 -->
+            <section class="level-section space-y-4" data-level="lvl1">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center font-bold text-sm">01</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 1: Nền Tảng Điện Tử & Phần Cứng</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 1.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-1-1" onchange="toggleTopic('topic-1-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Cơ bản</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">1.1 Nguyên lý Cảm biến Hồng ngoại IR (TCRT5000 / QTR-8A)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Hiểu bản chất quang học, hiện tượng phản xạ ánh sáng trên nền trắng & hấp thụ trên nền đen.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Prompt Section -->
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-1-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-1-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy đóng vai là Chuyên gia phần cứng Robotics & Arduino. Hãy giải thích cho tôi nguyên lý hoạt động bản chất của cảm biến hồng ngoại IR (như TCRT5000 hoặc mảng QTR-8A) dùng trong xe dò line. 
+1. Tại sao màu trắng lại phản xạ tia IR tốt còn màu đen lại hấp thụ?
+2. Sự khác biệt giữa ngõ ra Digital (DO) và Analog (AO) trên module cảm biến là gì?
+3. Biến trở trên cảm biến dùng để làm gì và chỉnh thế nào cho đúng?
+4. Cho tôi sơ đồ đấu nối chân chân cảm biến IR với Arduino Uno R3.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 1.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-1-2" onchange="toggleTopic('topic-1-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Cơ bản</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">1.2 Nguyên lý Mạch Cầu H & Điều khiển Động cơ (L298N / TB6612)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Tại sao không nối trực tiếp động cơ vào Arduino? Cách đảo chiều dòng điện và điều khiển tốc độ.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-1-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-1-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Tôi muốn học bản chất về mạch cầu H điều khiển động cơ DC (L298N hoặc TB6612FNG) dùng cho xe Arduino:
+1. Tại sao chân IO của Arduino không thể cấp nguồn trực tiếp cho Động cơ DC mà bắt buộc qua Mạch cầu H? (Giải thích khái niệm Dòng điện & Công suất).
+2. Nguyên lý hoạt động của Mạch cầu H (H-Bridge) giúp đảo chiều quay động cơ như thế nào?
+3. Chân IN1, IN2, IN3, IN4 và ENA, ENB trên L298N giữ vai trò gì?
+4. Vẽ bảng trạng thái logic (Logic Table) của chân IN1, IN2 để điều khiển động cơ Quay thuận, Quay ngược, Dừng tự do và Phanh gấp (Brake).</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 1.3 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-1-3" onchange="toggleTopic('topic-1-3')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Cơ bản</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">1.3 Quản lý Nguồn điện, Pin 18650 & Hiện tượng Sụt áp (Reset vô hạn)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Nguồn cấp đúng cách cho Arduino & Động cơ, chung GND để tránh nhiễu và đơ vi điều khiển.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-1-3')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-1-3" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy hướng dẫn tôi cách thiết kế nguồn điện chuẩn cho xe robot dò line dùng Arduino:
+1. Tại sao xe robot của tôi bị hiện tượng: Cứ khởi động động cơ là Arduino bị reset lại từ đầu? (Hiện tượng Sụt áp / Voltage Dip).
+2. Quy tắc đi dây chung GND (Common Ground) có ý nghĩa bản chất là gì? Nếu không nối chung GND điều gì xảy ra?
+3. Sơ đồ cấp nguồn an toàn dùng 2 viên Pin 18650 (7.4V): Nối vào đâu của L298N và cấp nguồn thế nào cho Arduino Uno (chân VIN hay Jack DC hay 5V)?</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 2 -->
+            <section class="level-section space-y-4" data-level="lvl2">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center font-bold text-sm">02</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 2: Đọc Tín Hiệu & Điều Khẩu Vi Sai Tốc Độ</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 2.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-2-1" onchange="toggleTopic('topic-2-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Trung bình</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">2.1 Đọc Tín Hiệu Động & Xử lý Ngưỡng (Thresholding Analog/Digital)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Viết chương trình đọc dữ liệu cảm biến, in lên Serial Monitor để thiết lập ngưỡng phân biệt vạch đen/trắng.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-2-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-2-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy viết code Arduino hoàn chỉnh để test và xác định ngưỡng đọc cảm biến IR:
+1. Viết mã nguồn đọc giá trị 2 cảm biến IR (chân Analog A0 và A1) và xuất ra Serial Monitor liên tục.
+2. Hướng dẫn tôi quy trình thực nghiệm: đo giá trị khi đặt cảm biến trên nền trắng (ví dụ được 100) và khi đặt trên vạch đen (ví dụ được 850).
+3. Cách tính toán ngưỡng ngắt Threshold = (Trắng + Đen) / 2 trong code C++.
+4. Chuyển đổi giá trị Analog thu được thành giá trị Nhị phân (0 cho Trắng, 1 cho Đen) thông qua toán tử điều kiện.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 2.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-2-2" onchange="toggleTopic('topic-2-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Trung bình</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">2.2 Bản chất Xung PWM & Điều khiển Tốc độ Động cơ (analogWrite)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Điều tiết điện áp trung bình cấp cho động cơ thông qua độ rộng xung (Duty Cycle) từ 0 đến 255.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-2-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-2-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Giải thích giúp tôi bản chất lập trình PWM trên Arduino:
+1. Xung PWM (Pulse Width Modulation) là gì? Tại sao hàm analogWrite(pin, value) nhận giá trị từ 0 đến 255 (8-bit)?
+2. Tại sao chỉ một số chân có dấu `~` (như 3, 5, 6, 9, 10, 11) trên Arduino Uno mới dùng được PWM?
+3. Viết code Arduino thử nghiệm tăng tốc độ động cơ từ từ từ 0 lên 255 rồi giảm về 0 bằng vòng lặp `for`.
+4. Giải thích hiện tượng "Động cơ kêu rên nhưng không quay" khi đặt giá trị PWM quá thấp (dưới 50-60) và cách khắc phục.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 2.3 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-2-3" onchange="toggleTopic('topic-2-3')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Trung bình</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">2.3 Đóng Gói Các Hàm Lái Xe Vi Sai (Differential Steering Functions)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Viết các hàm sạch gọn: moveForward(), turnLeft(), turnRight(), stopRobot() điều khiển linh hoạt 2 bánh.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-2-3')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-2-3" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy giúp tôi chuẩn hóa kiến trúc code lái xe bằng cơ chế điều khiển vi sai (Differential Drive):
+1. Viết cho tôi các hàm C++ mô-đun hóa nhận tham số tốc độ:
+   - `setMotors(int speedLeft, int speedRight)` (Hỗ trợ cả giá trị âm để quay lùi)
+   - `moveForward(int speed)`
+   - `turnLeft(int speed)`
+   - `turnRight(int speed)`
+   - `stopRobot()`
+2. Hướng dẫn cách giới hạn giá trị tốc độ truyền vào bằng hàm `constrain()` trong Arduino để không bao giờ vượt quá [-255, 255].</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 3 -->
+            <section class="level-section space-y-4" data-level="lvl3">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center font-bold text-sm">03</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 3: Thuật Toán Dò Line Bang-Bang (2-3 Cảm biến)</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 3.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-3-1" onchange="toggleTopic('topic-3-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Cơ bản - Thuật toán</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">3.1 Xây dựng Bảng Trạng Thái & Code Xe Dò Line Bang-Bang</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Thuật toán điều khiển BẬT/TẮT logic đơn giản dựa trên 2 hoặc 3 cảm biến IR ngõ ra Digital.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-3-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-3-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hướng dẫn tôi lập trình xe dò line thuật toán Bang-Bang với 3 cảm biến IR (Trái - Giữa - Phải):
+1. Lập Bảng ma trận trạng thái cho 8 trường hợp (000, 001, 010, 011, 100, 101, 110, 111).
+2. Viết chương trình Arduino dùng các lệnh `if - else if - else` điều khiển động cơ ứng với từng trạng thái.
+3. Thêm bộ nhớ hướng rẽ cuối cùng (Last Known Position) để khi xe lỡ bị lệch hoàn toàn khỏi vạch đen (trường hợp 000), xe biết tự quay lại hướng cũ chứ không đi bậy.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 3.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-3-2" onchange="toggleTopic('topic-3-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Phân tích chuyên sâu</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">3.2 Phân tích Hạn chế của Bang-Bang & Hiện tượng Đảo Giật (Overshoot)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Hiểu lý do tại sao Bang-Bang chỉ chạy chậm được và bị giật liên tục khi tăng tốc độ.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-3-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-3-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Tôi đã chạy thử thuật toán Bang-Bang nhưng xe bị giật lắc rất mạnh (văng đuôi xe) và khi tăng tốc lên là bị văng ra khỏi đường vạch ngay ở cua gấp.
+1. Phân tích nguyên nhân vật lý và quán tính dẫn đến hiện tượng Overshoot này trong thuật toán Bang-Bang.
+2. Tại sao việc chỉ dùng chuyển đổi 2 trạng thái ON/OFF (như rẽ hết cỡ hoặc đi thẳng) không thể đáp ứng được khi muốn xe chạy mượt mượt ở tốc độ cao?
+3. Khái niệm "Sai số liên tục" (Continuous Error) sẽ giải quyết vấn đề này ra sao để chuẩn bị sang thuật toán PID?</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 4 -->
+            <section class="level-section space-y-4" data-level="lvl4">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold text-sm">04</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 4: Thuật Toán PID Chuyên Sâu (Mảng 5-8 Cảm biến)</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 4.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-4-1" onchange="toggleTopic('topic-4-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Nâng cao</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">4.1 Mảng Cảm Biến Trọng Số & Thuật Toán Tính Sai Số Lệch Tâm (Error Calculation)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Gán trọng số vị trí cho mảng 5 cảm biến (-2000, -1000, 0, 1000, 2000) để xác định tâm vạch chính xác.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-4-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-4-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy giải thích thật chi tiết bản chất cách tính sai số vị trí (Position Error) cho mảng 5 cảm biến IR:
+1. Công thức trung bình có trọng số (Weighted Average Formula) là gì? 
+   `Position = (S0*0 + S1*1000 + S2*2000 + S3*3000 + S4*4000) / (S0 + S1 + S2 + S3 + S4)`
+2. Cách quy đổi để Vị trí chính giữa (Center) có `Error = 0`, lệch trái có `Error < 0` (ví dụ: -2000) và lệch phải có `Error > 0` (ví dụ: +2000).
+3. Viết hàm C++ `int readSensorError()` đọc giá trị Analog từ 5 cảm biến và trả về con số sai số chính xác này.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 4.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-4-2" onchange="toggleTopic('topic-4-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Nâng cao</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">4.2 Giải Mã Bản Chất 3 Thành Phần: Kp (Proportional), Ki (Integral), Kd (Derivative)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Cơ chế toán học đằng sau PID: Phản ứng hiện tại (P), Tích lũy quá khứ (I), và Dự đoán tương lai (D).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-4-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-4-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy giải thích thuật toán PID bằng ngôn ngữ bình dân dễ hiểu nhất cho lập trình xe dò line:
+1. Thành phần `P = Kp * error`: Tại sao lệch ít thì bẻ lái nhẹ, lệch nhiều thì bẻ lái mạnh?
+2. Thành phần `D = Kd * (error - lastError)`: Tại sao nó được gọi là "Bộ hãm quán tính / Chống dội" giúp xe dừng lắc lư khi về lại vạch giữa?
+3. Thành phần `I = Ki * sumError`: Tại sao trong xe dò line tốc độ cao, người ta thường set `Ki = 0` hoặc rất nhỏ?
+4. Viết phương trình tổng hợp tính giá trị hiệu chỉnh: `PID_value = P + I + D` và cách áp dụng nó để điều chỉnh tốc độ 2 bánh: `speedLeft = baseSpeed + PID_value; speedRight = baseSpeed - PID_value;`</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 4.3 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-4-3" onchange="toggleTopic('topic-4-3')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Nâng cao - Code Mẫu</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">4.3 Mã Nguồn Hoàn Chỉnh Thuật Toán PID & Quy Trình Tinh Chỉnh Tham Số (Tuning Kp, Kd)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Toàn bộ file code Arduino hoàn chỉnh và quy trình thực nghiệm tìm thông số Kp, Kd tối ưu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-4-3')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-4-3" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy cung cấp cho tôi một file Code Arduino Dò Line PID hoàn chỉnh cho mảng 5 cảm biến IR và hướng dẫn cách Tune thông số:
+1. Viết toàn bộ code có cấu trúc rõ ràng (biến toàn cục Kp, Ki, Kd, BaseSpeed, MaxSpeed, hàm `calculatePID()`, hàm `controlMotors()`).
+2. Quy trình tinh chỉnh tham số (Tuning step-by-step):
+   - Bước 1: Đặt Ki=0, Kd=0. Tăng Kp từ nhỏ lên đến khi nào xe vừa bắt đầu dò line được nhưng còn lắc.
+   - Bước 2: Giữ Kp, tăng Kd lên từ từ để triệt tiêu hiện tượng lắc dội.
+   - Bước 3: Khi nào mới cần đụng đến Ki?
+3. Các mẹo nhỏ xử lý trường hợp bánh xe bị quay ngược khi giá trị PID quá lớn.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 5 -->
+            <section class="level-section space-y-4" data-level="lvl5">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-sm">05</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 5: Tự Động Calib & Xử Lý Cua Vuông, Vạch Ngang</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 5.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-5-1" onchange="toggleTopic('topic-5-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Chuyên nghiệp</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">5.1 Thuật Toán Auto-Calibration (Tự động Hiệu chuẩn Cảm biến lúc Khởi động)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Xe tự quét trái/phải 5 giây đầu tiên khi bật nguồn để ghi nhớ ngưỡng cực đại (Max) và cực tiểu (Min) của môi trường.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-5-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-5-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy hướng dẫn tôi lập trình tính năng Tự động Hiệu chuẩn (Auto-Calibration) cho mảng cảm biến IR khi xe khởi động trong `setup()`:
+1. Tại sao nếu nạp code cố định số giá trị ngưỡng (threshold) thì khi mang xe sang sân đấu có ánh sáng khác xe sẽ bị chạy sai?
+2. Viết hàm `calibrateSensors()` cho phép xe tự xoay tại chỗ sang trái và phải trong 5 giây, liên tục đọc và ghi nhận giá trị Min, Max của từng cảm biến.
+3. Cách sử dụng hàm `map()` để chuẩn hóa mọi giá trị cảm biến đọc được về thang đo cố định từ 0 đến 1000 bất kể ánh sáng môi trường thế nào.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 5.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-5-2" onchange="toggleTopic('topic-5-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Chuyên nghiệp</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">5.2 Xử Lý Góc Cua Vuông 90 Độ & Vạch Ngang Ngã Tư (Special Intersections)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Kết hợp thuật toán PID cho đoạn đường mượt và bẫy sự kiện (Event-driven) khi tất cả cảm biến đều thấy đen.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-5-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-5-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Khi chạy PID, gặp khúc cua gấp 90 độ hoặc ngã tư (vạch ngang đen hết 5 cảm biến), xe PID thuần túy hay bị mất phương hướng. 
+1. Làm thế nào để kết hợp giữa Thuật toán PID (dành cho đường cong mượt) và Cấu trúc Điều kiện Special Cases (dành cho góc 90 độ)?
+2. Viết thuật toán nhận diện trường hợp Cua vuông trái (Cảm biến 0, 1 cùng nhận vạch đen) -> Khóa 1 bánh thực hiện bẻ ngoặt 90 độ cho tới khi cảm biến giữa bắt lại vạch.
+3. Cách đếm vạch ngang để bắt xe dừng lại đúng vạch đích sau khi chạy hoàn thành 1 vòng đường đua.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 6 -->
+            <section class="level-section space-y-4" data-level="lvl6">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 flex items-center justify-center font-bold text-sm">06</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 6: Thi Vượt Chướng Ngại Vật (Obstacle Avoidance & Bypass)</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 6.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-6-1" onchange="toggleTopic('topic-6-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Chướng ngại vật</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">6.1 Kết Nối Cảm Biến Siêu Âm (HC-SR04 / ToF VL53L0X) & Đo Khoảng Cách Không Trễ (Non-blocking)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Đọc khoảng cách vật cản phía trước bằng kỹ thuật không làm đơ chu trình đọc line PID (sử dụng millis() thay cho delay()).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-6-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-6-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy đóng vai là Chuyên gia Robotics Arduino. Tôi muốn thêm cảm biến siêu âm HC-SR04 (hoặc VL53L0X) vào xe dò line để phát hiện vật cản:
+1. Tại sao nếu dùng hàm `pulseIn()` hoặc `delay()` truyền thống để đo siêu âm thì xe dò line PID sẽ bị khựng, lắc giật hoặc văng khỏi vạch?
+2. Viết hàm đọc khoảng cách siêu âm theo kỹ thuật Không trễ (Non-blocking logic bằng `millis()` hoặc ngắt Timer) để xe vừa dò line mượt vừa phát hiện vật cản dưới 15cm.
+3. Sơ đồ đấu nối chân Trig, Echo an toàn với Arduino Uno R3 và nguyên lý sóng âm phản hồi.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 6.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-6-2" onchange="toggleTopic('topic-6-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Thi đấu</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">6.2 Thuật Toán Đi Vòng Lách Tránh Vật Cản & Tìm Lại Vạch Dò Line (Bypass & Relocate Line)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Lập trình kịch bản xe tự dừng, bẻ lái né chướng ngại vật, đi vòng qua vật cản và bắt lại vạch đen mượt mà.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-6-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-6-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy hướng dẫn tôi lập trình thuật toán lách tránh vật cản (Obstacle Bypass Algorithm) cho xe dò line:
+1. Xây dựng Máy trạng thái (State Machine): DÒ_LINE -> PHÁT_HIỆN_VẬT_CẢN -> RẼ_NÉ -> ĐI_VÒNG -> TÌM_VẠCH -> QUAY_LẠI_DÒ_LINE.
+2. Viết mã nguồn C++ điều khiển xe rẽ 90 độ sang phải/trái, chạy một khoảng thời gian, quay lại góc cũ và tiếp tục chạy đến khi cảm biến IR phía trước bắt được vạch đen lại.
+3. Các mẹo tinh chỉnh thời gian quay và khoảng cách đi né để xe không bị va đâm đít vào vật cản khi ôm cua vòng.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- LEVEL 7 -->
+            <section class="level-section space-y-4" data-level="lvl7">
+                <div class="flex items-center space-x-3 pb-2 border-b border-slate-800">
+                    <span class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center font-bold text-sm">07</span>
+                    <h3 class="text-lg font-bold text-slate-100">Level 7: Chiến Thuật Đua Xe Tốc Độ Cao & Xử Lý Sa Huỳnh Thi Đấu</h3>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    <!-- Topic 7.1 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-7-1" onchange="toggleTopic('topic-7-1')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Tốc độ cao</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">7.1 Thuật Toán Tự Động Tăng Tốc Đoạn Thẳng & Hãm Phanh Cua Gấp (Dynamic Speed Control)</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Điều chỉnh tốc độ cơ bản (Base Speed) linh hoạt dựa trên sai số PID: Thẳng thì bắn tốc tối đa, cua thì phanh chủ động.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-7-1')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-7-1" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy hướng dẫn tôi thuật toán Điều khiển Tốc độ Động (Dynamic Speed Controller) để biến xe dò line PID thành Xe Đua Tốc Độ Cao:
+1. Giải thích công thức giảm Base Speed theo sai số tuyệt đối |Error|: `currentBaseSpeed = MAX_SPEED - k * abs(error)`.
+2. Cơ chế Phanh Chủ Động (Active Braking / Reverse Pulse) khi vào cua ngoặt: Làm sao để khóa bánh hoặc cho bánh trong cua quay lùi ngắn hạn giúp xe ôm sát cua mà không bị lật hay văng lề.
+3. Các yếu tố cơ khí ảnh hưởng đến đua xe: Đường kính bánh xe, tỷ số truyền động cơ (RPM high), hạ thấp trọng tâm và chọn độ bám của lốp cao su silicone.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Topic 7.2 -->
+                    <label class="relative block cursor-pointer group">
+                        <input type="checkbox" id="topic-7-2" onchange="toggleTopic('topic-7-2')" class="checkbox-custom hidden">
+                        <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition duration-200 shadow-sm space-y-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="mt-1">
+                                        <div class="w-5 h-5 rounded border-2 border-slate-600 group-hover:border-cyan-400 flex items-center justify-center transition">
+                                            <i class="fa-solid fa-check text-xs text-emerald-400 hidden check-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="status-badge inline-block text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 mb-1">Sa huỳnh thi đấu</span>
+                                        <h4 class="topic-title text-base font-semibold text-slate-100">7.2 Xử Lý Sa Huỳnh Phức Tạp: Vạch Đứt Nét, Cầu Vượt, Ngã Ba Chọn Hướng & Chống Nhiễu Ánh Sáng</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Vượt qua các thử thách thực chiến trong các giải đấu Robotics: Vạch đứt đoạn, đường dốc, ngã ba ưu tiên và đèn flash sân đấu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-950/80 border border-slate-800/80 rounded-lg p-4 space-y-2" onclick="event.preventDefault();">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center"><i class="fa-solid fa-robot mr-1.5"></i> Prompt dành cho AI:</span>
+                                    <button onclick="copyPrompt('prompt-7-2')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1 rounded-md transition flex items-center space-x-1.5">
+                                        <i class="fa-regular fa-copy"></i>
+                                        <span>Sao chép Prompt</span>
+                                    </button>
+                                </div>
+                                <p id="prompt-7-2" class="font-mono text-xs text-slate-300 bg-slate-900/90 p-3 rounded border border-slate-800/60 leading-relaxed overflow-x-auto whitespace-pre-wrap">Hãy là Huấn luyện viên thi đấu Robotics. Giải đáp giúp tôi cách xử lý 4 dạng bài tập sa huỳnh thi đấu nâng cao:
+1. Vạch đứt đoạn (Dashed line / Broken line): Làm thế nào để khi mất vạch hoàn toàn trong 10-20cm xe vẫn duy trì quán tính đi thẳng tìm lại vạch thay vì dừng lại hay quay cuồng?
+2. Sa huỳnh Ngã 3 / Ngã 4 chỉ định hướng đi (rẽ trái/rẽ phải theo yêu cầu đề thi): Lập trình biến đếm ngã tư để rẽ đúng hướng.
+3. Cầu vượt / Dốc nghiêng: Cách điều chỉnh công thức PID hoặc bù công suất động cơ khi xe leo dốc bị tụt áp.
+4. Chống nhiễu ánh sáng hội trường: Giải pháp phần cứng (che chắn nắp cảm biến, dùng cảm biến phát xung tần số) & giải pháp phần mềm.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-6 mt-12 text-center text-xs text-slate-500">
+        <p>Lộ trình đào tạo Robot Dò Line Arduino từ bản chất • Thiết kế tương tác hỗ trợ học tập với AI</p>
+    </footer>
+
+    <script>
+        // Store checked status in localStorage
+        const STORAGE_KEY = 'arduino_line_follower_progress_v1';
+        let totalTopicsCount = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            totalTopicsCount = document.querySelectorAll('.checkbox-custom').length;
+            loadProgress();
+            updateProgressBar();
+        });
+
+        // Toggle checkbox & save state
+        function toggleTopic(id) {
+            const checkbox = document.getElementById(id);
+            const parentLabel = checkbox.closest('label');
+            const checkIcon = parentLabel.querySelector('.check-icon');
+
+            if (checkbox.checked) {
+                checkIcon.classList.remove('hidden');
+            } else {
+                checkIcon.classList.add('hidden');
+            }
+
+            saveProgress();
+            updateProgressBar();
+        }
+
+        // Save progress to LocalStorage
+        function saveProgress() {
+            const checkedIds = [];
+            document.querySelectorAll('.checkbox-custom:checked').forEach(cb => {
+                checkedIds.push(cb.id);
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedIds));
+        }
+
+        // Load progress from LocalStorage
+        function loadProgress() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (!saved) return;
+
+            try {
+                const checkedIds = JSON.parse(saved);
+                checkedIds.forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) {
+                        cb.checked = true;
+                        const parentLabel = cb.closest('label');
+                        if (parentLabel) {
+                            const checkIcon = parentLabel.querySelector('.check-icon');
+                            if (checkIcon) checkIcon.classList.remove('hidden');
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error("Lỗi đọc LocalStorage", e);
+            }
+        }
+
+        // Update progress bar UI
+        function updateProgressBar() {
+            const checkedCount = document.querySelectorAll('.checkbox-custom:checked').length;
+            const percent = totalTopicsCount > 0 ? Math.round((checkedCount / totalTopicsCount) * 100) : 0;
+            
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-percent-text').innerText = `${percent}% (${checkedCount}/${totalTopicsCount})`;
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('Bạn có chắc chắn muốn đặt lại toàn bộ tiến độ học không?')) {
+                document.querySelectorAll('.checkbox-custom').forEach(cb => {
+                    cb.checked = false;
+                    const parentLabel = cb.closest('label');
+                    if (parentLabel) {
+                        const checkIcon = parentLabel.querySelector('.check-icon');
+                        if (checkIcon) checkIcon.classList.add('hidden');
+                    }
+                });
+                localStorage.removeItem(STORAGE_KEY);
+                updateProgressBar();
+                showToast('Đã đặt lại tiến độ học tập!');
+            }
+        }
+
+        // Filter levels
+        function filterLevel(level) {
+            // Update active button styling
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-500', 'text-slate-950', 'active');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            });
+            event.target.classList.add('bg-cyan-500', 'text-slate-950', 'active');
+            event.target.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+
+            // Show/Hide sections
+            const sections = document.querySelectorAll('.level-section');
+            sections.forEach(sec => {
+                if (level === 'all' || sec.getAttribute('data-level') === level) {
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        function searchTopics() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const topicLabels = document.querySelectorAll('label.group');
+
+            topicLabels.forEach(label => {
+                const title = label.querySelector('.topic-title')?.innerText.toLowerCase() || '';
+                const promptText = label.querySelector('p[id^="prompt-"]')?.innerText.toLowerCase() || '';
+                
+                if (title.includes(query) || promptText.includes(query)) {
+                    label.style.display = 'block';
+                } else {
+                    label.style.display = 'none';
+                }
+            });
+        }
+
+        // Copy Prompt using fallbacks for iFrame compatibility
+        function copyPrompt(promptId) {
+            const promptElement = document.getElementById(promptId);
+            if (!promptElement) return;
+
+            const textToCopy = promptElement.innerText;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('Đã sao chép Prompt thành công!');
+                }).catch(() => {
+                    fallbackCopy(textToCopy);
+                });
+            } else {
+                fallbackCopy(textToCopy);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Đã sao chép Prompt thành công!');
+            } catch (err) {
+                showToast('Không thể sao chép tự động. Vui lòng tô đen và copy!');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Toast notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = msg;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
