@@ -32,6 +32,74 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* ═══════════════════════════════════════════════════════
+           LITE MODE — giảm hiệu ứng cho mobile / máy yếu
+           ═══════════════════════════════════════════════════════ */
+
+        /* 1. Tắt backdrop-blur — nặng nhất */
+        body.lite-mode [class*="backdrop-blur"],
+        body.lite-mode .backdrop-blur {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background-color: rgba(15, 23, 42, 0.98) !important;
+        }
+
+        /* 2. Giảm shadow màu */
+        body.lite-mode .shadow-2xl {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+        }
+        body.lite-mode .shadow-xl,
+        body.lite-mode .shadow-lg {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+        }
+        body.lite-mode .shadow-cyan-500\/20,
+        body.lite-mode .shadow-cyan-600\/30,
+        body.lite-mode .shadow-cyan-600\/20 {
+            box-shadow: none !important;
+        }
+
+        /* 3. Tắt pulse animation */
+        body.lite-mode .animate-pulse {
+            animation: none !important;
+            opacity: 1 !important;
+        }
+
+        /* 4. Giảm transition duration */
+        body.lite-mode * {
+            transition-duration: 0.1s !important;
+        }
+
+        /* 5. Tối ưu scroll dài */
+        body.lite-mode main,
+        body.lite-mode aside {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
+        }
+
+        /* 6. Fix text-transparent khi tắt gradient */
+        body.lite-mode .bg-clip-text {
+            -webkit-text-fill-color: #22d3ee !important;
+            color: #22d3ee !important;
+        }
+
+        /* 7. Giảm hiệu ứng hover trên thiết bị cảm ứng */
+        @media (hover: none) {
+            body.lite-mode *:hover {
+                transition-duration: 0s !important;
+            }
+        }
+
+        /* 8. Ultra Lite — chỉ dùng khi thật cần */
+        body.lite-mode.ultra .bg-gradient-to-r,
+        body.lite-mode.ultra .bg-gradient-to-br,
+        body.lite-mode.ultra .bg-gradient-to-b {
+            background-image: none !important;
+            background-color: #0e7490 !important;
+        }
+        body.lite-mode.ultra .bg-clip-text {
+            -webkit-text-fill-color: #22d3ee !important;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
@@ -64,6 +132,9 @@
                         <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
                     </div>
                 </div>
+                <button onclick="toggleLiteMode()" id="lite-toggle-btn" class="text-xs text-slate-400 hover:text-amber-400 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-amber-900/50 transition" title="Bật/Tắt chế độ nhẹ cho mobile">
+                    ⚡ Lite
+                </button>
                 <button onclick="resetProgress()" class="text-xs text-slate-400 hover:text-rose-400 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-rose-900/50 transition">
                     🔄 Reset
                 </button>
@@ -437,7 +508,8 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
         const LS_KEYS = {
             completed: 'hcmute_completed_lessons',
             lesson: 'hcmute_current_lesson',
-            view: 'hcmute_view'
+            view: 'hcmute_view',
+            lite: 'hcmute_lite_mode'
         };
 
         let completedLessons = [];
@@ -450,6 +522,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
         let currentView = localStorage.getItem(LS_KEYS.view) || 'course';
 
         document.addEventListener('DOMContentLoaded', () => {
+            initLiteMode();
             applyView(currentView);
             renderSidebar();
             generateDynamicPrompt();
@@ -501,6 +574,12 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                     applyView(v);
                 }
             });
+            LBSync.load('liteMode', (v) => {
+                if (typeof v === 'boolean') {
+                    try { localStorage.setItem(LS_KEYS.lite, v ? '1' : '0'); } catch(e){}
+                    applyLiteMode(v);
+                }
+            });
         }
 
         /* ══════════════════════════════════════════════════════
@@ -540,8 +619,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
         }
 
         /* ══════════════════════════════════════════════════════
-           FORM VALUES — Lưu biến số Bộ Tạo Prompt
-           (Dashboard tự scan input/select nhưng ta thêm hook để chắc chắn)
+           FORM VALUES
            ══════════════════════════════════════════════════════ */
         const FORM_IDS = ['var-board', 'var-driver', 'var-sensor', 'var-env', 'var-task', 'var-extra', 'var-debug'];
 
@@ -562,7 +640,6 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                 el.addEventListener('input', () => LBSync.save('promptFormValues', collectFormValues()));
             });
 
-            // Khôi phục form values từ cloud
             LBSync.load('promptFormValues', (v) => {
                 if (!v || typeof v !== 'object') return;
                 FORM_IDS.forEach(id => {
@@ -815,6 +892,70 @@ ${debug}
         }
 
         /* ══════════════════════════════════════════════════════
+           LITE MODE — tự động phát hiện + toggle thủ công
+           ══════════════════════════════════════════════════════ */
+        function detectLowEndDevice() {
+            const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent);
+            const lowMem = navigator.deviceMemory && navigator.deviceMemory <= 4;
+            const lowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+            const smallScreen = window.innerWidth <= 768;
+            const slowNet = navigator.connection &&
+                (navigator.connection.saveData ||
+                 /2g|slow-2g/.test(navigator.connection.effectiveType || ''));
+
+            return (isMobile && smallScreen) || lowMem || lowCPU || slowNet;
+        }
+
+        function applyLiteMode(enabled) {
+            if (enabled) {
+                document.body.classList.add('lite-mode');
+                // Bật ultra nếu RAM <= 2GB hoặc màn hình <= 400px
+                if ((navigator.deviceMemory && navigator.deviceMemory <= 2) || window.innerWidth <= 400) {
+                    document.body.classList.add('ultra');
+                }
+            } else {
+                document.body.classList.remove('lite-mode');
+                document.body.classList.remove('ultra');
+            }
+
+            const btn = document.getElementById('lite-toggle-btn');
+            if (btn) {
+                if (enabled) {
+                    btn.classList.remove('text-slate-400', 'border-slate-800');
+                    btn.classList.add('text-amber-400', 'border-amber-700/50', 'bg-amber-950/30');
+                    btn.textContent = '⚡ Lite: BẬT';
+                } else {
+                    btn.classList.remove('text-amber-400', 'border-amber-700/50', 'bg-amber-950/30');
+                    btn.classList.add('text-slate-400', 'border-slate-800');
+                    btn.textContent = '⚡ Lite';
+                }
+            }
+        }
+
+        function toggleLiteMode() {
+            const current = document.body.classList.contains('lite-mode');
+            const next = !current;
+            try { localStorage.setItem(LS_KEYS.lite, next ? '1' : '0'); } catch(e) {}
+            LBSync.save('liteMode', next);
+            applyLiteMode(next);
+            showToast(next ? '⚡ Đã bật chế độ nhẹ — giảm lag' : '✨ Đã tắt chế độ nhẹ');
+        }
+
+        function initLiteMode() {
+            // 1. localStorage có thì dùng
+            const saved = localStorage.getItem(LS_KEYS.lite);
+            if (saved !== null) {
+                applyLiteMode(saved === '1');
+                return;
+            }
+            // 2. Chưa có gì → auto-detect
+            if (detectLowEndDevice()) {
+                applyLiteMode(true);
+                try { localStorage.setItem(LS_KEYS.lite, '1'); } catch(e) {}
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════
            TOAST
            ══════════════════════════════════════════════════════ */
         function showToast(message) {
@@ -833,4 +974,3 @@ ${debug}
     </script>
 </body>
 </html>
-#hsafhahfahfkaaf
