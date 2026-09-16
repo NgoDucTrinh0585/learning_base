@@ -2,8 +2,17 @@
 <html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khóa Học Robot Dò Line & Né Vật Cản HCMUTE - Bộ Prompt AI Chuyên Sâu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HCMUTE Line Follower">
+    <title>Khóa Học Robot Dò Line & Né Vật Cản HCMUTE</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230891b2'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%23ffffff'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230f172a'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%2306b6d4'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%2306b6d4'/%3E%3C/svg%3E" />
+    <link rel="manifest" href='data:application/manifest+json,{"name":"HCMUTE Line Follower","short_name":"LineFollower","start_url":".","display":"standalone","background_color":"%230f172a","theme_color":"%2306b6d4","orientation":"any"}' />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,12 +21,9 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0284c7',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
+                            50: '#f0f9ff', 100: '#e0f2fe',
+                            500: '#0284c7', 600: '#0284c7',
+                            700: '#0369a1', 900: '#0c4a6e',
                         }
                     }
                 }
@@ -26,103 +32,97 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         code, pre { font-family: 'Fira Code', monospace; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
+        /* Safe area cho iPhone notch */
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
+        .safe-top { padding-top: env(safe-area-inset-top, 0); }
+
+        /* Ẩn scrollbar ngang cho filter chips */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         /* ═══════════════════════════════════════════════════════
-           LITE MODE — giảm hiệu ứng cho mobile / máy yếu
+           LITE MODE MẶC ĐỊNH CHO MOBILE/TABLET (≤1024px)
+           Tự động áp dụng, không cần class hay toggle
            ═══════════════════════════════════════════════════════ */
-
-        /* 1. Tắt backdrop-blur — nặng nhất */
-        body.lite-mode [class*="backdrop-blur"],
-        body.lite-mode .backdrop-blur {
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            background-color: rgba(15, 23, 42, 0.98) !important;
-        }
-
-        /* 2. Giảm shadow màu */
-        body.lite-mode .shadow-2xl {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
-        }
-        body.lite-mode .shadow-xl,
-        body.lite-mode .shadow-lg {
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
-        }
-        body.lite-mode .shadow-cyan-500\/20,
-        body.lite-mode .shadow-cyan-600\/30,
-        body.lite-mode .shadow-cyan-600\/20 {
-            box-shadow: none !important;
-        }
-
-        /* 3. Tắt pulse animation */
-        body.lite-mode .animate-pulse {
-            animation: none !important;
-            opacity: 1 !important;
-        }
-
-        /* 4. Giảm transition duration */
-        body.lite-mode * {
-            transition-duration: 0.1s !important;
-        }
-
-        /* 5. Tối ưu scroll dài */
-        body.lite-mode main,
-        body.lite-mode aside {
-            content-visibility: auto;
-            contain-intrinsic-size: auto 600px;
-        }
-
-        /* 6. Fix text-transparent khi tắt gradient */
-        body.lite-mode .bg-clip-text {
-            -webkit-text-fill-color: #22d3ee !important;
-            color: #22d3ee !important;
-        }
-
-        /* 7. Giảm hiệu ứng hover trên thiết bị cảm ứng */
-        @media (hover: none) {
-            body.lite-mode *:hover {
-                transition-duration: 0s !important;
+        @media (max-width: 1024px) {
+            /* 1. Tắt backdrop-blur */
+            * {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            header {
+                background-color: rgba(15, 23, 42, 0.98) !important;
+            }
+            /* 2. Giảm shadow */
+            .shadow-2xl { box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important; }
+            .shadow-xl, .shadow-lg { box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; }
+            .shadow-cyan-500\/20,
+            .shadow-cyan-600\/30,
+            .shadow-cyan-600\/20 { box-shadow: none !important; }
+            /* 3. Tắt animation */
+            .animate-pulse { animation: none !important; opacity: 1 !important; }
+            /* 4. Giảm transition */
+            * { transition-duration: 0.1s !important; }
+            /* 5. Gradient text fallback */
+            .bg-clip-text {
+                -webkit-text-fill-color: #22d3ee !important;
+                color: #22d3ee !important;
             }
         }
-
-        /* 8. Ultra Lite — chỉ dùng khi thật cần */
-        body.lite-mode.ultra .bg-gradient-to-r,
-        body.lite-mode.ultra .bg-gradient-to-br,
-        body.lite-mode.ultra .bg-gradient-to-b {
-            background-image: none !important;
-            background-color: #0e7490 !important;
+        @media (hover: none) {
+            *:hover { transition-duration: 0s !important; }
         }
-        body.lite-mode.ultra .bg-clip-text {
-            -webkit-text-fill-color: #22d3ee !important;
+
+        /* ═══ Mobile drawer cho sidebar bài học ═══ */
+        #mobileDrawer {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+        #drawerBackdrop {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        #drawerBackdrop.open { opacity: 1; pointer-events: auto; }
+
+        /* Touch target tối thiểu 44px cho mobile */
+        @media (max-width: 1024px) {
+            button, .touch-target { min-height: 44px; }
+            .filter-chip { min-height: 36px; }
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
-    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-cyan-500/20">
+    <!-- ═══ HEADER ═══ -->
+    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 safe-top">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <!-- Hamburger mở drawer bài học (chỉ hiện mobile) -->
+                <button onclick="toggleDrawer()" class="lg:hidden flex-shrink-0 w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 active:bg-slate-700" aria-label="Mở danh sách bài học">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-base sm:text-xl text-white shadow-lg shadow-cyan-500/20 flex-shrink-0">
                     🤖
                 </div>
-                <div>
-                    <h1 class="text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">HCMUTE Line Follower Master</h1>
-                    <p class="text-xs text-slate-400">Bản Chất Nguyên Lý • Lập Trình Dò Line Cốt Lõi • Webots & Xe Thật HCMUTE</p>
+                <div class="min-w-0">
+                    <h1 class="text-sm sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent truncate">HCMUTE Line Follower Master</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 truncate">Dò Line • PID • Né Vật Cản</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <button onclick="switchView('generator')" id="nav-btn-generator" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition flex items-center gap-1.5">
-                    ⚡ Bộ Tạo Prompt Tùy Chỉnh
-                </button>
-                <button onclick="switchView('course')" id="nav-btn-course" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-600/50 transition flex items-center gap-1.5">
-                    📚 Bài Học & Prompt AI
-                </button>
+            <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
                 <div class="hidden md:flex flex-col items-end pl-2">
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
                         <span>Tiến độ:</span>
@@ -132,143 +132,174 @@
                         <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
                     </div>
                 </div>
-                <button onclick="toggleLiteMode()" id="lite-toggle-btn" class="text-xs text-slate-400 hover:text-amber-400 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-amber-900/50 transition" title="Bật/Tắt chế độ nhẹ cho mobile">
-                    ⚡ Lite
+                <!-- Progress mini cho mobile -->
+                <div class="md:hidden flex items-center gap-1.5 bg-slate-800/60 border border-slate-700 px-2 py-1 rounded-lg">
+                    <span id="progress-percent-mobile" class="text-[10px] font-mono text-cyan-400 font-bold">0%</span>
+                </div>
+                <button onclick="resetProgress()" class="text-xs text-slate-400 active:text-rose-400 p-2 rounded-lg border border-slate-800" title="Reset tiến độ" aria-label="Reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>
+                    </svg>
                 </button>
-                <button onclick="resetProgress()" class="text-xs text-slate-400 hover:text-rose-400 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-rose-900/50 transition">
-                    🔄 Reset
+            </div>
+        </div>
+
+        <!-- Tab switcher: Bài học | Bộ tạo Prompt (luôn hiện) -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-2 sm:pb-3">
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-950/60 border border-slate-800 rounded-xl p-1">
+                <button onclick="switchView('course')" id="nav-btn-course" class="text-[11px] sm:text-xs font-semibold px-2 py-2 rounded-lg bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 transition flex items-center justify-center gap-1.5">
+                    📚 <span class="hidden sm:inline">Bài Học &</span> Prompt
+                </button>
+                <button onclick="switchView('generator')" id="nav-btn-generator" class="text-[11px] sm:text-xs font-semibold px-2 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center justify-center gap-1.5">
+                    ⚡ <span class="hidden sm:inline">Bộ Tạo</span> Prompt
                 </button>
             </div>
         </div>
     </header>
 
-    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+    <!-- ═══ MOBILE DRAWER (chỉ hiện ≤1024px) ═══ -->
+    <div id="drawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/80 z-40 lg:hidden"></div>
+    <aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-[85vw] max-w-[320px] bg-slate-900 border-r border-slate-800 z-50 lg:hidden flex flex-col safe-top">
+        <div class="p-3 border-b border-slate-800 flex items-center justify-between">
+            <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-cyan-400">📚 Danh Sách Bài Học</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Kit HCMUTE • Arduino R3</div>
+            </div>
+            <button onclick="closeDrawer()" class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300" aria-label="Đóng">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <nav id="module-menu-mobile" class="flex-1 overflow-y-auto p-2 space-y-1"></nav>
+        <div class="p-3 border-t border-slate-800 text-[10px] text-slate-500 space-y-0.5 bg-slate-950/50">
+            <div class="font-bold text-slate-400 mb-1">🛠️ Kit:</div>
+            <div>• Arduino Uno R3 • L298N • 5 mắt IR</div>
+            <div>• 2WD TT Motor • HC-SR04</div>
+        </div>
+    </aside>
 
-        <aside class="w-full md:w-80 flex-shrink-0 space-y-4">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sticky top-20">
+    <!-- ═══ MAIN ═══ -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-4 sm:gap-6">
+
+        <!-- Sidebar desktop (≥1024px) -->
+        <aside class="hidden lg:block w-80 flex-shrink-0">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sticky top-24">
                 <div class="flex items-center justify-between mb-3 px-2">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Danh Sách Bài Học</h2>
                     <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800">Kit HCMUTE</span>
                 </div>
-                
-                <nav id="module-menu" class="space-y-1">
-                    <!-- Navigation Items will be rendered dynamically -->
-                </nav>
-
+                <nav id="module-menu" class="space-y-1 max-h-[60vh] overflow-y-auto"></nav>
                 <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1 bg-slate-950/50 p-3 rounded-xl border">
-                    <div class="font-bold text-slate-300 mb-1 flex items-center gap-1">
-                        <span>🛠️ Cấu hình Kit HCMUTE của bạn:</span>
-                    </div>
+                    <div class="font-bold text-slate-300 mb-1">🛠️ Cấu hình Kit:</div>
                     <div>• Arduino Uno R3 (ATmega328P)</div>
                     <div>• Driver L298N Red Module</div>
-                    <div>• Mạch 5 mắt IR bo cong (cánh cung)</div>
-                    <div>• Khung xe 2WD + Động cơ TT Motor</div>
-                    <div>• Cảm biến siêu âm HC-SR04 (né vật)</div>
+                    <div>• Mạch 5 mắt IR bo cong</div>
+                    <div>• Khung xe 2WD + TT Motor</div>
+                    <div>• Cảm biến siêu âm HC-SR04</div>
                 </div>
             </div>
         </aside>
 
+        <!-- Content -->
         <main class="flex-1 min-w-0">
-            
-            <div id="prompt-generator-container" class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 hidden">
-                <div class="border-b border-slate-800 pb-4">
-                    <div class="flex items-center justify-between flex-wrap gap-2">
-                        <div>
-                            <span class="text-xs font-semibold text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded border border-cyan-800">BỘ TẠO PROMPT TỰ ĐỘNG THEO YÊU CẦU</span>
-                            <h2 class="text-2xl font-bold text-white mt-2">Tùy Chỉnh Biến Số Để Tạo Prompt Hỏi AI</h2>
+
+            <!-- Prompt Generator Container -->
+            <div id="prompt-generator-container" class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl space-y-5 sm:space-y-6 hidden">
+                <div class="border-b border-slate-800 pb-3 sm:pb-4">
+                    <div class="flex items-start justify-between flex-wrap gap-2">
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] sm:text-xs font-semibold text-cyan-400 bg-cyan-950 px-2 py-0.5 sm:py-1 rounded border border-cyan-800 inline-block">BỘ TẠO PROMPT TỰ ĐỘNG</span>
+                            <h2 class="text-lg sm:text-2xl font-bold text-white mt-2">Tùy Chỉnh Biến Số Để Hỏi AI</h2>
+                            <p class="text-slate-400 text-[11px] sm:text-xs mt-1.5">Nhập biến số bên dưới để tự động tạo Prompt hoàn chỉnh gửi cho ChatGPT / Gemini.</p>
                         </div>
-                        <button onclick="resetPromptForm()" class="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
-                            🔄 Đặt lại biến số
+                        <button onclick="resetPromptForm()" class="text-[11px] sm:text-xs text-slate-400 active:text-white px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 flex-shrink-0">
+                            🔄 Đặt lại
                         </button>
                     </div>
-                    <p class="text-slate-400 text-xs mt-2">Dành cho trường hợp bạn gặp bài toán hoặc lỗi cụ thể. Nhập biến số bên dưới để tự động tạo Prompt hoàn chỉnh gửi cho ChatGPT / Gemini.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">1. Vi Điều Khiển [BOARD]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">1. Vi Điều Khiển</label>
                         <select id="var-board" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Arduino Uno R3 (ATmega328P DIP)">Arduino Uno R3 (ATmega328P)</option>
-                            <option value="STM32F103C8T6 (Blue Pill)">STM32F103C8T6 (Blue Pill)</option>
+                            <option value="Arduino Uno R3 (ATmega328P DIP)">Arduino Uno R3</option>
+                            <option value="STM32F103C8T6 (Blue Pill)">STM32F103C8T6</option>
                             <option value="ESP32 NodeMCU">ESP32 NodeMCU</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">2. Driver Động Cơ [DRIVER]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">2. Driver Động Cơ</label>
                         <select id="var-driver" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Mạch Cầu H L298N (Đỏ)">Mạch Cầu H L298N (Đỏ)</option>
-                            <option value="Mạch Cầu H TB6612FNG">Mạch Cầu H TB6612FNG</option>
+                            <option value="Mạch Cầu H L298N (Đỏ)">L298N (Đỏ)</option>
+                            <option value="Mạch Cầu H TB6612FNG">TB6612FNG</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">3. Mạch Cảm Biến Line [SENSOR_ARRAY]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">3. Mạch Cảm Biến Line</label>
                         <select id="var-sensor" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Mạch 5 mắt IR bo cong (cánh cung)">Mạch 5 mắt IR bo cong (cánh cung)</option>
-                            <option value="Mạch 5 mắt IR thẳng hàng (BFD-1000)">Mạch 5 mắt IR thẳng hàng</option>
-                            <option value="Mạch 8 mắt Analog TCRT5000">Mạch 8 mắt Analog TCRT5000</option>
+                            <option value="Mạch 5 mắt IR bo cong (cánh cung)">5 mắt IR bo cong</option>
+                            <option value="Mạch 5 mắt IR thẳng hàng (BFD-1000)">5 mắt IR thẳng</option>
+                            <option value="Mạch 8 mắt Analog TCRT5000">8 mắt Analog</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">4. Môi Trường Thực Thi [ENV]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">4. Môi Trường</label>
                         <select id="var-env" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="VS Code + PlatformIO (C++ Xe Thật HCMUTE)">VS Code + PlatformIO (Xe Thật)</option>
-                            <option value="Mô phỏng Động học 3D trên Webots">Mô phỏng 3D Webots</option>
-                            <option value="Mô phỏng Mạch logic trên Wokwi (VS Code)">Mô phỏng Mạch Wokwi</option>
+                            <option value="VS Code + PlatformIO (C++ Xe Thật HCMUTE)">VS Code + PlatformIO</option>
+                            <option value="Mô phỏng Động học 3D trên Webots">Mô phỏng Webots</option>
+                            <option value="Mô phỏng Mạch logic trên Wokwi (VS Code)">Mô phỏng Wokwi</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">5. Bài Thi / Yêu Cầu [TASK]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">5. Bài Thi / Yêu Cầu</label>
                         <select id="var-task" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Thi Tốc Độ: Thuật toán PID (Kp, Ki, Kd) căn chỉnh mượt">Thi Tốc Độ (Lập trình PID)</option>
-                            <option value="Thi Tránh Vật Cản: Máy trạng thái hữu hạn FSM + HC-SR04">Thi Né Vật Cản (HC-SR04 + FSM)</option>
-                            <option value="Cân chỉnh (Calibrate) ngưỡng cảm biến hồng ngoại sáng/tối">Calibrate Ngưỡng IR Thực Tế</option>
-                            <option value="Dựng file PROTO / URDF Robot 2WD chuẩn kích thước">Dựng Mô hình Webots PROTO 2WD</option>
+                            <option value="Thi Tốc Độ: Thuật toán PID (Kp, Ki, Kd) căn chỉnh mượt">Thi Tốc Độ (PID)</option>
+                            <option value="Thi Tránh Vật Cản: Máy trạng thái hữu hạn FSM + HC-SR04">Thi Né Vật Cản (FSM)</option>
+                            <option value="Cân chỉnh (Calibrate) ngưỡng cảm biến hồng ngoại sáng/tối">Calibrate IR</option>
+                            <option value="Dựng file PROTO / URDF Robot 2WD chuẩn kích thước">Dựng Webots PROTO</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-cyan-300 mb-1">6. Cảm Biến Phụ [EXTRA_SENSOR]</label>
+                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">6. Cảm Biến Phụ</label>
                         <input id="var-extra" type="text" value="Cảm biến siêu âm HC-SR04" oninput="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-cyan-300 mb-1">7. Mô Tả Lỗi / Yêu Cầu Cụ Thể Của Bạn [DEBUG_NOTE]</label>
-                    <textarea id="var-debug" oninput="generateDynamicPrompt()" rows="2" placeholder="Ví dụ: Xe bị lắc văng khỏi line khi cua 90 độ; Hoặc cách xử lý khi cảm biến bị nhiễu ánh sáng bóng đèn..." class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none font-mono"></textarea>
+                    <label class="block text-[11px] font-semibold text-cyan-300 mb-1">7. Mô Tả Lỗi / Yêu Cầu Cụ Thể</label>
+                    <textarea id="var-debug" oninput="generateDynamicPrompt()" rows="2" placeholder="VD: Xe bị lắc văng khỏi line khi cua 90 độ..." class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none font-mono"></textarea>
                 </div>
 
-                <div class="bg-slate-950 border border-cyan-500/40 rounded-xl p-4 relative">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> PROMPT HOÀN CHỈNH KÈM BIẾN SỐ
+                <div class="bg-slate-950 border border-cyan-500/40 rounded-xl p-3 sm:p-4">
+                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                        <span class="text-[11px] sm:text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> PROMPT HOÀN CHỈNH
                         </span>
-                        <button onclick="copyGeneratedPrompt()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5">
-                            <span>📋</span> SAO CHÉP PROMPT NÀY
+                        <button onclick="copyGeneratedPrompt()" class="bg-cyan-600 active:bg-cyan-500 text-white text-[11px] sm:text-xs px-3 sm:px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5">
+                            <span>📋</span> SAO CHÉP
                         </button>
                     </div>
-                    <pre id="generated-prompt-output" class="text-xs font-mono text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-96 overflow-y-auto p-3 bg-slate-900/60 rounded-lg border border-slate-800"></pre>
+                    <pre id="generated-prompt-output" class="text-[11px] sm:text-xs font-mono text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto p-3 bg-slate-900/60 rounded-lg border border-slate-800"></pre>
                 </div>
             </div>
 
-            <div id="lesson-content-container" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
-                <!-- Content and AI Prompts will be dynamically injected here -->
+            <!-- Lesson Container -->
+            <div id="lesson-content-container" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
+                <!-- Content inject here -->
             </div>
         </main>
-
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 bg-cyan-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-cyan-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-[60] pointer-events-none max-w-[calc(100vw-3rem)]">
         <span id="toast-icon">📋</span>
-        <span id="toast-message" class="text-sm font-medium">Đã sao chép Prompt vào bộ nhớ tạm!</span>
+        <span id="toast-message" class="text-sm font-medium">Đã sao chép!</span>
     </div>
 
     <script>
         /* ══════════════════════════════════════════════════════
-           LBSYNC SDK — Giao tiếp với Dashboard qua postMessage
+           LBSYNC SDK
            ══════════════════════════════════════════════════════ */
         (function(){
             function lbsync_save(key, value){
@@ -287,15 +318,18 @@
             window.LBSync = { save: lbsync_save, load: lbsync_load };
         })();
 
+        /* ══════════════════════════════════════════════════════
+           COURSE DATA
+           ══════════════════════════════════════════════════════ */
         const courseData = [
             {
                 id: "mod-1",
-                title: "Module 1: Bản Chất Nguyên Lý Hoạt Động & Môi Trường VS Code",
-                desc: "Tìm hiểu bản chất vật lý quang học IR, mạch cầu H L298N và thiết lập VS Code / Wokwi.",
+                title: "Module 1: Bản Chất Nguyên Lý & Môi Trường",
+                desc: "Bản chất vật lý IR, mạch cầu H L298N, VS Code / Wokwi.",
                 lessons: [
                     {
                         id: "m1-l1",
-                        title: "1.1 Bản Chất Cảm Biến Hồng Ngoại (IR) & Mạch Cầu H L298N",
+                        title: "1.1 Bản Chất Cảm Biến IR & Mạch Cầu H L298N",
                         time: "30 Phút",
                         summary: "Hiểu sâu bản chất vật lý phản xạ tia hồng ngoại trên mặt sàn sáng/tối, nguyên lý mạch cầu H L298N đảo chiều động cơ DC và băm xung PWM điều khiển tốc độ.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
@@ -306,38 +340,38 @@ Tôi muốn hiểu BẢN CHẤT NGUYÊN LÝ HOẠT ĐỘNG trước khi bắt đ
 - Vi điều khiển: Arduino Uno R3 (ATmega328P)
 - Driver Động cơ: Module Cầu H L298N (Đỏ)
 - Cảm biến: Mạch 5 mắt hồng ngoại IR bo cong (cánh cung)
-- Động cơ: 2 Động cơ DC Vàng (TT Motor) + 1 Bánh xe xoay tự do (Bánh bèo kim loại)
+- Động cơ: 2 Động cơ DC Vàng (TT Motor) + 1 Bánh xe xoay tự do
 
 [YÊU CẦU CHI TIẾT]
-1. Giải thích bản chất quang học của Cảm biến IR: Tại sao bề mặt trắng phản xạ nhiều hồng ngoại (tín hiệu LOW/HIGH tùy mạch) còn bề mặt đen hấp thụ hồng ngoại?
+1. Giải thích bản chất quang học của Cảm biến IR: Tại sao bề mặt trắng phản xạ nhiều hồng ngoại còn bề mặt đen hấp thụ?
 2. Giải thích bản chất hoạt động của Mạch Cầu H L298N: Tại sao cần 4 transistor/MOSFET tạo thành hình chữ H để đảo chiều quay động cơ DC? Tín hiệu PWM trên chân ENA/ENB thay đổi điện áp trung bình như thế nào?
-3. Phân tích nguyên lý Động học Vi sai (Differential Drive): Xe rẽ trái/rẽ phải bằng cách chênh lệch tốc độ 2 bánh như thế nào? (Bánh trái quay chậm/lùi, bánh phải quay nhanh).
+3. Phân tích nguyên lý Động học Vi sai (Differential Drive): Xe rẽ trái/rẽ phải bằng cách chênh lệch tốc độ 2 bánh như thế nào?
 4. Viết đoạn code C++ mẫu cơ bản nhất trên VS Code điều khiển 2 động cơ chạy tiến, lùi, rẽ trái, rẽ phải qua L298N.`
                     },
                     {
                         id: "m1-l2",
-                        title: "1.2 Thiết Lập VS Code + PlatformIO & Giả Lập Mạch Wokwi",
+                        title: "1.2 Thiết Lập VS Code + PlatformIO & Wokwi",
                         time: "25 Phút",
                         summary: "Cấu hình môi trường lập trình C++ chuyên nghiệp với PlatformIO và giả lập Wokwi trên VS Code để test mạch logic trước khi cắm dây xe thật.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi đang học lập trình Xe Dò Line HCMUTE trên VS Code. Hãy hướng dẫn tôi thiết lập môi trường giả lập mạch logic Wokwi để test code C++.
+Tôi đang học lập trình Xe Dò Line HCMUTE trên VS Code. Hãy hướng dẫn tôi thiết lập môi trường giả lập mạch logic Wokwi.
 
 [YÊU CẦU CHI TIẾT]
 1. Hướng dẫn khởi tạo project PlatformIO cho Arduino Uno R3 trên VS Code.
 2. Cung cấp file \`platformio.ini\` chuẩn (baud rate 115200, tối ưu biên dịch C++).
 3. Cung cấp nội dung file \`diagram.json\` dựng mạch giả lập Wokwi gồm: Arduino Uno R3, Module L298N, 5 nút nhấn (mô phỏng 5 mắt IR) và 2 Động cơ DC.
-4. Viết đoạn code C++ test pinout và in trạng thái 5 mắt IR ra Serial Monitor để kiểm tra mạch.`
+4. Viết đoạn code C++ test pinout và in trạng thái 5 mắt IR ra Serial Monitor.`
                     }
                 ]
             },
             {
                 id: "mod-2",
-                title: "Module 2: Lập Trình Xe Dò Line Cơ Bản & Đa Trạng Thái",
-                desc: "Lập trình thuật toán dò line cốt lõi (On-Off/Bang-Bang) và xử lý mảng 5 mắt IR bo cong.",
+                title: "Module 2: Lập Trình Dò Line Cơ Bản",
+                desc: "Thuật toán On-Off/Bang-Bang và xử lý mảng 5 mắt IR bo cong.",
                 lessons: [
                     {
                         id: "m2-l1",
-                        title: "2.1 Thuật Toán Dò Line Cơ Bản (On-Off / Bang-Bang Control)",
+                        title: "2.1 Thuật Toán Dò Line Bang-Bang",
                         time: "40 Phút",
                         summary: "Nắm vững bản chất logic rẽ trái/rẽ phải/chạy thẳng cơ bản dựa trên trạng thái mắt IR. Hiểu ưu nhược điểm và hiện tượng 'rắn bò'.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
@@ -345,171 +379,163 @@ Tôi bắt đầu viết thuật toán Dò Line Cốt Lõi (Bài thi chính) cho
 
 [CẤU HÌNH PHẦN CỨNG]
 - 5 Mắt IR trả về 0 (Trắng) và 1 (Đen).
-- L298N điều khiển 2 động cơ DC bánh trái và bánh phải.
+- L298N điều khiển 2 động cơ DC.
 
 [YÊU CẦU CHI TIẾT]
-1. Giải thích BẢN CHẤT thuật toán On-Off (Bang-Bang Control): Cơ chế quyết định hành vi dựa trên điều kiện logic (If-Else).
-2. Lập bảng logic chuyển động cho các trường hợp:
-   - Trung tâm đè line (0 0 1 0 0): Chạy thẳng full speed.
-   - Lệch nhẹ trái (0 1 0 0 0): Rẽ trái nhẹ (Bánh trái giảm tốc, bánh phải giữ nguyên).
-   - Lệch gắt trái (1 0 0 0 0): Rẽ trái gấp (Bánh trái quay lùi, bánh phải tiến).
-   - Ngược lại cho bên phải.
-3. Viết mã nguồn C++ hoàn chỉnh triển khai thuật toán On-Off này trên VS Code.
-4. Phân tích tại sao thuật toán On-Off làm xe bị hiện tượng 'rắn bò' (lắc lư nhẹ khi chạy) và cách điều chỉnh tốc độ PWM để giảm lắc.`
+1. Giải thích BẢN CHẤT thuật toán On-Off (Bang-Bang Control).
+2. Lập bảng logic chuyển động cho các trường hợp: Trung tâm đè line (0 0 1 0 0), lệch nhẹ trái, lệch gắt trái, ngược lại cho phải.
+3. Viết mã nguồn C++ hoàn chỉnh triển khai thuật toán On-Off trên VS Code.
+4. Phân tích tại sao thuật toán On-Off làm xe bị hiện tượng 'rắn bò' và cách điều chỉnh tốc độ PWM.`
                     },
                     {
                         id: "m2-l2",
-                        title: "2.2 Xử Lý Mạch 5 Mắt IR Bo Cong (Cánh Cung) & Góc Cua Vuông 90°",
+                        title: "2.2 Xử Lý IR Bo Cong & Góc Cua 90°",
                         time: "45 Phút",
-                        summary: "Hiểu bản chất hình học cánh cung của 5 mắt IR kit HCMUTE. Viết thuật toán bắt góc cua 90 độ, vạch đứt và cơ chế nhớ vết line cũ.",
+                        summary: "Hiểu bản chất hình học cánh cung của 5 mắt IR. Viết thuật toán bắt góc cua 90 độ, vạch đứt và cơ chế nhớ vết line cũ.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Mạch cảm biến của kit HCMUTE có 5 mắt IR sắp xếp dạng bo cong hình cánh cung (chữ T). Hãy giúp tôi khai thác tối đa ưu thế hình học này để xử lý cua vuông 90 độ và vạch đứt.
+Mạch cảm biến kit HCMUTE có 5 mắt IR bo cong hình cánh cung. Hãy giúp tôi khai thác tối đa ưu thế hình học này.
 
 [YÊU CẦU CHI TIẾT]
-1. Phân tích BẢN CHẤT HÌNH HỌC: Tại sao thiết kế bo cong (mắt S1 và S5 xòe ra phía trước/bên) lại phát hiện góc cua vuông 90° sớm hơn mảng cảm biến thẳng hàng?
-2. Viết thuật toán C++ xử lý các tình huống đặc biệt:
-   - Cua vuông 90° trái (1 1 1 0 0 hoặc 1 1 0 0 0): Cho xe quay tại chỗ (Pivot Turn).
-   - Vạch đứt hoặc mất line hoàn toàn (0 0 0 0 0): Sử dụng biến lưu vết \`lastDirection\` (Lần cuối thấy line ở bên nào thì bẻ lái tìm lại bên đó).
-   - Vạch ngang ngã tư (1 1 1 1 1): Xử lý vượt qua vạch ngang không bị khựng.
-3. Viết code C++ hoàn chỉnh có cấu trúc rõ ràng, tối ưu thời gian phản hồi.`
+1. Phân tích BẢN CHẤT HÌNH HỌC: Tại sao thiết kế bo cong phát hiện góc cua 90° sớm hơn mảng thẳng hàng?
+2. Viết thuật toán C++ xử lý:
+   - Cua vuông 90° (1 1 1 0 0): Pivot Turn tại chỗ.
+   - Mất line hoàn toàn (0 0 0 0 0): Dùng biến lastDirection.
+   - Vạch ngang ngã tư (1 1 1 1 1): Vượt qua không khựng.
+3. Viết code C++ hoàn chỉnh, tối ưu thời gian phản hồi.`
                     }
                 ]
             },
             {
                 id: "mod-3",
-                title: "Module 3: Mô Phỏng Động Học 3D Trên Webots",
-                desc: "Dựng mô hình Robot PROTO 2WD đúng tỉ lệ và mô phỏng xe dò line 3D.",
+                title: "Module 3: Mô Phỏng 3D Trên Webots",
+                desc: "Dựng mô hình Robot PROTO 2WD và mô phỏng xe dò line 3D.",
                 lessons: [
                     {
                         id: "m3-l1",
-                        title: "3.1 Dựng Robot PROTO 2WD Chuẩn Tỷ Lệ Kit HCMUTE Trong Webots",
+                        title: "3.1 Dựng Robot PROTO 2WD Chuẩn Tỷ Lệ",
                         time: "40 Phút",
-                        summary: "Dựng khung xe 3D, 2 bánh xe chủ động, bánh bèo kim loại và gán tham số vật lý (trọng lực, khối lượng, ma sát lốp cao su).",
+                        summary: "Dựng khung xe 3D, 2 bánh chủ động, bánh bèo kim loại và gán tham số vật lý (trọng lực, khối lượng, ma sát).",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Bạn là chuyên gia mô phỏng Webots 3D. Tôi cần dựng mô hình Robot PROTO cho xe 2WD đúng thông số phần cứng kit HCMUTE thực tế.
+Bạn là chuyên gia Webots 3D. Tôi cần dựng mô hình Robot PROTO cho xe 2WD đúng thông số kit HCMUTE.
 
 [THÔNG SỐ VẬT LÝ THỰC TẾ]
-- Khung xe: Mica 2WD trong suốt (Dài 20cm, Rộng 14cm, Khối lượng ~0.5kg)
-- Bánh xe: 2 Bánh chủ động (Đường kính 6.5cm, Bề rộng 2.6cm), 1 bánh bèo kim loại xoay tự do.
-- 2 Động cơ DC TT Motor.
+- Khung Mica 2WD: Dài 20cm, Rộng 14cm, ~0.5kg
+- Bánh: 2 bánh chủ động 6.5cm, 1 bánh bèo kim loại.
+- 2 động cơ DC TT Motor.
 
 [YÊU CẦU CHI TIẾT]
-1. Viết mã nguồn file Webots PROTO hoàn chỉnh dựng khung Mica, 2 bánh xe HingeJoint + RotationalMotor, và 1 bánh bèo BallJoint.
-2. Hướng dẫn thiết lập thông số Physics: Khối lượng (mass), Tâm khối lượng (Center of Mass), và hệ số ma sát lốp xe cao su trên đường (contactMaterial).
-3. Hướng dẫn cách tạo file đường đua (World) có vạch đen rộng 2cm trên nền trắng trong Webots.`
+1. Viết file Webots PROTO: khung Mica, 2 bánh HingeJoint + RotationalMotor, 1 bánh bèo BallJoint.
+2. Hướng dẫn thông số Physics: mass, Center of Mass, contactMaterial.
+3. Tạo file đường đua World có vạch đen rộng 2cm nền trắng.`
                     },
                     {
                         id: "m3-l2",
-                        title: "3.2 Bố Trí 5 Cảm Biến DistanceSensor & Chạy Webots Controller",
+                        title: "3.2 Bố Trí 5 DistanceSensor & Webots Controller",
                         time: "45 Phút",
-                        summary: "Gán 5 cảm biến DistanceSensor bo cong hướng xuống mặt đất và viết Webots Controller C++ chạy dò line 3D.",
+                        summary: "Gán 5 cảm biến DistanceSensor bo cong hướng xuống mặt đất và viết Controller C++ chạy dò line 3D.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi cần nhúng 5 cảm biến DistanceSensor dạng bo cong vào robot Webots và viết Controller điều khiển xe chạy dò line trên môi trường 3D.
+Tôi cần nhúng 5 DistanceSensor dạng bo cong vào robot Webots và viết Controller C++.
 
 [TỌA ĐỘ 5 MẮT SENSOR HƯỚNG XUỐNG SÀN]
-- S1 (Ngoài trái): x = -0.04m, z = 0.10m
-- S2 (Trong trái): x = -0.02m, z = 0.11m
-- S3 (Trung tâm):  x =  0.00m, z = 0.12m
-- S4 (Trong phải): x = +0.02m, z = 0.11m
-- S5 (Ngoài phải): x = +0.04m, z = 0.10m
+- S1: x=-0.04, z=0.10 | S2: x=-0.02, z=0.11 | S3: x=0, z=0.12
+- S4: x=+0.02, z=0.11 | S5: x=+0.04, z=0.10
 
 [YÊU CẦU CHI TIẾT]
-1. Cung cấp mã nguồn PROTO nhúng 5 DistanceSensor chiếu xuống mặt đường (khoảng cách 1cm).
-2. Viết Webots Controller C++ hoàn chỉnh đọc giá trị 5 cảm biến, quy đổi tín hiệu phản xạ vạch đen/trắng và thực thi thuật toán dò line.
-3. So sánh kết quả chuyển động xe trên mô phỏng Webots 3D so với mạch logic Wokwi.`
+1. Cung cấp PROTO nhúng 5 DistanceSensor chiếu xuống mặt đường (1cm).
+2. Viết Webots Controller C++ đọc 5 cảm biến, quy đổi vạch đen/trắng, thực thi dò line.
+3. So sánh kết quả Webots 3D vs Wokwi.`
                     }
                 ]
             },
             {
                 id: "mod-4",
-                title: "Module 4: Hardware Transfer - Nạp Xe Thật Kit HCMUTE",
-                desc: "Đấu nối phần cứng thực tế, quản lý nguồn điện và tự động Calibrate cảm biến IR.",
+                title: "Module 4: Nạp Xe Thật Kit HCMUTE",
+                desc: "Đấu nối phần cứng, quản lý nguồn, Calibrate cảm biến IR.",
                 lessons: [
                     {
                         id: "m4-l1",
-                        title: "4.1 Sơ Đồ Đấu Nối Chuẩn Arduino R3 + L298N + 5 Mắt IR",
+                        title: "4.1 Sơ Đồ Đấu Nối Chuẩn R3 + L298N + 5 IR",
                         time: "40 Phút",
-                        summary: "Bảng đấu nối chi tiết tránh xung đột Timer PWM và RX/TX. Hướng dẫn trích nguồn Pin Li-ion 7.4V qua L298N nuôi Arduino.",
+                        summary: "Bảng đấu nối chi tiết tránh xung đột Timer PWM và RX/TX. Trích nguồn Pin Li-ion 7.4V qua L298N nuôi Arduino.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi chuẩn bị đấu nối phần cứng thực tế gồm: Arduino Uno R3, Mạch Cầu H L298N Red, Mạch 5 mắt IR bo cong và Công tắc nguồn bập bấp.
+Tôi chuẩn bị đấu nối: Arduino Uno R3, L298N Red, Mạch 5 mắt IR bo cong, công tắc nguồn.
 
 [BẢNG CHÂN DỰ KIẾN]
 - L298N: ENA(3), IN1(4), IN2(5), ENB(6), IN3(7), IN4(8)
 - 5 Mắt IR: Out1(A0), Out2(A1), Out3(A2), Out4(A3), Out5(A4)
 
 [YÊU CẦU CHI TIẾT]
-1. Kiểm tra BẢN CHẤT CẮM CHÂN: Đảm bảo ENA và ENB cắm đúng chân PWM cứng (Timer 2) của Arduino Uno R3. Không dùng chân 0, 1 (tránh nhiễu nạp code RX/TX).
-2. Bảng hướng dẫn cấp nguồn an toàn: Nối Pin Li-ion 7.4V qua công tắc bập bấp vào cọc 12V L298N, lấy đầu ra 5V ổn định từ L298N nuôi Arduino R3 và mảng IR.
-3. Viết code C++ PlatformIO hoàn chỉnh khởi tạo pinMode(), test động cơ chạy tiến/lùi/rẽ trong \`setup()\`.`
+1. Kiểm tra BẢN CHẤT CẮM CHÂN: ENA/ENB phải vào chân PWM cứng (Timer 2). Không dùng chân 0, 1 (RX/TX).
+2. Bảng hướng dẫn cấp nguồn an toàn: Pin Li-ion 7.4V → cọc 12V L298N → đầu ra 5V nuôi Arduino + mảng IR.
+3. Viết code C++ PlatformIO hoàn chỉnh khởi tạo pinMode(), test động cơ trong setup().`
                     },
                     {
                         id: "m4-l2",
-                        title: "4.2 Tự Động Calibrate Ngưỡng IR Thực Tế Chống Nhiễu Ánh Sáng Sàn",
+                        title: "4.2 Tự Động Calibrate Ngưỡng IR",
                         time: "50 Phút",
-                        summary: "Viết hàm quét Min/Max tự động trong 3 giây đầu khi bật nguồn để tính Threshold = (Min+Max)/2 lọc nhiễu môi trường phòng lab.",
+                        summary: "Viết hàm quét Min/Max tự động trong 3 giây đầu để tính Threshold = (Min+Max)/2 lọc nhiễu ánh sáng phòng lab.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Khác với mô phỏng Webots (môi trường lý tưởng), ngoài thực tế tại phòng lab HCMUTE, ánh sáng môi trường và chất liệu sàn gạch/gỗ làm tín hiệu cảm biến IR bị thay đổi.
+Ngoài thực tế tại phòng lab HCMUTE, ánh sáng môi trường và chất liệu sàn làm tín hiệu IR thay đổi.
 
 [YÊU CẦU CHI TIẾT]
-1. Phân tích BẢN CHẤT NHIỄU QUANG HỌC ngoài thực tế và tại sao cần 'Dynamic Threshold' (Ngưỡng động).
-2. Viết hàm C++ \`autoCalibrateSensors()\` chạy trong 3 giây đầu tiên khi nhấn nút Reset xe.
-3. Cơ chế: Trong 3s đầu, người dùng lia mảng IR qua lại giữa nền trắng và vạch đen để lưu giá trị Analog Min/Max của từng mắt.
-4. Tự động tính: \`Threshold[i] = (Min[i] + Max[i]) / 2\`. Nhị phân hóa tín hiệu đọc từ cảm biến để xe chạy chính xác trên mọi bề mặt sân thi.`
+1. Phân tích BẢN CHẤT NHIỄU QUANG HỌC và tại sao cần 'Dynamic Threshold'.
+2. Viết hàm C++ autoCalibrateSensors() chạy 3 giây đầu khi nhấn Reset.
+3. Cơ chế: Người dùng lia mảng IR qua lại giữa nền trắng và vạch đen để lưu Min/Max của từng mắt.
+4. Tự động tính Threshold[i] = (Min[i]+Max[i])/2.`
                     }
                 ]
             },
             {
                 id: "mod-5",
-                title: "Module 5: Chuyên Đề Mở Rộng (Thi Tốc Độ PID & Né Vật Cản)",
-                desc: "Nâng cấp thuật toán PID cho bài thi tốc độ và FSM + HC-SR04 cho bài thi né vật cản.",
+                title: "Module 5: Chuyên Đề Mở Rộng (PID & Né Vật Cản)",
+                desc: "Nâng cấp PID cho bài thi tốc độ và FSM + HC-SR04 cho bài thi né vật cản.",
                 lessons: [
                     {
                         id: "m5-l1",
-                        title: "5.1 Nâng Cấp Dò Line Tốc Độ Cao Với Thuật Toán PID",
+                        title: "5.1 Dò Line Tốc Độ Cao Với Thuật Toán PID",
                         time: "60 Phút",
-                        summary: "Hiểu bản chất toán học P-I-D, quy đổi sai số Error (-4 đến +4) từ 5 mắt IR và quy trình 3 bước tuning Kp, Ki, Kd chống văng line.",
+                        summary: "Hiểu bản chất toán học P-I-D, quy đổi sai số Error (-4 đến +4) từ 5 mắt IR và quy trình 3 bước tuning Kp, Ki, Kd.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
 Khi đã chạy thành công bài dò line cơ bản, tôi muốn nâng cấp lên bài Thi Tốc Độ bằng thuật toán PID.
 
 [CẤU HÌNH & YÊU CẦU CHI TIẾT]
 1. Giải thích BẢN CHẤT TOÁN HỌC PID trong bài toán dò line:
-   - Sai số vị trí Error (từ -4 đến +4).
+   - Sai số vị trí Error (-4 đến +4).
    - Tác dụng của P (Tỷ lệ lệch), I (Tích lũy dạt line), D (Đạo hàm phanh chống văng cua).
-2. Viết hàm C++ \`calculatePID()\` và \`controlMotors()\` điều chế xung PWM L298N (constrain -255 đến 255), có kỹ thuật chống tràn tích phân (Anti-windup).
-3. Quy trình Tuning PID 3 bước thực nghiệm (Kp -> Kd -> Ki) dành cho xe 2WD nhẹ 0.5kg trên Webots và Xe thật.`
+2. Viết hàm C++ calculatePID() và controlMotors() điều chế xung PWM L298N (constrain -255 đến 255), có Anti-windup.
+3. Quy trình Tuning PID 3 bước (Kp → Kd → Ki) cho xe 2WD 0.5kg.`
                     },
                     {
                         id: "m5-l2",
-                        title: "5.2 Bài Thi Né Vật Cản Với Cảm Biến Siêu Âm HC-SR04 & FSM",
+                        title: "5.2 Né Vật Cản Với HC-SR04 & FSM",
                         time: "60 Phút",
-                        summary: "Lắp thêm cảm biến HC-SR04 đo khoảng cách Non-blocking (millis) và thiết kế Máy trạng thái hữu hạn FSM rẽ né vật cản rồi tự bắt lại line.",
+                        summary: "Lắp HC-SR04 đo khoảng cách Non-blocking (millis) và thiết kế FSM rẽ né vật cản rồi tự bắt lại line.",
                         aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm cảm biến siêu âm HC-SR04 (Trig Pin 12, Echo Pin 13).
+Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
 
-[KIẾN TRÚC MÁY TRẠNG THÁI FSM]
-- State 0: Dò line PID / On-Off.
-- State 1: Phát hiện vật cản < 15cm -> Rẽ trái né vật.
-- State 2: Chạy thẳng song song vật cản.
-- State 3: Rẽ phải hướng về lại đường line.
-- State 4: Quét mắt IR gặp lại vạch đen -> Tự động ngắt FSM về State 0.
+[KIẾN TRÚC FSM]
+- State 0: Dò line PID/On-Off
+- State 1: Phát hiện vật cản < 15cm → Rẽ trái né
+- State 2: Chạy thẳng song song vật cản
+- State 3: Rẽ phải hướng về lại đường line
+- State 4: Quét mắt IR gặp lại vạch đen → về State 0
 
 [YÊU CẦU CHI TIẾT]
-1. Viết hàm đọc HC-SR04 theo cơ chế Non-blocking (millis) kết hợp bộ lọc trung bình động 3-5 mẫu chống nhiễu dội âm.
-2. Viết chương trình C++ cấu trúc Switch-Case điều khiển FSM 5 trạng thái trên.
-3. Hướng dẫn căn chỉnh thời gian chuyển pha để xe né mượt và bắt lại line chính xác.`
+1. Viết hàm đọc HC-SR04 Non-blocking (millis) + bộ lọc trung bình động 3-5 mẫu.
+2. Viết chương trình C++ Switch-Case điều khiển FSM 5 trạng thái.
+3. Hướng dẫn căn chỉnh thời gian chuyển pha.`
                     }
                 ]
             }
         ];
 
         /* ══════════════════════════════════════════════════════
-           STATE MANAGEMENT
+           STATE
            ══════════════════════════════════════════════════════ */
         const LS_KEYS = {
             completed: 'hcmute_completed_lessons',
             lesson: 'hcmute_current_lesson',
-            view: 'hcmute_view',
-            lite: 'hcmute_lite_mode'
+            view: 'hcmute_view'
         };
 
         let completedLessons = [];
@@ -522,20 +548,18 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
         let currentView = localStorage.getItem(LS_KEYS.view) || 'course';
 
         document.addEventListener('DOMContentLoaded', () => {
-            initLiteMode();
             applyView(currentView);
             renderSidebar();
+            renderSidebarMobile();
             generateDynamicPrompt();
             updateProgress();
             loadLesson(currentLessonId);
             bindFormListeners();
-
-            // Khôi phục từ cloud (nếu có)
             restoreFromCloud();
         });
 
         /* ══════════════════════════════════════════════════════
-           PERSIST — Lưu cả localStorage (cache) lẫn cloud
+           PERSIST / RESTORE
            ══════════════════════════════════════════════════════ */
         function persistState() {
             try {
@@ -543,7 +567,6 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                 localStorage.setItem(LS_KEYS.lesson, currentLessonId);
                 localStorage.setItem(LS_KEYS.view, currentView);
             } catch(e) {}
-
             LBSync.save('completedLessons', completedLessons);
             LBSync.save('currentLessonId', currentLessonId);
             LBSync.save('currentView', currentView);
@@ -555,6 +578,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                     completedLessons = v;
                     try { localStorage.setItem(LS_KEYS.completed, JSON.stringify(v)); } catch(e){}
                     renderSidebar();
+                    renderSidebarMobile();
                     updateProgress();
                     if (currentView === 'course') loadLesson(currentLessonId);
                 }
@@ -564,6 +588,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                     currentLessonId = v;
                     try { localStorage.setItem(LS_KEYS.lesson, v); } catch(e){}
                     renderSidebar();
+                    renderSidebarMobile();
                     if (currentView === 'course') loadLesson(v);
                 }
             });
@@ -574,12 +599,24 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                     applyView(v);
                 }
             });
-            LBSync.load('liteMode', (v) => {
-                if (typeof v === 'boolean') {
-                    try { localStorage.setItem(LS_KEYS.lite, v ? '1' : '0'); } catch(e){}
-                    applyLiteMode(v);
-                }
-            });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           DRAWER (mobile)
+           ══════════════════════════════════════════════════════ */
+        function toggleDrawer() {
+            const drawer = document.getElementById('mobileDrawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) closeDrawer();
+            else {
+                drawer.classList.add('open');
+                backdrop.classList.add('open');
+            }
+        }
+        function closeDrawer() {
+            document.getElementById('mobileDrawer').classList.remove('open');
+            document.getElementById('drawerBackdrop').classList.remove('open');
         }
 
         /* ══════════════════════════════════════════════════════
@@ -589,9 +626,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
             currentView = view;
             applyView(view);
             persistState();
-            if (view === 'course') {
-                loadLesson(currentLessonId);
-            }
+            if (view === 'course') loadLesson(currentLessonId);
         }
 
         function applyView(view) {
@@ -604,22 +639,22 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
             if (view === 'generator') {
                 genContainer.classList.remove('hidden');
                 courseContainer.classList.add('hidden');
-                navGen.classList.remove('bg-slate-800', 'text-slate-300');
+                navGen.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
                 navGen.classList.add('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
                 navCourse.classList.remove('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navCourse.classList.add('bg-slate-800', 'text-slate-300');
+                navCourse.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
             } else {
                 genContainer.classList.add('hidden');
                 courseContainer.classList.remove('hidden');
-                navCourse.classList.remove('bg-slate-800', 'text-slate-300');
+                navCourse.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
                 navCourse.classList.add('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
                 navGen.classList.remove('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navGen.classList.add('bg-slate-800', 'text-slate-300');
+                navGen.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
             }
         }
 
         /* ══════════════════════════════════════════════════════
-           FORM VALUES
+           FORM LISTENERS
            ══════════════════════════════════════════════════════ */
         const FORM_IDS = ['var-board', 'var-driver', 'var-sensor', 'var-env', 'var-task', 'var-extra', 'var-debug'];
 
@@ -644,9 +679,7 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                 if (!v || typeof v !== 'object') return;
                 FORM_IDS.forEach(id => {
                     const el = document.getElementById(id);
-                    if (el && v[id] !== undefined) {
-                        el.value = v[id];
-                    }
+                    if (el && v[id] !== undefined) el.value = v[id];
                 });
                 generateDynamicPrompt();
             });
@@ -655,37 +688,34 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
         /* ══════════════════════════════════════════════════════
            SIDEBAR
            ══════════════════════════════════════════════════════ */
-        function renderSidebar() {
-            const menuContainer = document.getElementById('module-menu');
-            menuContainer.innerHTML = '';
-
+        function buildMenuHTML() {
+            let html = '';
             courseData.forEach((mod) => {
-                const modEl = document.createElement('div');
-                modEl.className = 'mb-3';
-                
-                let lessonsHtml = mod.lessons.map(les => {
+                html += '<div class="mb-3">';
+                html += '<div class="text-[11px] font-bold text-slate-300 px-2 py-1 mb-1 bg-slate-800/40 rounded">' + mod.title + '</div>';
+                html += '<div class="space-y-0.5 pl-1">';
+                mod.lessons.forEach(les => {
                     const isCompleted = completedLessons.includes(les.id);
                     const isActive = les.id === currentLessonId;
-                    
-                    return `
-                        <button onclick="selectLesson('${les.id}')" 
-                            class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition ${isActive ? 'bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/30' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}">
-                            <span class="truncate max-w-[190px]">${les.title}</span>
-                            <span class="${isCompleted ? 'text-emerald-400 font-bold' : 'text-slate-600'}">${isCompleted ? '✓' : '○'}</span>
-                        </button>
-                    `;
-                }).join('');
-
-                modEl.innerHTML = `
-                    <div class="text-[11px] font-bold text-slate-300 px-2 py-1 mb-1 bg-slate-800/40 rounded flex items-center justify-between">
-                        <span class="truncate">${mod.title}</span>
-                    </div>
-                    <div class="space-y-0.5 pl-1">
-                        ${lessonsHtml}
-                    </div>
-                `;
-                menuContainer.appendChild(modEl);
+                    html += '<button onclick="selectLesson(\'' + les.id + '\')" class="w-full text-left px-2.5 py-2 rounded-lg text-xs flex items-center justify-between transition ' +
+                        (isActive ? 'bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/30' : 'text-slate-400 active:bg-slate-800 text-slate-200') + '">' +
+                        '<span class="truncate pr-2">' + les.title + '</span>' +
+                        '<span class="' + (isCompleted ? 'text-emerald-400 font-bold' : 'text-slate-600') + '">' + (isCompleted ? '✓' : '○') + '</span>' +
+                        '</button>';
+                });
+                html += '</div></div>';
             });
+            return html;
+        }
+
+        function renderSidebar() {
+            const menuContainer = document.getElementById('module-menu');
+            if (menuContainer) menuContainer.innerHTML = buildMenuHTML();
+        }
+
+        function renderSidebarMobile() {
+            const menuContainer = document.getElementById('module-menu-mobile');
+            if (menuContainer) menuContainer.innerHTML = buildMenuHTML();
         }
 
         function selectLesson(id) {
@@ -695,8 +725,10 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
                 applyView('course');
             }
             renderSidebar();
+            renderSidebarMobile();
             loadLesson(id);
             persistState();
+            closeDrawer();
         }
 
         /* ══════════════════════════════════════════════════════
@@ -708,13 +740,8 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
 
             for (const mod of courseData) {
                 const found = mod.lessons.find(l => l.id === id);
-                if (found) {
-                    targetLesson = found;
-                    targetModule = mod;
-                    break;
-                }
+                if (found) { targetLesson = found; targetModule = mod; break; }
             }
-
             if (!targetLesson) return;
 
             const container = document.getElementById('lesson-content-container');
@@ -728,61 +755,61 @@ Hãy giúp tôi thiết kế bài thi Né Vật Cản bằng cách lắp thêm c
 
             container.innerHTML = `
                 <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
-                    <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-cyan-950 text-cyan-400 border border-cyan-800">${targetModule.title}</span>
-                    <span class="text-xs text-slate-400 font-mono">⏱️ Thời lượng gợi ý: ${targetLesson.time}</span>
+                    <span class="text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-md bg-cyan-950 text-cyan-400 border border-cyan-800">${targetModule.title}</span>
+                    <span class="text-[10px] sm:text-xs text-slate-400 font-mono">⏱️ ${targetLesson.time}</span>
                 </div>
-                
-                <h2 class="text-2xl font-bold text-white mb-4">${targetLesson.title}</h2>
 
-                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 mb-6">
-                    <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <span>🎯</span> TÓM TẮT MỤC TIÊU BÀI HỌC
+                <h2 class="text-lg sm:text-2xl font-bold text-white mb-3 sm:mb-4">${targetLesson.title}</h2>
+
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+                    <h4 class="text-[10px] sm:text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <span>🎯</span> TÓM TẮT MỤC TIÊU
                     </h4>
-                    <p class="text-xs text-slate-300 leading-relaxed">${targetLesson.summary}</p>
+                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed">${targetLesson.summary}</p>
                 </div>
 
-                <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-2 border-cyan-500/40 rounded-2xl p-5 mb-8 shadow-2xl relative">
-                    <div class="flex items-center justify-between flex-wrap gap-3 mb-3 border-b border-slate-800 pb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">🤖</span>
-                            <div>
-                                <h3 class="font-bold text-white text-sm">PROMPT AI CHI TIẾT (SẮN SÀNG HỎI CHATGPT / GEMINI)</h3>
-                                <p class="text-[11px] text-slate-400">Sao chép đoạn prompt này và dán trực tiếp vào AI để nhận code C++, sơ đồ chân & thuật toán.</p>
+                <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-2 border-cyan-500/40 rounded-xl sm:rounded-2xl p-3 sm:p-5 mb-6 sm:mb-8 shadow-2xl">
+                    <div class="flex items-start justify-between flex-wrap gap-2 sm:gap-3 mb-3 border-b border-slate-800 pb-3">
+                        <div class="flex items-start gap-2 min-w-0 flex-1">
+                            <span class="text-lg sm:text-2xl flex-shrink-0">🤖</span>
+                            <div class="min-w-0">
+                                <h3 class="font-bold text-white text-xs sm:text-sm">PROMPT AI CHI TIẾT</h3>
+                                <p class="text-[10px] sm:text-[11px] text-slate-400">Sao chép và dán trực tiếp vào ChatGPT / Gemini</p>
                             </div>
                         </div>
-                        <button onclick="copyLessonPrompt('${targetLesson.id}')" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs px-4 py-2 rounded-xl font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-2">
-                            <span>📋</span> SAO CHÉP PROMPT NÀY
+                        <button onclick="copyLessonPrompt('${targetLesson.id}')" class="bg-gradient-to-r from-cyan-600 to-blue-600 active:from-cyan-500 text-white text-[11px] sm:text-xs px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5 flex-shrink-0">
+                            <span>📋</span> <span class="hidden sm:inline">SAO CHÉP</span><span class="sm:hidden">COPY</span>
                         </button>
                     </div>
 
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-96 overflow-y-auto" id="prompt-lesson-text-${targetLesson.id}">${targetLesson.aiPrompt}</div>
-                    
-                    <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400">
-                        <span>💡 Mẹo: Bạn có thể yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO ngay lập tức.</span>
-                        <button onclick="switchView('generator')" class="text-cyan-400 hover:underline">⚡ Cần tùy chỉnh biến số khác?</button>
+                    <div class="bg-slate-950 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-slate-800 font-mono text-[10px] sm:text-xs text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto" id="prompt-lesson-text-${targetLesson.id}">${targetLesson.aiPrompt}</div>
+
+                    <div class="mt-3 flex items-start sm:items-center justify-between text-[10px] sm:text-[11px] text-slate-400 flex-col sm:flex-row gap-2">
+                        <span class="leading-relaxed">💡 Mẹo: Yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO.</span>
+                        <button onclick="switchView('generator')" class="text-cyan-400 underline">⚡ Tùy chỉnh biến số?</button>
                     </div>
                 </div>
 
-                <div class="pt-4 border-t border-slate-800 flex items-center justify-between flex-wrap gap-4">
-                    <button type="button" onclick="toggleLessonCompletion('${targetLesson.id}')" class="flex items-center gap-3 cursor-pointer group select-none bg-transparent border-0 text-left">
-                        <span class="w-5 h-5 rounded border-2 ${isCompleted ? 'bg-cyan-500 border-cyan-500' : 'border-slate-700 group-hover:border-cyan-400'} flex items-center justify-center transition text-white text-xs font-bold">
+                <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <button type="button" onclick="toggleLessonCompletion('${targetLesson.id}')" class="flex items-center gap-3 cursor-pointer select-none bg-transparent border-0 text-left p-2 -m-2 rounded-lg active:bg-slate-800/50">
+                        <span class="w-6 h-6 rounded border-2 ${isCompleted ? 'bg-cyan-500 border-cyan-500' : 'border-slate-700'} flex items-center justify-center transition text-white text-xs font-bold flex-shrink-0">
                             ${isCompleted ? '✓' : ''}
                         </span>
-                        <span class="text-xs font-semibold ${isCompleted ? 'text-emerald-400' : 'text-slate-300 group-hover:text-white'}">
-                            ${isCompleted ? '✓ Đã hoàn thành bài học này' : 'Đánh dấu đã hoàn thành bài này'}
+                        <span class="text-xs sm:text-sm font-semibold ${isCompleted ? 'text-emerald-400' : 'text-slate-300'}">
+                            ${isCompleted ? 'Đã hoàn thành' : 'Đánh dấu hoàn thành'}
                         </span>
                     </button>
 
-                    <div class="flex items-center gap-2">
-                        ${prevId ? `<button onclick="selectLesson('${prevId}')" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs hover:bg-slate-700 border border-slate-700 transition">← Bài trước</button>` : ''}
-                        ${nextId ? `<button onclick="selectLesson('${nextId}')" class="px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-500 transition shadow-lg shadow-cyan-600/20">Bài tiếp theo →</button>` : ''}
+                    <div class="grid grid-cols-2 gap-2">
+                        ${prevId ? `<button onclick="selectLesson('${prevId}')" class="px-3 py-2.5 rounded-lg bg-slate-800 active:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition text-center">← Trước</button>` : '<div></div>'}
+                        ${nextId ? `<button onclick="selectLesson('${nextId}')" class="px-3 py-2.5 rounded-lg bg-cyan-600 active:bg-cyan-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/20 text-center">Tiếp →</button>` : '<div></div>'}
                     </div>
                 </div>
             `;
         }
 
         /* ══════════════════════════════════════════════════════
-           DYNAMIC PROMPT GENERATOR
+           DYNAMIC PROMPT
            ══════════════════════════════════════════════════════ */
         function generateDynamicPrompt() {
             const board = document.getElementById('var-board')?.value || 'Arduino Uno R3';
@@ -810,13 +837,11 @@ ${debug}
 [YÊU CẦU ĐẦU RA TỪ AI TRỢ GIẢNG]
 1. Giải thích BẢN CHẤT KỸ THUẬT & TOÁN HỌC của vấn đề này.
 2. Cung cấp mã nguồn C++ (hoặc Webots Controller C++) hoàn chỉnh, biên dịch được ngay không lỗi.
-3. Chú thích rõ từng dòng code (đặc biệt là logic đọc cảm biến, tính Error, công thức PID/FSM, và xuất xung PWM L298N).
+3. Chú thích rõ từng dòng code (logic đọc cảm biến, tính Error, công thức PID/FSM, xuất xung PWM L298N).
 4. Đề xuất quy trình thử nghiệm và căn chỉnh tham số từng bước (Tuning steps).`;
 
             const outputEl = document.getElementById('generated-prompt-output');
-            if (outputEl) {
-                outputEl.innerText = masterPrompt;
-            }
+            if (outputEl) outputEl.innerText = masterPrompt;
         }
 
         /* ══════════════════════════════════════════════════════
@@ -836,29 +861,31 @@ ${debug}
             const textarea = document.createElement("textarea");
             textarea.value = text;
             textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
             document.body.appendChild(textarea);
             textarea.select();
             try {
                 document.execCommand('copy');
-                showToast("📋 Đã sao chép Prompt AI vào bộ nhớ tạm!");
+                showToast("📋 Đã sao chép Prompt AI!");
             } catch (err) {
-                showToast("❌ Không thể sao chép tự động, vui lòng chọn thủ công.");
+                showToast("❌ Không sao chép được, vui lòng chọn thủ công.");
             }
             document.body.removeChild(textarea);
         }
 
         /* ══════════════════════════════════════════════════════
-           LESSON COMPLETION
+           COMPLETION
            ══════════════════════════════════════════════════════ */
         function toggleLessonCompletion(id) {
             if (completedLessons.includes(id)) {
                 completedLessons = completedLessons.filter(item => item !== id);
             } else {
                 completedLessons.push(id);
-                showToast("🎉 Đã đánh dấu hoàn thành bài học!");
+                showToast("🎉 Đã đánh dấu hoàn thành!");
             }
             persistState();
             renderSidebar();
+            renderSidebarMobile();
             updateProgress();
             loadLesson(id);
         }
@@ -866,22 +893,27 @@ ${debug}
         function updateProgress() {
             let totalLessons = 0;
             courseData.forEach(m => totalLessons += m.lessons.length);
-            
             const count = completedLessons.length;
             const percent = totalLessons > 0 ? Math.round((count / totalLessons) * 100) : 0;
 
-            document.getElementById('progress-percent').innerText = `${percent}%`;
-            document.getElementById('progress-bar').style.width = `${percent}%`;
+            const pcDesktop = document.getElementById('progress-percent');
+            const pcMobile = document.getElementById('progress-percent-mobile');
+            const bar = document.getElementById('progress-bar');
+            if (pcDesktop) pcDesktop.innerText = `${percent}%`;
+            if (pcMobile) pcMobile.innerText = `${percent}% (${count}/${totalLessons})`;
+            if (bar) bar.style.width = `${percent}%`;
         }
 
         function resetProgress() {
+            if (!confirm('Reset toàn bộ tiến độ học?')) return;
             completedLessons = [];
             try { localStorage.removeItem(LS_KEYS.completed); } catch(e){}
             persistState();
             renderSidebar();
+            renderSidebarMobile();
             updateProgress();
             loadLesson(currentLessonId);
-            showToast("🔄 Đã reset lại tiến độ học!");
+            showToast("🔄 Đã reset tiến độ!");
         }
 
         function resetPromptForm() {
@@ -892,85 +924,30 @@ ${debug}
         }
 
         /* ══════════════════════════════════════════════════════
-           LITE MODE — tự động phát hiện + toggle thủ công
-           ══════════════════════════════════════════════════════ */
-        function detectLowEndDevice() {
-            const isMobile = /Android|iPhone|iPad|iPod|Mobile|Opera Mini/i.test(navigator.userAgent);
-            const lowMem = navigator.deviceMemory && navigator.deviceMemory <= 4;
-            const lowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-            const smallScreen = window.innerWidth <= 768;
-            const slowNet = navigator.connection &&
-                (navigator.connection.saveData ||
-                 /2g|slow-2g/.test(navigator.connection.effectiveType || ''));
-
-            return (isMobile && smallScreen) || lowMem || lowCPU || slowNet;
-        }
-
-        function applyLiteMode(enabled) {
-            if (enabled) {
-                document.body.classList.add('lite-mode');
-                // Bật ultra nếu RAM <= 2GB hoặc màn hình <= 400px
-                if ((navigator.deviceMemory && navigator.deviceMemory <= 2) || window.innerWidth <= 400) {
-                    document.body.classList.add('ultra');
-                }
-            } else {
-                document.body.classList.remove('lite-mode');
-                document.body.classList.remove('ultra');
-            }
-
-            const btn = document.getElementById('lite-toggle-btn');
-            if (btn) {
-                if (enabled) {
-                    btn.classList.remove('text-slate-400', 'border-slate-800');
-                    btn.classList.add('text-amber-400', 'border-amber-700/50', 'bg-amber-950/30');
-                    btn.textContent = '⚡ Lite: BẬT';
-                } else {
-                    btn.classList.remove('text-amber-400', 'border-amber-700/50', 'bg-amber-950/30');
-                    btn.classList.add('text-slate-400', 'border-slate-800');
-                    btn.textContent = '⚡ Lite';
-                }
-            }
-        }
-
-        function toggleLiteMode() {
-            const current = document.body.classList.contains('lite-mode');
-            const next = !current;
-            try { localStorage.setItem(LS_KEYS.lite, next ? '1' : '0'); } catch(e) {}
-            LBSync.save('liteMode', next);
-            applyLiteMode(next);
-            showToast(next ? '⚡ Đã bật chế độ nhẹ — giảm lag' : '✨ Đã tắt chế độ nhẹ');
-        }
-
-        function initLiteMode() {
-            // 1. localStorage có thì dùng
-            const saved = localStorage.getItem(LS_KEYS.lite);
-            if (saved !== null) {
-                applyLiteMode(saved === '1');
-                return;
-            }
-            // 2. Chưa có gì → auto-detect
-            if (detectLowEndDevice()) {
-                applyLiteMode(true);
-                try { localStorage.setItem(LS_KEYS.lite, '1'); } catch(e) {}
-            }
-        }
-
-        /* ══════════════════════════════════════════════════════
            TOAST
            ══════════════════════════════════════════════════════ */
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
             toastMsg.innerText = message;
-            
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
+
+        /* ══════════════════════════════════════════════════════
+           PWA
+           ══════════════════════════════════════════════════════ */
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window._deferredPrompt = e;
+        });
     </script>
 </body>
 </html>
