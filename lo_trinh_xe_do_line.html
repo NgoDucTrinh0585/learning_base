@@ -39,20 +39,11 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-        /* Safe area cho iPhone notch */
         .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
         .safe-top { padding-top: env(safe-area-inset-top, 0); }
 
-        /* Ẩn scrollbar ngang cho filter chips */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* ═══════════════════════════════════════════════════════
-           LITE MODE MẶC ĐỊNH CHO MOBILE/TABLET (≤1024px)
-           Tự động áp dụng, không cần class hay toggle
-           ═══════════════════════════════════════════════════════ */
+        /* ═══ LITE MODE MẶC ĐỊNH CHO MOBILE/TABLET ≤1024px ═══ */
         @media (max-width: 1024px) {
-            /* 1. Tắt backdrop-blur */
             * {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
@@ -60,17 +51,13 @@
             header {
                 background-color: rgba(15, 23, 42, 0.98) !important;
             }
-            /* 2. Giảm shadow */
             .shadow-2xl { box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important; }
             .shadow-xl, .shadow-lg { box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; }
             .shadow-cyan-500\/20,
             .shadow-cyan-600\/30,
             .shadow-cyan-600\/20 { box-shadow: none !important; }
-            /* 3. Tắt animation */
             .animate-pulse { animation: none !important; opacity: 1 !important; }
-            /* 4. Giảm transition */
             * { transition-duration: 0.1s !important; }
-            /* 5. Gradient text fallback */
             .bg-clip-text {
                 -webkit-text-fill-color: #22d3ee !important;
                 color: #22d3ee !important;
@@ -80,7 +67,7 @@
             *:hover { transition-duration: 0s !important; }
         }
 
-        /* ═══ Mobile drawer cho sidebar bài học ═══ */
+        /* Mobile drawer */
         #mobileDrawer {
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -93,10 +80,8 @@
         }
         #drawerBackdrop.open { opacity: 1; pointer-events: auto; }
 
-        /* Touch target tối thiểu 44px cho mobile */
         @media (max-width: 1024px) {
-            button, .touch-target { min-height: 44px; }
-            .filter-chip { min-height: 36px; }
+            button { min-height: 44px; }
         }
     </style>
 </head>
@@ -106,7 +91,6 @@
     <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 safe-top">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                <!-- Hamburger mở drawer bài học (chỉ hiện mobile) -->
                 <button onclick="toggleDrawer()" class="lg:hidden flex-shrink-0 w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 active:bg-slate-700" aria-label="Mở danh sách bài học">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -132,7 +116,6 @@
                         <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
                     </div>
                 </div>
-                <!-- Progress mini cho mobile -->
                 <div class="md:hidden flex items-center gap-1.5 bg-slate-800/60 border border-slate-700 px-2 py-1 rounded-lg">
                     <span id="progress-percent-mobile" class="text-[10px] font-mono text-cyan-400 font-bold">0%</span>
                 </div>
@@ -143,21 +126,9 @@
                 </button>
             </div>
         </div>
-
-        <!-- Tab switcher: Bài học | Bộ tạo Prompt (luôn hiện) -->
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-2 sm:pb-3">
-            <div class="grid grid-cols-2 gap-1.5 bg-slate-950/60 border border-slate-800 rounded-xl p-1">
-                <button onclick="switchView('course')" id="nav-btn-course" class="text-[11px] sm:text-xs font-semibold px-2 py-2 rounded-lg bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 transition flex items-center justify-center gap-1.5">
-                    📚 <span class="hidden sm:inline">Bài Học &</span> Prompt
-                </button>
-                <button onclick="switchView('generator')" id="nav-btn-generator" class="text-[11px] sm:text-xs font-semibold px-2 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center justify-center gap-1.5">
-                    ⚡ <span class="hidden sm:inline">Bộ Tạo</span> Prompt
-                </button>
-            </div>
-        </div>
     </header>
 
-    <!-- ═══ MOBILE DRAWER (chỉ hiện ≤1024px) ═══ -->
+    <!-- ═══ MOBILE DRAWER ═══ -->
     <div id="drawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/80 z-40 lg:hidden"></div>
     <aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-[85vw] max-w-[320px] bg-slate-900 border-r border-slate-800 z-50 lg:hidden flex flex-col safe-top">
         <div class="p-3 border-b border-slate-800 flex items-center justify-between">
@@ -182,7 +153,7 @@
     <!-- ═══ MAIN ═══ -->
     <div class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-4 sm:gap-6">
 
-        <!-- Sidebar desktop (≥1024px) -->
+        <!-- Sidebar desktop -->
         <aside class="hidden lg:block w-80 flex-shrink-0">
             <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sticky top-24">
                 <div class="flex items-center justify-between mb-3 px-2">
@@ -203,88 +174,6 @@
 
         <!-- Content -->
         <main class="flex-1 min-w-0">
-
-            <!-- Prompt Generator Container -->
-            <div id="prompt-generator-container" class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl space-y-5 sm:space-y-6 hidden">
-                <div class="border-b border-slate-800 pb-3 sm:pb-4">
-                    <div class="flex items-start justify-between flex-wrap gap-2">
-                        <div class="min-w-0 flex-1">
-                            <span class="text-[10px] sm:text-xs font-semibold text-cyan-400 bg-cyan-950 px-2 py-0.5 sm:py-1 rounded border border-cyan-800 inline-block">BỘ TẠO PROMPT TỰ ĐỘNG</span>
-                            <h2 class="text-lg sm:text-2xl font-bold text-white mt-2">Tùy Chỉnh Biến Số Để Hỏi AI</h2>
-                            <p class="text-slate-400 text-[11px] sm:text-xs mt-1.5">Nhập biến số bên dưới để tự động tạo Prompt hoàn chỉnh gửi cho ChatGPT / Gemini.</p>
-                        </div>
-                        <button onclick="resetPromptForm()" class="text-[11px] sm:text-xs text-slate-400 active:text-white px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 flex-shrink-0">
-                            🔄 Đặt lại
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">1. Vi Điều Khiển</label>
-                        <select id="var-board" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Arduino Uno R3 (ATmega328P DIP)">Arduino Uno R3</option>
-                            <option value="STM32F103C8T6 (Blue Pill)">STM32F103C8T6</option>
-                            <option value="ESP32 NodeMCU">ESP32 NodeMCU</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">2. Driver Động Cơ</label>
-                        <select id="var-driver" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Mạch Cầu H L298N (Đỏ)">L298N (Đỏ)</option>
-                            <option value="Mạch Cầu H TB6612FNG">TB6612FNG</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">3. Mạch Cảm Biến Line</label>
-                        <select id="var-sensor" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Mạch 5 mắt IR bo cong (cánh cung)">5 mắt IR bo cong</option>
-                            <option value="Mạch 5 mắt IR thẳng hàng (BFD-1000)">5 mắt IR thẳng</option>
-                            <option value="Mạch 8 mắt Analog TCRT5000">8 mắt Analog</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">4. Môi Trường</label>
-                        <select id="var-env" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="VS Code + PlatformIO (C++ Xe Thật HCMUTE)">VS Code + PlatformIO</option>
-                            <option value="Mô phỏng Động học 3D trên Webots">Mô phỏng Webots</option>
-                            <option value="Mô phỏng Mạch logic trên Wokwi (VS Code)">Mô phỏng Wokwi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">5. Bài Thi / Yêu Cầu</label>
-                        <select id="var-task" onchange="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                            <option value="Thi Tốc Độ: Thuật toán PID (Kp, Ki, Kd) căn chỉnh mượt">Thi Tốc Độ (PID)</option>
-                            <option value="Thi Tránh Vật Cản: Máy trạng thái hữu hạn FSM + HC-SR04">Thi Né Vật Cản (FSM)</option>
-                            <option value="Cân chỉnh (Calibrate) ngưỡng cảm biến hồng ngoại sáng/tối">Calibrate IR</option>
-                            <option value="Dựng file PROTO / URDF Robot 2WD chuẩn kích thước">Dựng Webots PROTO</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-cyan-300 mb-1">6. Cảm Biến Phụ</label>
-                        <input id="var-extra" type="text" value="Cảm biến siêu âm HC-SR04" oninput="generateDynamicPrompt()" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[11px] font-semibold text-cyan-300 mb-1">7. Mô Tả Lỗi / Yêu Cầu Cụ Thể</label>
-                    <textarea id="var-debug" oninput="generateDynamicPrompt()" rows="2" placeholder="VD: Xe bị lắc văng khỏi line khi cua 90 độ..." class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 focus:outline-none font-mono"></textarea>
-                </div>
-
-                <div class="bg-slate-950 border border-cyan-500/40 rounded-xl p-3 sm:p-4">
-                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-                        <span class="text-[11px] sm:text-xs font-bold text-emerald-400 flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> PROMPT HOÀN CHỈNH
-                        </span>
-                        <button onclick="copyGeneratedPrompt()" class="bg-cyan-600 active:bg-cyan-500 text-white text-[11px] sm:text-xs px-3 sm:px-4 py-2 rounded-lg font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5">
-                            <span>📋</span> SAO CHÉP
-                        </button>
-                    </div>
-                    <pre id="generated-prompt-output" class="text-[11px] sm:text-xs font-mono text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto p-3 bg-slate-900/60 rounded-lg border border-slate-800"></pre>
-                </div>
-            </div>
-
-            <!-- Lesson Container -->
             <div id="lesson-content-container" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
                 <!-- Content inject here -->
             </div>
@@ -534,8 +423,7 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
            ══════════════════════════════════════════════════════ */
         const LS_KEYS = {
             completed: 'hcmute_completed_lessons',
-            lesson: 'hcmute_current_lesson',
-            view: 'hcmute_view'
+            lesson: 'hcmute_current_lesson'
         };
 
         let completedLessons = [];
@@ -545,16 +433,12 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
         } catch(e) {}
 
         let currentLessonId = localStorage.getItem(LS_KEYS.lesson) || 'm1-l1';
-        let currentView = localStorage.getItem(LS_KEYS.view) || 'course';
 
         document.addEventListener('DOMContentLoaded', () => {
-            applyView(currentView);
             renderSidebar();
             renderSidebarMobile();
-            generateDynamicPrompt();
             updateProgress();
             loadLesson(currentLessonId);
-            bindFormListeners();
             restoreFromCloud();
         });
 
@@ -565,11 +449,9 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             try {
                 localStorage.setItem(LS_KEYS.completed, JSON.stringify(completedLessons));
                 localStorage.setItem(LS_KEYS.lesson, currentLessonId);
-                localStorage.setItem(LS_KEYS.view, currentView);
             } catch(e) {}
             LBSync.save('completedLessons', completedLessons);
             LBSync.save('currentLessonId', currentLessonId);
-            LBSync.save('currentView', currentView);
         }
 
         function restoreFromCloud() {
@@ -580,7 +462,7 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
                     renderSidebar();
                     renderSidebarMobile();
                     updateProgress();
-                    if (currentView === 'course') loadLesson(currentLessonId);
+                    loadLesson(currentLessonId);
                 }
             });
             LBSync.load('currentLessonId', (v) => {
@@ -589,14 +471,7 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
                     try { localStorage.setItem(LS_KEYS.lesson, v); } catch(e){}
                     renderSidebar();
                     renderSidebarMobile();
-                    if (currentView === 'course') loadLesson(v);
-                }
-            });
-            LBSync.load('currentView', (v) => {
-                if (typeof v === 'string' && (v === 'course' || v === 'generator')) {
-                    currentView = v;
-                    try { localStorage.setItem(LS_KEYS.view, v); } catch(e){}
-                    applyView(v);
+                    loadLesson(v);
                 }
             });
         }
@@ -617,72 +492,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
         function closeDrawer() {
             document.getElementById('mobileDrawer').classList.remove('open');
             document.getElementById('drawerBackdrop').classList.remove('open');
-        }
-
-        /* ══════════════════════════════════════════════════════
-           VIEW
-           ══════════════════════════════════════════════════════ */
-        function switchView(view) {
-            currentView = view;
-            applyView(view);
-            persistState();
-            if (view === 'course') loadLesson(currentLessonId);
-        }
-
-        function applyView(view) {
-            currentView = view;
-            const genContainer = document.getElementById('prompt-generator-container');
-            const courseContainer = document.getElementById('lesson-content-container');
-            const navGen = document.getElementById('nav-btn-generator');
-            const navCourse = document.getElementById('nav-btn-course');
-
-            if (view === 'generator') {
-                genContainer.classList.remove('hidden');
-                courseContainer.classList.add('hidden');
-                navGen.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
-                navGen.classList.add('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navCourse.classList.remove('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navCourse.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
-            } else {
-                genContainer.classList.add('hidden');
-                courseContainer.classList.remove('hidden');
-                navCourse.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
-                navCourse.classList.add('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navGen.classList.remove('bg-cyan-600/30', 'text-cyan-300', 'border-cyan-500/40');
-                navGen.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
-            }
-        }
-
-        /* ══════════════════════════════════════════════════════
-           FORM LISTENERS
-           ══════════════════════════════════════════════════════ */
-        const FORM_IDS = ['var-board', 'var-driver', 'var-sensor', 'var-env', 'var-task', 'var-extra', 'var-debug'];
-
-        function collectFormValues() {
-            const values = {};
-            FORM_IDS.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) values[id] = el.value;
-            });
-            return values;
-        }
-
-        function bindFormListeners() {
-            FORM_IDS.forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                el.addEventListener('change', () => LBSync.save('promptFormValues', collectFormValues()));
-                el.addEventListener('input', () => LBSync.save('promptFormValues', collectFormValues()));
-            });
-
-            LBSync.load('promptFormValues', (v) => {
-                if (!v || typeof v !== 'object') return;
-                FORM_IDS.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el && v[id] !== undefined) el.value = v[id];
-                });
-                generateDynamicPrompt();
-            });
         }
 
         /* ══════════════════════════════════════════════════════
@@ -720,10 +529,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
 
         function selectLesson(id) {
             currentLessonId = id;
-            if (currentView !== 'course') {
-                currentView = 'course';
-                applyView('course');
-            }
             renderSidebar();
             renderSidebarMobile();
             loadLesson(id);
@@ -784,9 +589,8 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
 
                     <div class="bg-slate-950 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-slate-800 font-mono text-[10px] sm:text-xs text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto" id="prompt-lesson-text-${targetLesson.id}">${targetLesson.aiPrompt}</div>
 
-                    <div class="mt-3 flex items-start sm:items-center justify-between text-[10px] sm:text-[11px] text-slate-400 flex-col sm:flex-row gap-2">
-                        <span class="leading-relaxed">💡 Mẹo: Yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO.</span>
-                        <button onclick="switchView('generator')" class="text-cyan-400 underline">⚡ Tùy chỉnh biến số?</button>
+                    <div class="mt-3 text-[10px] sm:text-[11px] text-slate-400 leading-relaxed">
+                        💡 Mẹo: Yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO.
                     </div>
                 </div>
 
@@ -809,49 +613,8 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
         }
 
         /* ══════════════════════════════════════════════════════
-           DYNAMIC PROMPT
-           ══════════════════════════════════════════════════════ */
-        function generateDynamicPrompt() {
-            const board = document.getElementById('var-board')?.value || 'Arduino Uno R3';
-            const driver = document.getElementById('var-driver')?.value || 'L298N';
-            const sensor = document.getElementById('var-sensor')?.value || 'Mạch 5 mắt IR';
-            const env = document.getElementById('var-env')?.value || 'VS Code';
-            const task = document.getElementById('var-task')?.value || 'Thi Tốc Độ PID';
-            const extra = document.getElementById('var-extra')?.value || 'HC-SR04';
-            const debug = document.getElementById('var-debug')?.value || 'Chưa có ghi chú';
-
-            const masterPrompt = `[VAI TRÒ & BỐI CẢNH]
-Bạn là Chuyên gia Kỹ thuật Hệ thống Nhúng & Robotics. Hãy đóng vai Trợ lý Kỹ thuật hỗ trợ tôi lập trình dự án Xe Dò Line HCMUTE.
-
-[CẤU HÌNH PHẦN CỨNG & DỰ ÁN]
-- Vi điều khiển [BOARD]: ${board}
-- Mạch công suất [DRIVER]: ${driver}
-- Cảm biến dò line [SENSOR_ARRAY]: ${sensor}
-- Cảm biến phụ [EXTRA_SENSOR]: ${extra}
-- Môi trường thực thi [ENV]: ${env}
-- Nhiệm vụ bài toán [TASK]: ${task}
-
-[MÔ TẢ VẤN ĐỀ CỤ THỂ CẦN GIẢI QUYẾT]
-${debug}
-
-[YÊU CẦU ĐẦU RA TỪ AI TRỢ GIẢNG]
-1. Giải thích BẢN CHẤT KỸ THUẬT & TOÁN HỌC của vấn đề này.
-2. Cung cấp mã nguồn C++ (hoặc Webots Controller C++) hoàn chỉnh, biên dịch được ngay không lỗi.
-3. Chú thích rõ từng dòng code (logic đọc cảm biến, tính Error, công thức PID/FSM, xuất xung PWM L298N).
-4. Đề xuất quy trình thử nghiệm và căn chỉnh tham số từng bước (Tuning steps).`;
-
-            const outputEl = document.getElementById('generated-prompt-output');
-            if (outputEl) outputEl.innerText = masterPrompt;
-        }
-
-        /* ══════════════════════════════════════════════════════
            COPY
            ══════════════════════════════════════════════════════ */
-        function copyGeneratedPrompt() {
-            const text = document.getElementById('generated-prompt-output').innerText;
-            fallbackCopy(text);
-        }
-
         function copyLessonPrompt(lessonId) {
             const promptText = document.getElementById(`prompt-lesson-text-${lessonId}`).innerText;
             fallbackCopy(promptText);
@@ -914,13 +677,6 @@ ${debug}
             updateProgress();
             loadLesson(currentLessonId);
             showToast("🔄 Đã reset tiến độ!");
-        }
-
-        function resetPromptForm() {
-            document.getElementById('var-debug').value = '';
-            document.getElementById('var-extra').value = 'Cảm biến siêu âm HC-SR04';
-            generateDynamicPrompt();
-            LBSync.save('promptFormValues', collectFormValues());
         }
 
         /* ══════════════════════════════════════════════════════
