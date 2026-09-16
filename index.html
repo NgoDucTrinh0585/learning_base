@@ -91,6 +91,7 @@ body.sidebar-collapsed #sidebar {
     border-radius: 20px; height: 52px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 14px; gap: 10px; box-shadow: var(--glass-shadow);
+    transition: height 0.25s ease, padding 0.25s ease;
 }
 #iframeWrapper {
     flex: 1; border-radius: 20px; overflow: hidden;
@@ -221,38 +222,8 @@ body.sidebar-collapsed #sidebar {
     backdrop-filter: blur(8px);
     border: 1px solid rgba(139, 92, 246, 0.2);
     max-width: 220px; overflow: hidden;
+    transition: all 0.2s ease;
 }
-.ver-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 12px; border-radius: 9999px;
-    background: rgba(139, 92, 246, 0.12);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(139, 92, 246, 0.15);
-    font-size: 10px; font-weight: 800;
-    letter-spacing: 0.1em; color: var(--vio-l);
-    text-transform: uppercase;
-}
-.live-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 11px; border-radius: 9999px;
-    background: rgba(16, 185, 129, 0.08);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.06em; color: #34d399;
-}
-.live-dot {
-    width: 7px; height: 7px; border-radius: 9999px;
-    background: #10b981; position: relative; display: inline-flex;
-}
-.live-dot::after {
-    content: ''; position: absolute; inset: 0;
-    border-radius: 9999px; background: #10b981;
-    opacity: 0.7;
-    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
-@keyframes spin { to { transform: rotate(360deg); } }
 .add-btn {
     width: 100%; display: flex; align-items: center; justify-content: center;
     gap: 7px; padding: 11px 16px; border-radius: 14px;
@@ -432,39 +403,114 @@ body.sidebar-collapsed #sidebar {
 
 /* ═══════════════════════════════════════════════════════════
    LITE MODE — TỰ ĐỘNG ÁP DỤNG CHO MOBILE/TABLET (≤1024px)
-   Không cần toggle, không cần class. Luôn bật cho màn nhỏ.
+   Giúp máy yếu chạy mượt hơn — KHÔNG liên quan đến compact header
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-    /* Tắt toàn bộ backdrop-filter */
     * {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
-    /* Nền đặc thay cho nền trong suốt */
     #sidebar, #headerCard, #welcomeState { background: #1a1530 !important; }
     .modal-card { background: #1f1a3a !important; }
     #sidebarBackdrop { background: rgba(0, 0, 0, 0.88) !important; }
     #addModal, #editModal, #deleteConfirmModal { background: rgba(0, 0, 0, 0.88) !important; }
-    /* Bỏ gradient nền body */
     body { background-image: none !important; }
-    /* Giảm shadow */
     #sidebar, #headerCard, #welcomeState, #iframeWrapper, .modal-card {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
     }
     .add-btn, .btn-pri, .btn-danger, .app-item.active { box-shadow: none !important; }
-    /* Tắt animation */
-    .live-dot::after { animation: none !important; opacity: 0 !important; }
     .welcome-logo svg { animation: none !important; }
-    /* Giảm transition */
     * { transition-duration: 0.1s !important; }
-    /* Gradient text fallback */
     #currentDateDisplay {
         background: none !important;
         -webkit-text-fill-color: #c4b5fd !important;
         color: #c4b5fd !important;
     }
-    /* Tối ưu scroll */
     #appList { content-visibility: auto; contain-intrinsic-size: auto 300px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPACT MODE — CHỈ ÁP DỤNG CHO ĐIỆN THOẠI (≤767px)
+   Khi đã vào app:
+     - Header chỉ còn chip tên app căn giữa
+     - Bỏ khung bao quanh iframe, app tràn viền
+   Tablet (768-1024px) và PC (≥1025px): giữ nguyên giao diện đầy đủ
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+    /* ─── HEADER COMPACT ─── */
+
+    body.has-active-app #headerCard {
+        justify-content: center;
+        padding: 0 10px;
+        height: 44px;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Ẩn group center (clock) + right (trống) */
+    body.has-active-app #headerCard > div:nth-child(2),
+    body.has-active-app #headerCard > div:nth-child(3) {
+        display: none !important;
+    }
+
+    /* Ẩn nút ☰, breadcrumb Base, slash */
+    body.has-active-app #headerCard .icon-btn,
+    body.has-active-app #breadcrumbBase,
+    body.has-active-app #breadcrumbSlash {
+        display: none !important;
+    }
+
+    /* Left group chiếm full width + căn giữa */
+    body.has-active-app #headerCard > div:nth-child(1) {
+        flex: 1 1 100%;
+        justify-content: center;
+        gap: 0;
+        max-width: 100%;
+    }
+    body.has-active-app #headerCard > div:nth-child(1) nav {
+        justify-content: center;
+        width: 100%;
+        gap: 0;
+    }
+
+    /* Chip tên app */
+    body.has-active-app #currentAppName {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        justify-content: center;
+        width: 100%;
+    }
+    body.has-active-app .app-chip {
+        max-width: 92vw;
+        padding: 7px 18px 7px 14px;
+        background: rgba(139, 92, 246, 0.22);
+        border-color: rgba(139, 92, 246, 0.35);
+    }
+    body.has-active-app .app-chip:active {
+        transform: scale(0.97);
+        background: rgba(139, 92, 246, 0.32);
+    }
+
+    /* ─── BỎ KHUNG BAO QUANH IFRAME ─── */
+
+    body.has-active-app #mainArea {
+        padding: 8px;
+        gap: 8px;
+    }
+
+    body.has-active-app #iframeWrapper {
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 16px !important;
+        background: transparent !important;
+    }
+}
+
+/* Ngoài mobile (≥768px): chip không bấm được, header luôn đầy đủ */
+@media (min-width: 768px) {
+    #currentAppName { cursor: default !important; }
 }
 </style>
 </head>
@@ -520,15 +566,15 @@ body.sidebar-collapsed #sidebar {
                 </svg>
             </button>
             <nav style="display:flex;align-items:center;gap:6px;overflow:hidden;user-select:none;">
-                <button class="bc-home" onclick="goHome()">
+                <button class="bc-home" id="breadcrumbBase" onclick="goHome()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
                     <span>Base</span>
                 </button>
-                <span style="color:#334155;font-size:12px;flex-shrink:0;">/</span>
-                <div id="currentAppName" style="display:flex;align-items:center;gap:6px;overflow:hidden;">
+                <span id="breadcrumbSlash" style="color:#334155;font-size:12px;flex-shrink:0;">/</span>
+                <div id="currentAppName" onclick="handleChipClick(event)" style="display:flex;align-items:center;gap:6px;overflow:hidden;">
                     <span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>
                 </div>
             </nav>
@@ -543,17 +589,7 @@ body.sidebar-collapsed #sidebar {
             </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex:1;justify-content:flex-end;">
-            <div id="activeIndicator" class="live-badge" style="display:none;">
-                <span class="live-dot"></span><span>LIVE</span>
-            </div>
-            <div class="ver-badge" id="verBadgeDesktop">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 3l1.9 5.8 5.8 1.9-5.8 1.9L12 18.4l-1.9-5.8L4.3 10.7l5.8-1.9z"/>
-                </svg>
-                <span>v4.0</span>
-            </div>
-        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex:1;justify-content:flex-end;"></div>
     </div>
 
     <div id="welcomeState">
@@ -1136,14 +1172,27 @@ function toggleSidebar() {
     if (window.innerWidth >= 768) document.body.classList.toggle('sidebar-collapsed');
     else document.body.classList.toggle('sidebar-open');
 }
+
+/* ══════════════════════════════════════════════════════════
+   XỬ LÝ BẤM VÀO CHIP TÊN APP
+   → Mobile + đã vào app: mở sidebar drawer để chọn app khác
+   → Nơi khác: không làm gì
+   ══════════════════════════════════════════════════════════ */
+function handleChipClick(e) {
+    if (!document.body.classList.contains('has-active-app')) return;
+    if (window.innerWidth > 767) return;
+    if (e && e.target && (e.target.closest('button') || e.target.closest('a'))) return;
+    document.body.classList.add('sidebar-open');
+}
+
 function goHome() {
+    document.body.classList.remove('has-active-app');
     loadRandomQuote();
     updateDate();
     document.getElementById('welcomeState').style.display = 'flex';
     document.getElementById('iframeWrapper').style.display = 'none';
     document.getElementById('currentAppName').innerHTML =
         '<span style="font-size:11px;color:#475569;font-style:italic;font-weight:500;">Chưa chọn ứng dụng</span>';
-    document.getElementById('activeIndicator').style.display = 'none';
     document.getElementById('appFrame').src = 'about:blank';
     currentActiveAppId = null;
     currentIframeDoc = null;
@@ -1213,6 +1262,7 @@ function renderApps() {
 }
 
 function activateApp(id, path, el, name, emoji) {
+    document.body.classList.add('has-active-app');
     currentActiveAppId = id;
     document.querySelectorAll('.app-item').forEach(b => b.classList.remove('active'));
     if (el) el.classList.add('active');
@@ -1222,7 +1272,6 @@ function activateApp(id, path, el, name, emoji) {
             '<span style="font-size:14px;flex-shrink:0;line-height:1;user-select:none;">' + escapeHtml(emoji || '💡') + '</span>' +
             '<span style="font-size:11px;font-weight:700;color:#c4b5fd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(name) + '</span>' +
         '</span>';
-    document.getElementById('activeIndicator').style.display = 'inline-flex';
 
     if (window.innerWidth >= 768) document.body.classList.add('sidebar-collapsed');
     else document.body.classList.remove('sidebar-open');
@@ -1402,15 +1451,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // PWA: hiện nút install nếu có
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         window._deferredPrompt = e;
-        // Có thể show toast hướng dẫn user
-        console.log('[PWA] Có thể cài đặt app');
     });
 
-    // Đăng ký service worker nếu file sw.js tồn tại (không bắt buộc)
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
         navigator.serviceWorker.register('sw.js').catch(() => {});
     }

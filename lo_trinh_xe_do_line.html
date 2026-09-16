@@ -83,6 +83,27 @@
         @media (max-width: 1024px) {
             button { min-height: 44px; }
         }
+
+        /* ═══ PROGRESS BAR MOBILE ═══ */
+        #progress-bar-mobile {
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+        }
+        @media (min-width: 1025px) {
+            #progressBarMobileWrapper { display: none !important; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           KHI APP CON CHẠY TRONG IFRAME (mở qua Dashboard) TRÊN MOBILE
+           → Thu gọn header: ẩn logo + tiêu đề dài
+           → Chỉ giữ: nút ☰ + progress + reset
+           ═══════════════════════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            body.in-iframe .app-logo { display: none !important; }
+            body.in-iframe .app-brand-text { display: none !important; }
+            body.in-iframe header > div:first-child { height: 44px !important; }
+            body.in-iframe header .safe-top { padding-top: 0 !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
@@ -97,17 +118,18 @@
                     </svg>
                 </button>
 
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-base sm:text-xl text-white shadow-lg shadow-cyan-500/20 flex-shrink-0">
+                <div class="app-logo w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-base sm:text-xl text-white shadow-lg shadow-cyan-500/20 flex-shrink-0">
                     🤖
                 </div>
-                <div class="min-w-0">
-                    <h1 class="text-sm sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent truncate">Robot dò Line</h1>
+                <div class="app-brand-text min-w-0">
+                    <h1 class="text-sm sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent truncate">HCMUTE Line Follower Master</h1>
                     <p class="text-[10px] sm:text-xs text-slate-400 truncate">Dò Line • PID • Né Vật Cản</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-                <div class="hidden md:flex flex-col items-end pl-2">
+                <!-- Progress desktop -->
+                <div class="hidden lg:flex flex-col items-end pl-2">
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
                         <span>Tiến độ:</span>
                         <span id="progress-percent" class="text-cyan-400 font-mono">0%</span>
@@ -116,15 +138,26 @@
                         <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
                     </div>
                 </div>
-                <div class="md:hidden flex items-center gap-1.5 bg-slate-800/60 border border-slate-700 px-2 py-1 rounded-lg">
-                    <span id="progress-percent-mobile" class="text-[10px] font-mono text-cyan-400 font-bold">0%</span>
+
+                <!-- Progress badge mobile/tablet -->
+                <div class="lg:hidden flex items-center gap-1.5 bg-slate-800/60 border border-slate-700 px-2.5 py-1 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span id="progress-percent-mobile" class="text-[11px] font-mono text-cyan-400 font-bold">0%</span>
                 </div>
+
                 <button onclick="resetProgress()" class="text-xs text-slate-400 active:text-rose-400 p-2 rounded-lg border border-slate-800" title="Reset tiến độ" aria-label="Reset">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>
                     </svg>
                 </button>
             </div>
+        </div>
+
+        <!-- ═══ THANH PROGRESS BAR MOBILE — chạy ngang dưới header ═══ -->
+        <div id="progressBarMobileWrapper" class="h-1.5 bg-slate-800/60 relative overflow-hidden">
+            <div id="progress-bar-mobile" class="h-full bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500 w-0 rounded-r-full"></div>
         </div>
     </header>
 
@@ -187,6 +220,13 @@
     </div>
 
     <script>
+        /* ══════════════════════════════════════════════════════
+           DETECT IFRAME — nếu đang chạy trong dashboard thì thu gọn header
+           ══════════════════════════════════════════════════════ */
+        if (window.self !== window.top) {
+            document.body.classList.add('in-iframe');
+        }
+
         /* ══════════════════════════════════════════════════════
            LBSYNC SDK
            ══════════════════════════════════════════════════════ */
@@ -661,10 +701,13 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
 
             const pcDesktop = document.getElementById('progress-percent');
             const pcMobile = document.getElementById('progress-percent-mobile');
-            const bar = document.getElementById('progress-bar');
+            const barDesktop = document.getElementById('progress-bar');
+            const barMobile = document.getElementById('progress-bar-mobile');
+
             if (pcDesktop) pcDesktop.innerText = `${percent}%`;
             if (pcMobile) pcMobile.innerText = `${percent}% (${count}/${totalLessons})`;
-            if (bar) bar.style.width = `${percent}%`;
+            if (barDesktop) barDesktop.style.width = `${percent}%`;
+            if (barMobile) barMobile.style.width = `${percent}%`;
         }
 
         function resetProgress() {
@@ -707,4 +750,3 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
     </script>
 </body>
 </html>
-
