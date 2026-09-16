@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HCMUTE Line Follower">
+    <title>Khóa Học Robot Dò Line & Né Vật Cản HCMUTE</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230891b2'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%23ffffff'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230f172a'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%2306b6d4'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%2306b6d4'/%3E%3C/svg%3E" />
+    <link rel="manifest" href='data:application/manifest+json,{"name":"HCMUTE Line Follower","short_name":"LineFollower","start_url":".","display":"standalone","background_color":"%230f172a","theme_color":"%2306b6d4","orientation":"any"}' />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff', 100: '#e0f2fe',
+                            500: '#0284c7', 600: '#0284c7',
+                            700: '#0369a1', 900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        code, pre { font-family: 'Fira Code', monospace; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
+        .safe-top { padding-top: env(safe-area-inset-top, 0); }
+
+        /* ═══ LITE MODE MẶC ĐỊNH CHO MOBILE/TABLET ≤1024px ═══ */
+        @media (max-width: 1024px) {
+            * {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            header {
+                background-color: rgba(15, 23, 42, 0.98) !important;
+            }
+            .shadow-2xl { box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important; }
+            .shadow-xl, .shadow-lg { box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; }
+            .shadow-cyan-500\/20,
+            .shadow-cyan-600\/30,
+            .shadow-cyan-600\/20 { box-shadow: none !important; }
+            .animate-pulse { animation: none !important; opacity: 1 !important; }
+            * { transition-duration: 0.1s !important; }
+            .bg-clip-text {
+                -webkit-text-fill-color: #22d3ee !important;
+                color: #22d3ee !important;
+            }
+        }
+        @media (hover: none) {
+            *:hover { transition-duration: 0s !important; }
+        }
+
+        /* Mobile drawer */
+        #mobileDrawer {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobileDrawer.open { transform: translateX(0); }
+        #drawerBackdrop {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        #drawerBackdrop.open { opacity: 1; pointer-events: auto; }
+
+        @media (max-width: 1024px) {
+            button { min-height: 44px; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 safe-top">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <button onclick="toggleDrawer()" class="lg:hidden flex-shrink-0 w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 active:bg-slate-700" aria-label="Mở danh sách bài học">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-base sm:text-xl text-white shadow-lg shadow-cyan-500/20 flex-shrink-0">
+                    🤖
+                </div>
+                <div class="min-w-0">
+                    <h1 class="text-sm sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent truncate">Robot dò Line</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 truncate">Dò Line • PID • Né Vật Cản</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+                <div class="hidden md:flex flex-col items-end pl-2">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                        <span>Tiến độ:</span>
+                        <span id="progress-percent" class="text-cyan-400 font-mono">0%</span>
+                    </div>
+                    <div class="w-36 bg-slate-800 h-2 rounded-full overflow-hidden mt-1 border border-slate-700">
+                        <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center gap-1.5 bg-slate-800/60 border border-slate-700 px-2 py-1 rounded-lg">
+                    <span id="progress-percent-mobile" class="text-[10px] font-mono text-cyan-400 font-bold">0%</span>
+                </div>
+                <button onclick="resetProgress()" class="text-xs text-slate-400 active:text-rose-400 p-2 rounded-lg border border-slate-800" title="Reset tiến độ" aria-label="Reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ MOBILE DRAWER ═══ -->
+    <div id="drawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/80 z-40 lg:hidden"></div>
+    <aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-[85vw] max-w-[320px] bg-slate-900 border-r border-slate-800 z-50 lg:hidden flex flex-col safe-top">
+        <div class="p-3 border-b border-slate-800 flex items-center justify-between">
+            <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-cyan-400">📚 Danh Sách Bài Học</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Kit HCMUTE • Arduino R3</div>
+            </div>
+            <button onclick="closeDrawer()" class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300" aria-label="Đóng">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <nav id="module-menu-mobile" class="flex-1 overflow-y-auto p-2 space-y-1"></nav>
+        <div class="p-3 border-t border-slate-800 text-[10px] text-slate-500 space-y-0.5 bg-slate-950/50">
+            <div class="font-bold text-slate-400 mb-1">🛠️ Kit:</div>
+            <div>• Arduino Uno R3 • L298N • 5 mắt IR</div>
+            <div>• 2WD TT Motor • HC-SR04</div>
+        </div>
+    </aside>
+
+    <!-- ═══ MAIN ═══ -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-4 sm:gap-6">
+
+        <!-- Sidebar desktop -->
+        <aside class="hidden lg:block w-80 flex-shrink-0">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sticky top-24">
+                <div class="flex items-center justify-between mb-3 px-2">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Danh Sách Bài Học</h2>
+                    <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800">Kit HCMUTE</span>
+                </div>
+                <nav id="module-menu" class="space-y-1 max-h-[60vh] overflow-y-auto"></nav>
+                <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1 bg-slate-950/50 p-3 rounded-xl border">
+                    <div class="font-bold text-slate-300 mb-1">🛠️ Cấu hình Kit:</div>
+                    <div>• Arduino Uno R3 (ATmega328P)</div>
+                    <div>• Driver L298N Red Module</div>
+                    <div>• Mạch 5 mắt IR bo cong</div>
+                    <div>• Khung xe 2WD + TT Motor</div>
+                    <div>• Cảm biến siêu âm HC-SR04</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <main class="flex-1 min-w-0">
+            <div id="lesson-content-container" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
+                <!-- Content inject here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-cyan-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-[60] pointer-events-none max-w-[calc(100vw-3rem)]">
+        <span id="toast-icon">📋</span>
+        <span id="toast-message" class="text-sm font-medium">Đã sao chép!</span>
+    </div>
+
+    <script>
+        /* ══════════════════════════════════════════════════════
+           LBSYNC SDK
+           ══════════════════════════════════════════════════════ */
+        (function(){
+            function lbsync_save(key, value){
+                try { parent.postMessage({type:'LB_SAVE', key:key, value:value}, '*'); } catch(e){}
+            }
+            function lbsync_load(key, cb){
+                try { parent.postMessage({type:'LB_LOAD', key:key}, '*'); } catch(e){}
+                const handler = function(e){
+                    if (e.data && e.data.type === 'LB_VALUE' && e.data.key === key){
+                        window.removeEventListener('message', handler);
+                        cb(e.data.value);
+                    }
+                };
+                window.addEventListener('message', handler);
+            }
+            window.LBSync = { save: lbsync_save, load: lbsync_load };
+        })();
+
+        /* ══════════════════════════════════════════════════════
+           COURSE DATA
+           ══════════════════════════════════════════════════════ */
+        const courseData = [
+            {
+                id: "mod-1",
+                title: "Module 1: Bản Chất Nguyên Lý & Môi Trường",
+                desc: "Bản chất vật lý IR, mạch cầu H L298N, VS Code / Wokwi.",
+                lessons: [
+                    {
+                        id: "m1-l1",
+                        title: "1.1 Bản Chất Cảm Biến IR & Mạch Cầu H L298N",
+                        time: "30 Phút",
+                        summary: "Hiểu sâu bản chất vật lý phản xạ tia hồng ngoại trên mặt sàn sáng/tối, nguyên lý mạch cầu H L298N đảo chiều động cơ DC và băm xung PWM điều khiển tốc độ.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Bạn là Chuyên gia Kỹ thuật Hệ thống Nhúng & Robotics HCMUTE. 
+Tôi muốn hiểu BẢN CHẤT NGUYÊN LÝ HOẠT ĐỘNG trước khi bắt đầu lập trình xe dò line 2WD.
+
+[THÔNG TIN PHẦN CỨNG THỰC TẾ KIT HCMUTE]
+- Vi điều khiển: Arduino Uno R3 (ATmega328P)
+- Driver Động cơ: Module Cầu H L298N (Đỏ)
+- Cảm biến: Mạch 5 mắt hồng ngoại IR bo cong (cánh cung)
+- Động cơ: 2 Động cơ DC Vàng (TT Motor) + 1 Bánh xe xoay tự do
+
+[YÊU CẦU CHI TIẾT]
+1. Giải thích bản chất quang học của Cảm biến IR: Tại sao bề mặt trắng phản xạ nhiều hồng ngoại còn bề mặt đen hấp thụ?
+2. Giải thích bản chất hoạt động của Mạch Cầu H L298N: Tại sao cần 4 transistor/MOSFET tạo thành hình chữ H để đảo chiều quay động cơ DC? Tín hiệu PWM trên chân ENA/ENB thay đổi điện áp trung bình như thế nào?
+3. Phân tích nguyên lý Động học Vi sai (Differential Drive): Xe rẽ trái/rẽ phải bằng cách chênh lệch tốc độ 2 bánh như thế nào?
+4. Viết đoạn code C++ mẫu cơ bản nhất trên VS Code điều khiển 2 động cơ chạy tiến, lùi, rẽ trái, rẽ phải qua L298N.`
+                    },
+                    {
+                        id: "m1-l2",
+                        title: "1.2 Thiết Lập VS Code + PlatformIO & Wokwi",
+                        time: "25 Phút",
+                        summary: "Cấu hình môi trường lập trình C++ chuyên nghiệp với PlatformIO và giả lập Wokwi trên VS Code để test mạch logic trước khi cắm dây xe thật.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Tôi đang học lập trình Xe Dò Line HCMUTE trên VS Code. Hãy hướng dẫn tôi thiết lập môi trường giả lập mạch logic Wokwi.
+
+[YÊU CẦU CHI TIẾT]
+1. Hướng dẫn khởi tạo project PlatformIO cho Arduino Uno R3 trên VS Code.
+2. Cung cấp file \`platformio.ini\` chuẩn (baud rate 115200, tối ưu biên dịch C++).
+3. Cung cấp nội dung file \`diagram.json\` dựng mạch giả lập Wokwi gồm: Arduino Uno R3, Module L298N, 5 nút nhấn (mô phỏng 5 mắt IR) và 2 Động cơ DC.
+4. Viết đoạn code C++ test pinout và in trạng thái 5 mắt IR ra Serial Monitor.`
+                    }
+                ]
+            },
+            {
+                id: "mod-2",
+                title: "Module 2: Lập Trình Dò Line Cơ Bản",
+                desc: "Thuật toán On-Off/Bang-Bang và xử lý mảng 5 mắt IR bo cong.",
+                lessons: [
+                    {
+                        id: "m2-l1",
+                        title: "2.1 Thuật Toán Dò Line Bang-Bang",
+                        time: "40 Phút",
+                        summary: "Nắm vững bản chất logic rẽ trái/rẽ phải/chạy thẳng cơ bản dựa trên trạng thái mắt IR. Hiểu ưu nhược điểm và hiện tượng 'rắn bò'.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Tôi bắt đầu viết thuật toán Dò Line Cốt Lõi (Bài thi chính) cho xe 2WD kit HCMUTE.
+
+[CẤU HÌNH PHẦN CỨNG]
+- 5 Mắt IR trả về 0 (Trắng) và 1 (Đen).
+- L298N điều khiển 2 động cơ DC.
+
+[YÊU CẦU CHI TIẾT]
+1. Giải thích BẢN CHẤT thuật toán On-Off (Bang-Bang Control).
+2. Lập bảng logic chuyển động cho các trường hợp: Trung tâm đè line (0 0 1 0 0), lệch nhẹ trái, lệch gắt trái, ngược lại cho phải.
+3. Viết mã nguồn C++ hoàn chỉnh triển khai thuật toán On-Off trên VS Code.
+4. Phân tích tại sao thuật toán On-Off làm xe bị hiện tượng 'rắn bò' và cách điều chỉnh tốc độ PWM.`
+                    },
+                    {
+                        id: "m2-l2",
+                        title: "2.2 Xử Lý IR Bo Cong & Góc Cua 90°",
+                        time: "45 Phút",
+                        summary: "Hiểu bản chất hình học cánh cung của 5 mắt IR. Viết thuật toán bắt góc cua 90 độ, vạch đứt và cơ chế nhớ vết line cũ.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Mạch cảm biến kit HCMUTE có 5 mắt IR bo cong hình cánh cung. Hãy giúp tôi khai thác tối đa ưu thế hình học này.
+
+[YÊU CẦU CHI TIẾT]
+1. Phân tích BẢN CHẤT HÌNH HỌC: Tại sao thiết kế bo cong phát hiện góc cua 90° sớm hơn mảng thẳng hàng?
+2. Viết thuật toán C++ xử lý:
+   - Cua vuông 90° (1 1 1 0 0): Pivot Turn tại chỗ.
+   - Mất line hoàn toàn (0 0 0 0 0): Dùng biến lastDirection.
+   - Vạch ngang ngã tư (1 1 1 1 1): Vượt qua không khựng.
+3. Viết code C++ hoàn chỉnh, tối ưu thời gian phản hồi.`
+                    }
+                ]
+            },
+            {
+                id: "mod-3",
+                title: "Module 3: Mô Phỏng 3D Trên Webots",
+                desc: "Dựng mô hình Robot PROTO 2WD và mô phỏng xe dò line 3D.",
+                lessons: [
+                    {
+                        id: "m3-l1",
+                        title: "3.1 Dựng Robot PROTO 2WD Chuẩn Tỷ Lệ",
+                        time: "40 Phút",
+                        summary: "Dựng khung xe 3D, 2 bánh chủ động, bánh bèo kim loại và gán tham số vật lý (trọng lực, khối lượng, ma sát).",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Bạn là chuyên gia Webots 3D. Tôi cần dựng mô hình Robot PROTO cho xe 2WD đúng thông số kit HCMUTE.
+
+[THÔNG SỐ VẬT LÝ THỰC TẾ]
+- Khung Mica 2WD: Dài 20cm, Rộng 14cm, ~0.5kg
+- Bánh: 2 bánh chủ động 6.5cm, 1 bánh bèo kim loại.
+- 2 động cơ DC TT Motor.
+
+[YÊU CẦU CHI TIẾT]
+1. Viết file Webots PROTO: khung Mica, 2 bánh HingeJoint + RotationalMotor, 1 bánh bèo BallJoint.
+2. Hướng dẫn thông số Physics: mass, Center of Mass, contactMaterial.
+3. Tạo file đường đua World có vạch đen rộng 2cm nền trắng.`
+                    },
+                    {
+                        id: "m3-l2",
+                        title: "3.2 Bố Trí 5 DistanceSensor & Webots Controller",
+                        time: "45 Phút",
+                        summary: "Gán 5 cảm biến DistanceSensor bo cong hướng xuống mặt đất và viết Controller C++ chạy dò line 3D.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Tôi cần nhúng 5 DistanceSensor dạng bo cong vào robot Webots và viết Controller C++.
+
+[TỌA ĐỘ 5 MẮT SENSOR HƯỚNG XUỐNG SÀN]
+- S1: x=-0.04, z=0.10 | S2: x=-0.02, z=0.11 | S3: x=0, z=0.12
+- S4: x=+0.02, z=0.11 | S5: x=+0.04, z=0.10
+
+[YÊU CẦU CHI TIẾT]
+1. Cung cấp PROTO nhúng 5 DistanceSensor chiếu xuống mặt đường (1cm).
+2. Viết Webots Controller C++ đọc 5 cảm biến, quy đổi vạch đen/trắng, thực thi dò line.
+3. So sánh kết quả Webots 3D vs Wokwi.`
+                    }
+                ]
+            },
+            {
+                id: "mod-4",
+                title: "Module 4: Nạp Xe Thật Kit HCMUTE",
+                desc: "Đấu nối phần cứng, quản lý nguồn, Calibrate cảm biến IR.",
+                lessons: [
+                    {
+                        id: "m4-l1",
+                        title: "4.1 Sơ Đồ Đấu Nối Chuẩn R3 + L298N + 5 IR",
+                        time: "40 Phút",
+                        summary: "Bảng đấu nối chi tiết tránh xung đột Timer PWM và RX/TX. Trích nguồn Pin Li-ion 7.4V qua L298N nuôi Arduino.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Tôi chuẩn bị đấu nối: Arduino Uno R3, L298N Red, Mạch 5 mắt IR bo cong, công tắc nguồn.
+
+[BẢNG CHÂN DỰ KIẾN]
+- L298N: ENA(3), IN1(4), IN2(5), ENB(6), IN3(7), IN4(8)
+- 5 Mắt IR: Out1(A0), Out2(A1), Out3(A2), Out4(A3), Out5(A4)
+
+[YÊU CẦU CHI TIẾT]
+1. Kiểm tra BẢN CHẤT CẮM CHÂN: ENA/ENB phải vào chân PWM cứng (Timer 2). Không dùng chân 0, 1 (RX/TX).
+2. Bảng hướng dẫn cấp nguồn an toàn: Pin Li-ion 7.4V → cọc 12V L298N → đầu ra 5V nuôi Arduino + mảng IR.
+3. Viết code C++ PlatformIO hoàn chỉnh khởi tạo pinMode(), test động cơ trong setup().`
+                    },
+                    {
+                        id: "m4-l2",
+                        title: "4.2 Tự Động Calibrate Ngưỡng IR",
+                        time: "50 Phút",
+                        summary: "Viết hàm quét Min/Max tự động trong 3 giây đầu để tính Threshold = (Min+Max)/2 lọc nhiễu ánh sáng phòng lab.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Ngoài thực tế tại phòng lab HCMUTE, ánh sáng môi trường và chất liệu sàn làm tín hiệu IR thay đổi.
+
+[YÊU CẦU CHI TIẾT]
+1. Phân tích BẢN CHẤT NHIỄU QUANG HỌC và tại sao cần 'Dynamic Threshold'.
+2. Viết hàm C++ autoCalibrateSensors() chạy 3 giây đầu khi nhấn Reset.
+3. Cơ chế: Người dùng lia mảng IR qua lại giữa nền trắng và vạch đen để lưu Min/Max của từng mắt.
+4. Tự động tính Threshold[i] = (Min[i]+Max[i])/2.`
+                    }
+                ]
+            },
+            {
+                id: "mod-5",
+                title: "Module 5: Chuyên Đề Mở Rộng (PID & Né Vật Cản)",
+                desc: "Nâng cấp PID cho bài thi tốc độ và FSM + HC-SR04 cho bài thi né vật cản.",
+                lessons: [
+                    {
+                        id: "m5-l1",
+                        title: "5.1 Dò Line Tốc Độ Cao Với Thuật Toán PID",
+                        time: "60 Phút",
+                        summary: "Hiểu bản chất toán học P-I-D, quy đổi sai số Error (-4 đến +4) từ 5 mắt IR và quy trình 3 bước tuning Kp, Ki, Kd.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Khi đã chạy thành công bài dò line cơ bản, tôi muốn nâng cấp lên bài Thi Tốc Độ bằng thuật toán PID.
+
+[CẤU HÌNH & YÊU CẦU CHI TIẾT]
+1. Giải thích BẢN CHẤT TOÁN HỌC PID trong bài toán dò line:
+   - Sai số vị trí Error (-4 đến +4).
+   - Tác dụng của P (Tỷ lệ lệch), I (Tích lũy dạt line), D (Đạo hàm phanh chống văng cua).
+2. Viết hàm C++ calculatePID() và controlMotors() điều chế xung PWM L298N (constrain -255 đến 255), có Anti-windup.
+3. Quy trình Tuning PID 3 bước (Kp → Kd → Ki) cho xe 2WD 0.5kg.`
+                    },
+                    {
+                        id: "m5-l2",
+                        title: "5.2 Né Vật Cản Với HC-SR04 & FSM",
+                        time: "60 Phút",
+                        summary: "Lắp HC-SR04 đo khoảng cách Non-blocking (millis) và thiết kế FSM rẽ né vật cản rồi tự bắt lại line.",
+                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
+Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
+
+[KIẾN TRÚC FSM]
+- State 0: Dò line PID/On-Off
+- State 1: Phát hiện vật cản < 15cm → Rẽ trái né
+- State 2: Chạy thẳng song song vật cản
+- State 3: Rẽ phải hướng về lại đường line
+- State 4: Quét mắt IR gặp lại vạch đen → về State 0
+
+[YÊU CẦU CHI TIẾT]
+1. Viết hàm đọc HC-SR04 Non-blocking (millis) + bộ lọc trung bình động 3-5 mẫu.
+2. Viết chương trình C++ Switch-Case điều khiển FSM 5 trạng thái.
+3. Hướng dẫn căn chỉnh thời gian chuyển pha.`
+                    }
+                ]
+            }
+        ];
+
+        /* ══════════════════════════════════════════════════════
+           STATE
+           ══════════════════════════════════════════════════════ */
+        const LS_KEYS = {
+            completed: 'hcmute_completed_lessons',
+            lesson: 'hcmute_current_lesson'
+        };
+
+        let completedLessons = [];
+        try {
+            const saved = JSON.parse(localStorage.getItem(LS_KEYS.completed) || '[]');
+            if (Array.isArray(saved)) completedLessons = saved;
+        } catch(e) {}
+
+        let currentLessonId = localStorage.getItem(LS_KEYS.lesson) || 'm1-l1';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSidebar();
+            renderSidebarMobile();
+            updateProgress();
+            loadLesson(currentLessonId);
+            restoreFromCloud();
+        });
+
+        /* ══════════════════════════════════════════════════════
+           PERSIST / RESTORE
+           ══════════════════════════════════════════════════════ */
+        function persistState() {
+            try {
+                localStorage.setItem(LS_KEYS.completed, JSON.stringify(completedLessons));
+                localStorage.setItem(LS_KEYS.lesson, currentLessonId);
+            } catch(e) {}
+            LBSync.save('completedLessons', completedLessons);
+            LBSync.save('currentLessonId', currentLessonId);
+        }
+
+        function restoreFromCloud() {
+            LBSync.load('completedLessons', (v) => {
+                if (Array.isArray(v)) {
+                    completedLessons = v;
+                    try { localStorage.setItem(LS_KEYS.completed, JSON.stringify(v)); } catch(e){}
+                    renderSidebar();
+                    renderSidebarMobile();
+                    updateProgress();
+                    loadLesson(currentLessonId);
+                }
+            });
+            LBSync.load('currentLessonId', (v) => {
+                if (typeof v === 'string' && v) {
+                    currentLessonId = v;
+                    try { localStorage.setItem(LS_KEYS.lesson, v); } catch(e){}
+                    renderSidebar();
+                    renderSidebarMobile();
+                    loadLesson(v);
+                }
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           DRAWER (mobile)
+           ══════════════════════════════════════════════════════ */
+        function toggleDrawer() {
+            const drawer = document.getElementById('mobileDrawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) closeDrawer();
+            else {
+                drawer.classList.add('open');
+                backdrop.classList.add('open');
+            }
+        }
+        function closeDrawer() {
+            document.getElementById('mobileDrawer').classList.remove('open');
+            document.getElementById('drawerBackdrop').classList.remove('open');
+        }
+
+        /* ══════════════════════════════════════════════════════
+           SIDEBAR
+           ══════════════════════════════════════════════════════ */
+        function buildMenuHTML() {
+            let html = '';
+            courseData.forEach((mod) => {
+                html += '<div class="mb-3">';
+                html += '<div class="text-[11px] font-bold text-slate-300 px-2 py-1 mb-1 bg-slate-800/40 rounded">' + mod.title + '</div>';
+                html += '<div class="space-y-0.5 pl-1">';
+                mod.lessons.forEach(les => {
+                    const isCompleted = completedLessons.includes(les.id);
+                    const isActive = les.id === currentLessonId;
+                    html += '<button onclick="selectLesson(\'' + les.id + '\')" class="w-full text-left px-2.5 py-2 rounded-lg text-xs flex items-center justify-between transition ' +
+                        (isActive ? 'bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/30' : 'text-slate-400 active:bg-slate-800 text-slate-200') + '">' +
+                        '<span class="truncate pr-2">' + les.title + '</span>' +
+                        '<span class="' + (isCompleted ? 'text-emerald-400 font-bold' : 'text-slate-600') + '">' + (isCompleted ? '✓' : '○') + '</span>' +
+                        '</button>';
+                });
+                html += '</div></div>';
+            });
+            return html;
+        }
+
+        function renderSidebar() {
+            const menuContainer = document.getElementById('module-menu');
+            if (menuContainer) menuContainer.innerHTML = buildMenuHTML();
+        }
+
+        function renderSidebarMobile() {
+            const menuContainer = document.getElementById('module-menu-mobile');
+            if (menuContainer) menuContainer.innerHTML = buildMenuHTML();
+        }
+
+        function selectLesson(id) {
+            currentLessonId = id;
+            renderSidebar();
+            renderSidebarMobile();
+            loadLesson(id);
+            persistState();
+            closeDrawer();
+        }
+
+        /* ══════════════════════════════════════════════════════
+           LESSON CONTENT
+           ══════════════════════════════════════════════════════ */
+        function loadLesson(id) {
+            let targetLesson = null;
+            let targetModule = null;
+
+            for (const mod of courseData) {
+                const found = mod.lessons.find(l => l.id === id);
+                if (found) { targetLesson = found; targetModule = mod; break; }
+            }
+            if (!targetLesson) return;
+
+            const container = document.getElementById('lesson-content-container');
+            const isCompleted = completedLessons.includes(targetLesson.id);
+
+            const allLessons = [];
+            courseData.forEach(m => m.lessons.forEach(l => allLessons.push(l.id)));
+            const currentIndex = allLessons.indexOf(targetLesson.id);
+            const prevId = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+            const nextId = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+            container.innerHTML = `
+                <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+                    <span class="text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-md bg-cyan-950 text-cyan-400 border border-cyan-800">${targetModule.title}</span>
+                    <span class="text-[10px] sm:text-xs text-slate-400 font-mono">⏱️ ${targetLesson.time}</span>
+                </div>
+
+                <h2 class="text-lg sm:text-2xl font-bold text-white mb-3 sm:mb-4">${targetLesson.title}</h2>
+
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+                    <h4 class="text-[10px] sm:text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <span>🎯</span> TÓM TẮT MỤC TIÊU
+                    </h4>
+                    <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed">${targetLesson.summary}</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-2 border-cyan-500/40 rounded-xl sm:rounded-2xl p-3 sm:p-5 mb-6 sm:mb-8 shadow-2xl">
+                    <div class="flex items-start justify-between flex-wrap gap-2 sm:gap-3 mb-3 border-b border-slate-800 pb-3">
+                        <div class="flex items-start gap-2 min-w-0 flex-1">
+                            <span class="text-lg sm:text-2xl flex-shrink-0">🤖</span>
+                            <div class="min-w-0">
+                                <h3 class="font-bold text-white text-xs sm:text-sm">PROMPT AI CHI TIẾT</h3>
+                                <p class="text-[10px] sm:text-[11px] text-slate-400">Sao chép và dán trực tiếp vào ChatGPT / Gemini</p>
+                            </div>
+                        </div>
+                        <button onclick="copyLessonPrompt('${targetLesson.id}')" class="bg-gradient-to-r from-cyan-600 to-blue-600 active:from-cyan-500 text-white text-[11px] sm:text-xs px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl font-bold transition shadow-lg shadow-cyan-600/30 flex items-center gap-1.5 flex-shrink-0">
+                            <span>📋</span> <span class="hidden sm:inline">SAO CHÉP</span><span class="sm:hidden">COPY</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-slate-800 font-mono text-[10px] sm:text-xs text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto" id="prompt-lesson-text-${targetLesson.id}">${targetLesson.aiPrompt}</div>
+
+                    <div class="mt-3 text-[10px] sm:text-[11px] text-slate-400 leading-relaxed">
+                        💡 Mẹo: Yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO.
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <button type="button" onclick="toggleLessonCompletion('${targetLesson.id}')" class="flex items-center gap-3 cursor-pointer select-none bg-transparent border-0 text-left p-2 -m-2 rounded-lg active:bg-slate-800/50">
+                        <span class="w-6 h-6 rounded border-2 ${isCompleted ? 'bg-cyan-500 border-cyan-500' : 'border-slate-700'} flex items-center justify-center transition text-white text-xs font-bold flex-shrink-0">
+                            ${isCompleted ? '✓' : ''}
+                        </span>
+                        <span class="text-xs sm:text-sm font-semibold ${isCompleted ? 'text-emerald-400' : 'text-slate-300'}">
+                            ${isCompleted ? 'Đã hoàn thành' : 'Đánh dấu hoàn thành'}
+                        </span>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        ${prevId ? `<button onclick="selectLesson('${prevId}')" class="px-3 py-2.5 rounded-lg bg-slate-800 active:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition text-center">← Trước</button>` : '<div></div>'}
+                        ${nextId ? `<button onclick="selectLesson('${nextId}')" class="px-3 py-2.5 rounded-lg bg-cyan-600 active:bg-cyan-500 text-white text-xs font-bold transition shadow-lg shadow-cyan-600/20 text-center">Tiếp →</button>` : '<div></div>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           COPY
+           ══════════════════════════════════════════════════════ */
+        function copyLessonPrompt(lessonId) {
+            const promptText = document.getElementById(`prompt-lesson-text-${lessonId}`).innerText;
+            fallbackCopy(promptText);
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("📋 Đã sao chép Prompt AI!");
+            } catch (err) {
+                showToast("❌ Không sao chép được, vui lòng chọn thủ công.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        /* ══════════════════════════════════════════════════════
+           COMPLETION
+           ══════════════════════════════════════════════════════ */
+        function toggleLessonCompletion(id) {
+            if (completedLessons.includes(id)) {
+                completedLessons = completedLessons.filter(item => item !== id);
+            } else {
+                completedLessons.push(id);
+                showToast("🎉 Đã đánh dấu hoàn thành!");
+            }
+            persistState();
+            renderSidebar();
+            renderSidebarMobile();
+            updateProgress();
+            loadLesson(id);
+        }
+
+        function updateProgress() {
+            let totalLessons = 0;
+            courseData.forEach(m => totalLessons += m.lessons.length);
+            const count = completedLessons.length;
+            const percent = totalLessons > 0 ? Math.round((count / totalLessons) * 100) : 0;
+
+            const pcDesktop = document.getElementById('progress-percent');
+            const pcMobile = document.getElementById('progress-percent-mobile');
+            const bar = document.getElementById('progress-bar');
+            if (pcDesktop) pcDesktop.innerText = `${percent}%`;
+            if (pcMobile) pcMobile.innerText = `${percent}% (${count}/${totalLessons})`;
+            if (bar) bar.style.width = `${percent}%`;
+        }
+
+        function resetProgress() {
+            if (!confirm('Reset toàn bộ tiến độ học?')) return;
+            completedLessons = [];
+            try { localStorage.removeItem(LS_KEYS.completed); } catch(e){}
+            persistState();
+            renderSidebar();
+            renderSidebarMobile();
+            updateProgress();
+            loadLesson(currentLessonId);
+            showToast("🔄 Đã reset tiến độ!");
+        }
+
+        /* ══════════════════════════════════════════════════════
+           TOAST
+           ══════════════════════════════════════════════════════ */
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        /* ══════════════════════════════════════════════════════
+           PWA
+           ══════════════════════════════════════════════════════ */
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window._deferredPrompt = e;
+        });
+    </script>
+</body>
+</html>
