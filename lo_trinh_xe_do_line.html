@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HCMUTE Line Follower">
-    <title>Khóa Học Robot Dò Line & Né Vật Cản HCMUTE</title>
+    <title>Khóa Học Robot Dò Line & Né Vật Cản HCMUTE (Arduino Thuần)</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230891b2'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%23ffffff'/%3E%3C/svg%3E" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230f172a'/%3E%3Cpath%20d='M30%2030%20L50%2020%20L70%2030%20L70%2070%20L50%2080%20L30%2070%20Z'%20fill='none'%20stroke='%2306b6d4'%20stroke-width='6'%20stroke-linejoin='round'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='8'%20fill='%2306b6d4'/%3E%3C/svg%3E" />
     <link rel="manifest" href='data:application/manifest+json,{"name":"HCMUTE Line Follower","short_name":"LineFollower","start_url":".","display":"standalone","background_color":"%230f172a","theme_color":"%2306b6d4","orientation":"any"}' />
@@ -35,7 +35,6 @@
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         code, pre { font-family: 'Fira Code', monospace; }
 
-        /* ═══ SCROLLBAR — mỏng, mờ, có khoảng cách ═══ */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; margin: 6px 0; }
         ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.5); border-radius: 4px; }
@@ -44,64 +43,29 @@
         .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0); }
         .safe-top { padding-top: env(safe-area-inset-top, 0); }
 
-        /* ═══ LITE MODE MẶC ĐỊNH CHO MOBILE/TABLET ≤1024px ═══ */
         @media (max-width: 1024px) {
-            * {
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            header {
-                background-color: rgba(15, 23, 42, 0.98) !important;
-            }
+            * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+            header { background-color: rgba(15, 23, 42, 0.98) !important; }
             .shadow-2xl { box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important; }
             .shadow-xl, .shadow-lg { box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; }
-            .shadow-cyan-500\/20,
-            .shadow-cyan-600\/30,
-            .shadow-cyan-600\/20 { box-shadow: none !important; }
+            .shadow-cyan-500\/20, .shadow-cyan-600\/30, .shadow-cyan-600\/20 { box-shadow: none !important; }
             .animate-pulse { animation: none !important; opacity: 1 !important; }
             * { transition-duration: 0.1s !important; }
-            .bg-clip-text {
-                -webkit-text-fill-color: #22d3ee !important;
-                color: #22d3ee !important;
-            }
+            .bg-clip-text { -webkit-text-fill-color: #22d3ee !important; color: #22d3ee !important; }
         }
-        @media (hover: none) {
-            *:hover { transition-duration: 0s !important; }
-        }
+        @media (hover: none) { *:hover { transition-duration: 0s !important; } }
 
-        /* Mobile drawer */
-        #mobileDrawer {
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        #mobileDrawer { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         #mobileDrawer.open { transform: translateX(0); }
-        #drawerBackdrop {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
+        #drawerBackdrop { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         #drawerBackdrop.open { opacity: 1; pointer-events: auto; }
 
-        @media (max-width: 1024px) {
-            button { min-height: 40px; }
-        }
+        @media (max-width: 1024px) { button { min-height: 40px; } }
 
-        /* ═══ PROGRESS BAR — Dùng chung desktop + mobile ═══ */
-        #progress-bar-mobile {
-            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 0 6px rgba(34, 211, 238, 0.4);
-        }
-        #progress-bar {
-            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 0 6px rgba(34, 211, 238, 0.4);
-        }
+        #progress-bar-mobile { transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 0 6px rgba(34, 211, 238, 0.4); }
+        #progress-bar { transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 0 6px rgba(34, 211, 238, 0.4); }
 
-        /* Ẩn progress bar mini ở desktop */
-        @media (min-width: 1025px) {
-            #progressRowMobile { display: none !important; }
-        }
-
-        /* Tiêu đề rút gọn trên màn hình nhỏ */
+        @media (min-width: 1025px) { #progressRowMobile { display: none !important; } }
         @media (max-width: 400px) {
             .app-brand-text h1 { font-size: 12px !important; }
             .app-brand-text p { font-size: 9px !important; }
@@ -113,8 +77,6 @@
     <!-- ═══ HEADER ═══ -->
     <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-40 safe-top">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-
-            <!-- Row 1: Brand + Reset -->
             <div class="h-14 sm:h-16 flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                     <button onclick="toggleDrawer()" class="lg:hidden flex-shrink-0 w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 active:bg-slate-700" aria-label="Mở danh sách bài học">
@@ -128,12 +90,11 @@
                     </div>
                     <div class="app-brand-text min-w-0">
                         <h1 class="text-sm sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent truncate">HCMUTE Line Follower Master</h1>
-                        <p class="text-[10px] sm:text-xs text-slate-400 truncate">Dò Line • PID • Né Vật Cản</p>
+                        <p class="text-[10px] sm:text-xs text-slate-400 truncate">Dò Line • PID • Né Vật Cản • Arduino Thuần</p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
-                    <!-- Progress desktop -->
                     <div class="hidden lg:flex flex-col items-end pl-2">
                         <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
                             <span>Tiến độ:</span>
@@ -152,12 +113,11 @@
                 </div>
             </div>
 
-            <!-- Row 2: Progress bar full width (mobile/tablet) -->
             <div id="progressRowMobile" class="lg:hidden pb-3 flex items-center gap-2.5">
                 <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
                     <div id="progress-bar-mobile" class="h-full bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500 w-0 rounded-r-full"></div>
                 </div>
-                <span id="progress-percent-mobile" class="text-[11px] font-mono text-cyan-400 font-bold flex-shrink-0 min-w-[52px] text-right">0% (0/10)</span>
+                <span id="progress-percent-mobile" class="text-[11px] font-mono text-cyan-400 font-bold flex-shrink-0 min-w-[52px] text-right">0% (0/12)</span>
             </div>
         </div>
     </header>
@@ -187,12 +147,11 @@
     <!-- ═══ MAIN ═══ -->
     <div class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex flex-col lg:flex-row gap-4 sm:gap-6">
 
-        <!-- Sidebar desktop -->
         <aside class="hidden lg:block w-80 flex-shrink-0">
             <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 sticky top-24">
                 <div class="flex items-center justify-between mb-3 px-2">
                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Danh Sách Bài Học</h2>
-                    <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800">Kit HCMUTE</span>
+                    <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800">Arduino Thuần</span>
                 </div>
                 <nav id="module-menu" class="space-y-1 max-h-[60vh] overflow-y-auto pr-2" style="scrollbar-gutter: stable;"></nav>
                 <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1 bg-slate-950/50 p-3 rounded-xl border">
@@ -206,7 +165,6 @@
             </div>
         </aside>
 
-        <!-- Content -->
         <main class="flex-1 min-w-0">
             <div id="lesson-content-container" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
                 <!-- Content inject here -->
@@ -214,23 +172,16 @@
         </main>
     </div>
 
-    <!-- Toast -->
     <div id="toast" class="fixed bottom-6 right-6 bg-cyan-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-[60] pointer-events-none max-w-[calc(100vw-3rem)]">
         <span id="toast-icon">📋</span>
         <span id="toast-message" class="text-sm font-medium">Đã sao chép!</span>
     </div>
 
-        <script>
-        /* ══════════════════════════════════════════════════════
-           DETECT IFRAME
-           ══════════════════════════════════════════════════════ */
+    <script>
         if (window.self !== window.top) {
             document.body.classList.add('in-iframe');
         }
 
-        /* ══════════════════════════════════════════════════════
-           LBSYNC SDK
-           ══════════════════════════════════════════════════════ */
         (function(){
             function lbsync_save(key, value){
                 try { parent.postMessage({type:'LB_SAVE', key:key, value:value}, '*'); } catch(e){}
@@ -249,211 +200,345 @@
         })();
 
         /* ══════════════════════════════════════════════════════
-           COURSE DATA
+           COURSE DATA — 100% ARDUINO C++, KHÔNG WEBOTS
            ══════════════════════════════════════════════════════ */
         const courseData = [
             {
                 id: "mod-1",
-                title: "Module 1: Bản Chất Nguyên Lý & Môi Trường",
-                desc: "Bản chất vật lý IR, mạch cầu H L298N, VS Code / Wokwi.",
+                title: "Module 1: Nhập Môn Lập Trình Cho Người Mới",
+                desc: "Làm quen C++ từ con số 0, hiểu biến, câu lệnh if, vòng lặp bằng ví dụ đời thường.",
                 lessons: [
                     {
                         id: "m1-l1",
-                        title: "1.1 Bản Chất Cảm Biến IR & Mạch Cầu H L298N",
-                        time: "30 Phút",
-                        summary: "Hiểu sâu bản chất vật lý phản xạ tia hồng ngoại trên mặt sàn sáng/tối, nguyên lý mạch cầu H L298N đảo chiều động cơ DC và băm xung PWM điều khiển tốc độ.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Bạn là Chuyên gia Kỹ thuật Hệ thống Nhúng & Robotics HCMUTE. 
-Tôi muốn hiểu BẢN CHẤT NGUYÊN LÝ HOẠT ĐỘNG trước khi bắt đầu lập trình xe dò line 2WD.
+                        title: "1.1 C++ Là Gì? Biến, Câu Lệnh If & Vòng Lặp",
+                        time: "40 Phút",
+                        summary: "Hiểu lập trình là gì bằng ví dụ đời thường (nấu ăn, đèn giao thông). Làm quen các khái niệm nền tảng: biến, kiểu dữ liệu, câu lệnh if, vòng lặp — tất cả đều ví von dễ hiểu, không cần nền tảng toán.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Bạn là giáo viên dạy lập trình thân thiện, chuyên dạy cho NGƯỜI CHƯA TỪNG HỌC LẬP TRÌNH BAO GIỜ.
+Tôi không biết gì về C++, không biết "biến", "hàm", "vòng lặp" là gì. Hãy dạy tôi như dạy một đứa trẻ 12 tuổi.
 
-[THÔNG TIN PHẦN CỨNG THỰC TẾ KIT HCMUTE]
-- Vi điều khiển: Arduino Uno R3 (ATmega328P)
-- Driver Động cơ: Module Cầu H L298N (Đỏ)
-- Cảm biến: Mạch 5 mắt hồng ngoại IR bo cong (cánh cung)
-- Động cơ: 2 Động cơ DC Vàng (TT Motor) + 1 Bánh xe xoay tự do
+[NGUYÊN TẮC GIẢNG DẠY]
+- Tuyệt đối KHÔNG dùng thuật ngữ mà không giải thích ngay.
+- Mỗi khái niệm phải kèm ví dụ ĐỜI THƯỜNG (nấu ăn, đèn giao thông, hộp đựng đồ...).
+- Giải thích từng dòng code một, không bỏ qua dòng nào.
+- Trình bày chậm rãi, từng bước nhỏ.
 
 [YÊU CẦU CHI TIẾT]
-1. Giải thích bản chất quang học của Cảm biến IR: Tại sao bề mặt trắng phản xạ nhiều hồng ngoại còn bề mặt đen hấp thụ?
-2. Giải thích bản chất hoạt động của Mạch Cầu H L298N: Tại sao cần 4 transistor/MOSFET tạo thành hình chữ H để đảo chiều quay động cơ DC? Tín hiệu PWM trên chân ENA/ENB thay đổi điện áp trung bình như thế nào?
-3. Phân tích nguyên lý Động học Vi sai (Differential Drive): Xe rẽ trái/rẽ phải bằng cách chênh lệch tốc độ 2 bánh như thế nào?
-4. Viết đoạn code C++ mẫu cơ bản nhất trên VS Code điều khiển 2 động cơ chạy tiến, lùi, rẽ trái, rẽ phải qua L298N.`
+1. Lập trình là gì? Vì sao Arduino cần "code" mới chạy được?
+2. "Biến" là gì? Ví dụ: biến \`int tocDo\` giống như một cái hộp có nhãn, bên trong chứa số. Cho ví dụ cụ thể bằng code C++.
+3. Các kiểu dữ liệu cơ bản: \`int\`, \`float\`, \`bool\`, \`char\` — mỗi cái dùng khi nào?
+4. Câu lệnh \`if-else\` là gì? Ví dụ: "NẾU trời mưa THÌ mang áo mưa, KHÔNG THÌ mặc áo thường". Viết code C++ minh họa.
+5. Vòng lặp \`for\` và \`while\` là gì? Ví dụ: "Lặp lại 10 lần bấm nút". Viết code C++ minh họa.
+6. Bài tập nhỏ cuối bài: Viết chương trình in ra 5 số từ 1 đến 5 và kiểm tra số nào là số chẵn — kèm lời giải chi tiết từng dòng.`
                     },
                     {
                         id: "m1-l2",
-                        title: "1.2 Thiết Lập VS Code + PlatformIO & Wokwi",
-                        time: "25 Phút",
-                        summary: "Cấu hình môi trường lập trình C++ chuyên nghiệp với PlatformIO và giả lập Wokwi trên VS Code để test mạch logic trước khi cắm dây xe thật.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi đang học lập trình Xe Dò Line HCMUTE trên VS Code. Hãy hướng dẫn tôi thiết lập môi trường giả lập mạch logic Wokwi.
+                        title: "1.2 Cài VS Code + PlatformIO Từ A đến Z (Không Cần Biết Gì)",
+                        time: "35 Phút",
+                        summary: "Cài đặt môi trường lập trình chuyên nghiệp từ con số 0: tải VS Code, cài PlatformIO, tạo project đầu tiên và chạy thử chương trình 'Hello Robot' — tất cả có ảnh minh họa từng bước.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi CHƯA TỪNG cài phần mềm lập trình bao giờ. Máy tôi là Windows. Hãy hướng dẫn tôi từng bước như đang ngồi cạnh tôi.
+
+[NGUYÊN TẮC]
+- Mỗi bước: Nói rõ "bấm vào đâu", "thấy gì", "làm gì tiếp".
+- Đưa ra cách xử lý lỗi thường gặp (không cài được driver, không nhận cổng COM...).
+- Giải thích PlatformIO khác gì Arduino IDE (tại sao nên dùng).
 
 [YÊU CẦU CHI TIẾT]
-1. Hướng dẫn khởi tạo project PlatformIO cho Arduino Uno R3 trên VS Code.
-2. Cung cấp file \`platformio.ini\` chuẩn (baud rate 115200, tối ưu biên dịch C++).
-3. Cung cấp nội dung file \`diagram.json\` dựng mạch giả lập Wokwi gồm: Arduino Uno R3, Module L298N, 5 nút nhấn (mô phỏng 5 mắt IR) và 2 Động cơ DC.
-4. Viết đoạn code C++ test pinout và in trạng thái 5 mắt IR ra Serial Monitor.`
+1. Tải và cài VS Code từ trang chính thức (kèm link).
+2. Cài extension PlatformIO IDE trong VS Code — chụp từng bước.
+3. Tạo project PlatformIO đầu tiên cho Arduino Uno R3 (chọn board gì? framework gì?).
+4. Giải thích cấu trúc thư mục project: \`src/\`, \`lib/\`, \`platformio.ini\` — mỗi thứ dùng làm gì?
+5. Nội dung file \`platformio.ini\` chuẩn cho Arduino Uno R3 (baud 115200).
+6. Viết chương trình "Hello Robot" đầu tiên: in ra Serial Monitor dòng chữ "Xin chào, tôi là robot dò line!" mỗi 1 giây. Giải thích từng dòng code.
+7. Cách biên dịch (Build) và nạp (Upload) xuống Arduino — kèm hướng dẫn chọn đúng cổng COM.`
                     }
                 ]
             },
             {
                 id: "mod-2",
-                title: "Module 2: Lập Trình Dò Line Cơ Bản",
-                desc: "Thuật toán On-Off/Bang-Bang và xử lý mảng 5 mắt IR bo cong.",
+                title: "Module 2: Hiểu Về Linh Kiện Trong Kit",
+                desc: "Cảm biến IR là gì, mạch cầu H L298N là gì — giải thích không cần kiến thức điện tử.",
                 lessons: [
                     {
                         id: "m2-l1",
-                        title: "2.1 Thuật Toán Dò Line Bang-Bang",
+                        title: "2.1 Cảm Biến IR — 'Đôi Mắt' Của Robot",
                         time: "40 Phút",
-                        summary: "Nắm vững bản chất logic rẽ trái/rẽ phải/chạy thẳng cơ bản dựa trên trạng thái mắt IR. Hiểu ưu nhược điểm và hiện tượng 'rắn bò'.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi bắt đầu viết thuật toán Dò Line Cốt Lõi (Bài thi chính) cho xe 2WD kit HCMUTE.
+                        summary: "Hiểu cảm biến hồng ngoại bằng ví von với đèn pin và gương. Biết cách nó 'nhìn' thấy vạch đen trên nền trắng mà không cần kiến thức quang học phức tạp.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi chưa biết gì về điện tử. Hãy giải thích cảm biến IR như đang kể chuyện cho trẻ con.
 
-[CẤU HÌNH PHẦN CỨNG]
-- 5 Mắt IR trả về 0 (Trắng) và 1 (Đen).
-- L298N điều khiển 2 động cơ DC.
+[NGUYÊN TẮC]
+- Không dùng từ "transistor", "quang trở" mà không giải thích bằng ví von.
+- Mỗi khái niệm kèm hình ảnh so sánh đời thường.
 
 [YÊU CẦU CHI TIẾT]
-1. Giải thích BẢN CHẤT thuật toán On-Off (Bang-Bang Control).
-2. Lập bảng logic chuyển động cho các trường hợp: Trung tâm đè line (0 0 1 0 0), lệch nhẹ trái, lệch gắt trái, ngược lại cho phải.
-3. Viết mã nguồn C++ hoàn chỉnh triển khai thuật toán On-Off trên VS Code.
-4. Phân tích tại sao thuật toán On-Off làm xe bị hiện tượng 'rắn bò' và cách điều chỉnh tốc độ PWM.`
+1. Cảm biến IR hoạt động giống như thế nào? Ví von: giống như bạn soi đèn pin vào gương (sáng chói) và vào tường sơn đen (tối thui).
+2. Tại sao mặt trắng phản xạ nhiều hồng ngoại → mắt thu được tín hiệu; mặt đen hấp thụ → mắt không thấy gì? Giải thích bằng ví von, KHÔNG cần công thức.
+3. Mạch 5 mắt IR bo cong của kit HCMUTE: mỗi mắt gồm 1 đèn phát IR + 1 mắt thu IR. Vì sao cần 5 mắt mà không phải 1?
+4. Tín hiệu mắt IR trả về cho Arduino: 0 (nền trắng) và 1 (vạch đen) — hoặc ngược lại. Cách kiểm tra bằng đồng hồ VOM.
+5. Bài thực hành nhỏ: Viết code Arduino đọc 5 mắt IR, in ra Serial Monitor dạng "1 1 0 1 1" khi xe đè vạch. Giải thích từng dòng code.`
                     },
                     {
                         id: "m2-l2",
-                        title: "2.2 Xử Lý IR Bo Cong & Góc Cua 90°",
-                        time: "45 Phút",
-                        summary: "Hiểu bản chất hình học cánh cung của 5 mắt IR. Viết thuật toán bắt góc cua 90 độ, vạch đứt và cơ chế nhớ vết line cũ.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Mạch cảm biến kit HCMUTE có 5 mắt IR bo cong hình cánh cung. Hãy giúp tôi khai thác tối đa ưu thế hình học này.
+                        title: "2.2 Mạch Cầu H L298N — 'Công Tắc Đảo Chiều' Cho Động Cơ",
+                        time: "40 Phút",
+                        summary: "Hiểu mạch cầu H bằng ví von với 4 công tắc điện. Biết cách dùng L298N để động cơ chạy tiến, lùi, và điều chỉnh tốc độ bằng PWM — giải thích bằng hình ảnh đơn giản.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi không biết gì về mạch điện. Hãy giải thích mạch cầu H như đang giải thích cho học sinh cấp 2.
+
+[NGUYÊN TẮC]
+- Ví von mạch cầu H = 4 cái công tắc đèn trong nhà, bật 2 cái này thì động cơ quay thuận, bật 2 cái kia thì quay ngược.
+- Không đi sâu vào MOSFET/transistor chi tiết, chỉ cần hiểu "công tắc điện tử".
 
 [YÊU CẦU CHI TIẾT]
-1. Phân tích BẢN CHẤT HÌNH HỌC: Tại sao thiết kế bo cong phát hiện góc cua 90° sớm hơn mảng thẳng hàng?
-2. Viết thuật toán C++ xử lý:
-   - Cua vuông 90° (1 1 1 0 0): Pivot Turn tại chỗ.
-   - Mất line hoàn toàn (0 0 0 0 0): Dùng biến lastDirection.
-   - Vạch ngang ngã tư (1 1 1 1 1): Vượt qua không khựng.
-3. Viết code C++ hoàn chỉnh, tối ưu thời gian phản hồi.`
+1. Động cơ DC là gì? Ví von: giống quạt máy — cấp điện thì quay, đảo dây thì quay ngược.
+2. Tại sao cần mạch cầu H? Vì Arduino không đủ dòng để chạy động cơ (Arduino chỉ ~20mA, động cơ cần ~200mA).
+3. Mạch cầu H L298N = 4 "công tắc điện tử" xếp hình chữ H. Bật S1+S4 → quay thuận; bật S2+S3 → quay ngược; bật S1+S3 hoặc S2+S4 → phanh động cơ.
+4. Chân IN1, IN2, IN3, IN4 trên L298N: kết hợp HIGH/LOW để đảo chiều. Lập bảng logic đơn giản.
+5. PWM (Pulse Width Modulation) là gì? Ví von: giống như bật tắt đèn liên tục rất nhanh — bật lâu thì sáng, bật ít thì mờ. Chân ENA/ENB dùng PWM để chỉnh tốc độ.
+6. Bài thực hành: Viết code Arduino cho xe chạy tiến 2 giây → lùi 2 giây → dừng 1 giây → lặp lại. Giải thích từng dòng.`
                     }
                 ]
             },
             {
                 id: "mod-3",
-                title: "Module 3: Mô Phỏng 3D Trên Webots",
-                desc: "Dựng mô hình Robot PROTO 2WD và mô phỏng xe dò line 3D.",
+                title: "Module 3: Lập Trình Dò Line Cơ Bản",
+                desc: "Viết thuật toán dò line đầu tiên bằng if-else đơn giản — ai cũng làm được.",
                 lessons: [
                     {
                         id: "m3-l1",
-                        title: "3.1 Dựng Robot PROTO 2WD Chuẩn Tỷ Lệ",
-                        time: "40 Phút",
-                        summary: "Dựng khung xe 3D, 2 bánh chủ động, bánh bèo kim loại và gán tham số vật lý (trọng lực, khối lượng, ma sát).",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Bạn là chuyên gia Webots 3D. Tôi cần dựng mô hình Robot PROTO cho xe 2WD đúng thông số kit HCMUTE.
+                        title: "3.1 Thuật Toán Dò Line Đầu Tiên Bằng If-Else",
+                        time: "45 Phút",
+                        summary: "Tự tay viết thuật toán dò line đầu tiên bằng câu lệnh if-else đơn giản. Hiểu tại sao xe chạy thẳng, khi nào rẽ trái, khi nào rẽ phải — tất cả bằng tiếng Việt trước khi viết code.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi đã biết if-else và vòng lặp cơ bản. Giờ tôi muốn tự viết thuật toán dò line đầu tiên cho xe 2WD kit HCMUTE.
 
-[THÔNG SỐ VẬT LÝ THỰC TẾ]
-- Khung Mica 2WD: Dài 20cm, Rộng 14cm, ~0.5kg
-- Bánh: 2 bánh chủ động 6.5cm, 1 bánh bèo kim loại.
-- 2 động cơ DC TT Motor.
+[NGUYÊN TẮC GIẢNG DẠY]
+- Viết thuật toán bằng TIẾNG VIỆT trước (dạng "NẾU ... THÌ ..."), sau đó mới dịch sang C++.
+- Giải thích từng dòng code như đang dạy em nhỏ.
+- Không dùng PID, không dùng thuật ngữ phức tạp.
+- Code là ARDUINO C++ (có setup() và loop()), không phải C++ máy tính.
+
+[CẤU HÌNH PHẦN CỨNG]
+- 5 mắt IR trả về 0 (trắng), 1 (đen).
+- L298N: ENA(3), IN1(4), IN2(5), ENB(6), IN3(7), IN4(8).
 
 [YÊU CẦU CHI TIẾT]
-1. Viết file Webots PROTO: khung Mica, 2 bánh HingeJoint + RotationalMotor, 1 bánh bèo BallJoint.
-2. Hướng dẫn thông số Physics: mass, Center of Mass, contactMaterial.
-3. Tạo file đường đua World có vạch đen rộng 2cm nền trắng.`
+1. Giải thích thuật toán On-Off (Bang-Bang) bằng ví von: "giống như bạn cầm lái xe đạp — thấy lệch trái thì bẻ lái phải, lệch phải thì bẻ lái trái".
+2. Bảng logic dò line với 5 mắt (viết bằng tiếng Việt trước):
+   - 0 0 1 0 0 → đi thẳng
+   - 0 1 1 0 0 → hơi lệch trái → rẽ trái nhẹ
+   - 1 1 0 0 0 → lệch trái nhiều → rẽ trái mạnh
+   - 0 0 1 1 0 → hơi lệch phải → rẽ phải nhẹ
+   - 0 0 0 1 1 → lệch phải nhiều → rẽ phải mạnh
+3. Viết hàm \`docCamBien()\` đọc 5 mắt IR.
+4. Viết hàm \`diThang()\`, \`reTrai()\`, \`rePhai()\`, \`dungLai()\` — mỗi hàm chỉ 3-4 dòng.
+5. Viết hàm \`loop()\` chính: đọc cảm biến → if-else chọn hành động.
+6. Giải thích hiện tượng "rắn bò" (xe lắc qua lắc lại) và cách giảm tốc độ PWM để hết.`
                     },
                     {
                         id: "m3-l2",
-                        title: "3.2 Bố Trí 5 DistanceSensor & Webots Controller",
+                        title: "3.2 Xử Lý Góc Cua 90° & Vạch Đứt",
                         time: "45 Phút",
-                        summary: "Gán 5 cảm biến DistanceSensor bo cong hướng xuống mặt đất và viết Controller C++ chạy dò line 3D.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi cần nhúng 5 DistanceSensor dạng bo cong vào robot Webots và viết Controller C++.
-
-[TỌA ĐỘ 5 MẮT SENSOR HƯỚNG XUỐNG SÀN]
-- S1: x=-0.04, z=0.10 | S2: x=-0.02, z=0.11 | S3: x=0, z=0.12
-- S4: x=+0.02, z=0.11 | S5: x=+0.04, z=0.10
+                        summary: "Nâng cấp thuật toán dò line để xử lý cua vuông 90 độ, vạch đứt và ngã tư — vẫn dùng if-else đơn giản, có biến 'nhớ hướng đi trước'.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Xe tôi đã chạy được đường thẳng. Giờ tôi muốn xử lý cua 90 độ, vạch đứt và ngã tư — vẫn dùng if-else, chưa cần PID.
 
 [YÊU CẦU CHI TIẾT]
-1. Cung cấp PROTO nhúng 5 DistanceSensor chiếu xuống mặt đường (1cm).
-2. Viết Webots Controller C++ đọc 5 cảm biến, quy đổi vạch đen/trắng, thực thi dò line.
-3. So sánh kết quả Webots 3D vs Wokwi.`
+1. Vì sao mảng 5 mắt IR bo cong phát hiện cua 90° sớm hơn mảng thẳng? Giải thích bằng hình học đơn giản (2 mắt ngoài cùng nhô ra trước).
+2. Cách xử lý cua vuông 90°:
+   - Đọc được 1 1 1 0 0 (hoặc 0 0 1 1 1) → xoay tại chỗ (Pivot Turn).
+   - Viết hàm \`quayTaiCho(bool sangTrai)\` cho 2 bánh quay ngược chiều.
+3. Xử lý mất line hoàn toàn (0 0 0 0 0):
+   - Dùng biến \`lastDirection\` nhớ hướng đi trước ("lần trước đang rẽ trái thì giờ tiếp tục rẽ trái").
+   - Viết code với biến này.
+4. Xử lý vạch ngang ngã tư (1 1 1 1 1):
+   - Xe phải đi thẳng xuyên qua, không được khựng lại.
+   - Cách phân biệt "ngã tư" vs "cua 90°".
+5. Viết code Arduino hoàn chỉnh, giải thích từng dòng.
+6. Mẹo chỉnh tốc độ PWM cho từng hành động (đi thẳng nhanh, cua chậm).`
                     }
                 ]
             },
             {
                 id: "mod-4",
-                title: "Module 4: Nạp Xe Thật Kit HCMUTE",
-                desc: "Đấu nối phần cứng, quản lý nguồn, Calibrate cảm biến IR.",
+                title: "Module 4: Thực Hành Wokwi Nâng Cao (Arduino C++)",
+                desc: "Mô phỏng xe dò line trên Wokwi trước khi nạp xe thật — cùng cú pháp Arduino, không đổi 'tiếng'.",
                 lessons: [
                     {
                         id: "m4-l1",
-                        title: "4.1 Sơ Đồ Đấu Nối Chuẩn R3 + L298N + 5 IR",
-                        time: "40 Phút",
-                        summary: "Bảng đấu nối chi tiết tránh xung đột Timer PWM và RX/TX. Trích nguồn Pin Li-ion 7.4V qua L298N nuôi Arduino.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Tôi chuẩn bị đấu nối: Arduino Uno R3, L298N Red, Mạch 5 mắt IR bo cong, công tắc nguồn.
+                        title: "4.1 Dựng Mạch Wokwi Đầy Đủ: Arduino + L298N + 5 IR + 2 Motor",
+                        time: "45 Phút",
+                        summary: "Dựng mạch giả lập hoàn chỉnh trên Wokwi: Arduino Uno R3, L298N, 5 nút nhấn giả lập mắt IR, 2 động cơ DC — tất cả bằng file diagram.json, không cần cắm dây thật.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi muốn dựng mạch giả lập Wokwi đầy đủ để test thuật toán dò line TRƯỚC KHI nạp xe thật. Tôi dùng ARDUINO C++ (có setup() và loop()), không phải C++ máy tính.
 
-[BẢNG CHÂN DỰ KIẾN]
-- L298N: ENA(3), IN1(4), IN2(5), ENB(6), IN3(7), IN4(8)
-- 5 Mắt IR: Out1(A0), Out2(A1), Out3(A2), Out4(A3), Out5(A4)
+[NGUYÊN TẮC]
+- Giải thích Wokwi là gì: giống "Google Docs cho mạch điện" — dựng mạch online, chạy code Arduino ngay trên trình duyệt.
+- Mỗi bước: nói rõ "thêm linh kiện gì", "nối chân nào với chân nào".
+
+[LINH KIỆN CẦN DỰNG]
+- Arduino Uno R3
+- Module L298N (2 motor)
+- 5 nút nhấn (mô phỏng 5 mắt IR) — nối vào A0, A1, A2, A3, A4
+- 2 Động cơ DC (mô phỏng 2 bánh xe)
+- 1 LED báo nguồn + 1 điện trở 220Ω
 
 [YÊU CẦU CHI TIẾT]
-1. Kiểm tra BẢN CHẤT CẮM CHÂN: ENA/ENB phải vào chân PWM cứng (Timer 2). Không dùng chân 0, 1 (RX/TX).
-2. Bảng hướng dẫn cấp nguồn an toàn: Pin Li-ion 7.4V → cọc 12V L298N → đầu ra 5V nuôi Arduino + mảng IR.
-3. Viết code C++ PlatformIO hoàn chỉnh khởi tạo pinMode(), test động cơ trong setup().`
+1. Wokwi là gì? Tại sao nên test trên Wokwi trước khi nạp xe thật?
+2. Cách tạo project Wokwi mới cho Arduino Uno.
+3. Nội dung file \`diagram.json\` đầy đủ (Arduino + L298N + 5 button + 2 motor).
+4. Nội dung file \`sketch.ino\` test: đọc 5 nút nhấn, in ra Serial Monitor trạng thái "1 1 0 1 1".
+5. Cách chạy mô phỏng, bấm nút, xem Serial Monitor.
+6. Cách lưu project và chia sẻ link cho bạn bè.`
                     },
                     {
                         id: "m4-l2",
-                        title: "4.2 Tự Động Calibrate Ngưỡng IR",
+                        title: "4.2 Chạy Thử Thuật Toán Dò Line Trên Wokwi (Tái Sử Dụng Code Module 3)",
                         time: "50 Phút",
-                        summary: "Viết hàm quét Min/Max tự động trong 3 giây đầu để tính Threshold = (Min+Max)/2 lọc nhiễu ánh sáng phòng lab.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Ngoài thực tế tại phòng lab HCMUTE, ánh sáng môi trường và chất liệu sàn làm tín hiệu IR thay đổi.
+                        summary: "Copy thuật toán if-else đã viết ở Module 3 dán vào Wokwi, bấm nút giả lập vạch đen để xem xe phản ứng — không cần đụng xe thật.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi đã có mạch Wokwi ở bài 4.1. Giờ tôi muốn chạy thử thuật toán dò line if-else đã học ở Module 3.
+
+[NGUYÊN TẮC]
+- Code là ARDUINO C++ thuần, KHÔNG phải Webots C++.
+- Tái sử dụng tối đa code Module 3, chỉ thay đổi cách đọc cảm biến (từ nút nhấn thay vì mắt IR thật).
 
 [YÊU CẦU CHI TIẾT]
-1. Phân tích BẢN CHẤT NHIỄU QUANG HỌC và tại sao cần 'Dynamic Threshold'.
-2. Viết hàm C++ autoCalibrateSensors() chạy 3 giây đầu khi nhấn Reset.
-3. Cơ chế: Người dùng lia mảng IR qua lại giữa nền trắng và vạch đen để lưu Min/Max của từng mắt.
-4. Tự động tính Threshold[i] = (Min[i]+Max[i])/2.`
+1. Copy hàm \`docCamBien()\`, \`diThang()\`, \`reTrai()\`, \`rePhai()\`, \`dungLai()\` từ Module 3 vào Wokwi.
+2. Sửa \`docCamBien()\` để đọc 5 nút nhấn thay vì mắt IR thật (dùng \`digitalRead\` thay vì \`analogRead\`).
+3. Viết \`loop()\` chính: đọc 5 nút → if-else chọn hành động → in trạng thái ra Serial Monitor.
+4. Cách bấm nút trên Wokwi để giả lập:
+   - Bấm nút giữa (S3) → xe đi thẳng.
+   - Bấm nút S2 → xe rẽ trái nhẹ.
+   - Bấm nút S1 → xe rẽ trái mạnh.
+   - Bấm nút S4 → xe rẽ phải nhẹ.
+   - Bấm nút S5 → xe rẽ phải mạnh.
+5. Cách xem motor quay trên Wokwi (Wokwi có hiển thị tốc độ motor).
+6. So sánh kết quả Wokwi vs xe thật: cái nào sát thực tế hơn, cái nào dễ debug hơn.`
                     }
                 ]
             },
             {
                 id: "mod-5",
-                title: "Module 5: Chuyên Đề Mở Rộng (PID & Né Vật Cản)",
-                desc: "Nâng cấp PID cho bài thi tốc độ và FSM + HC-SR04 cho bài thi né vật cản.",
+                title: "Module 5: Nạp Xe Thật Kit HCMUTE",
+                desc: "Đấu dây an toàn, cấp nguồn đúng, calibrate cảm biến — không làm cháy mạch.",
                 lessons: [
                     {
                         id: "m5-l1",
-                        title: "5.1 Dò Line Tốc Độ Cao Với Thuật Toán PID",
-                        time: "60 Phút",
-                        summary: "Hiểu bản chất toán học P-I-D, quy đổi sai số Error (-4 đến +4) từ 5 mắt IR và quy trình 3 bước tuning Kp, Ki, Kd.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Khi đã chạy thành công bài dò line cơ bản, tôi muốn nâng cấp lên bài Thi Tốc Độ bằng thuật toán PID.
+                        title: "5.1 Đấu Dây An Toàn — Không Sợ Cháy Mạch",
+                        time: "45 Phút",
+                        summary: "Bảng đấu dây chi tiết từng màu, cách cấp nguồn pin Li-ion qua L298N nuôi Arduino, tránh cháy mạch và tránh xung đột Timer PWM.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Tôi chưa từng đấu dây điện bao giờ. Tôi sợ làm cháy Arduino. Hãy hướng dẫn tôi từng bước như cầm tay chỉ việc.
 
-[CẤU HÌNH & YÊU CẦU CHI TIẾT]
-1. Giải thích BẢN CHẤT TOÁN HỌC PID trong bài toán dò line:
-   - Sai số vị trí Error (-4 đến +4).
-   - Tác dụng của P (Tỷ lệ lệch), I (Tích lũy dạt line), D (Đạo hàm phanh chống văng cua).
-2. Viết hàm C++ calculatePID() và controlMotors() điều chế xung PWM L298N (constrain -255 đến 255), có Anti-windup.
-3. Quy trình Tuning PID 3 bước (Kp → Kd → Ki) cho xe 2WD 0.5kg.`
+[NGUYÊN TẮC]
+- Mỗi dây: nói rõ "cắm từ chân nào → chân nào", dùng màu dây gì.
+- Cảnh báo rõ những lỗi dễ cháy mạch.
+- Có sơ đồ ASCII hoặc mô tả bằng hình.
+
+[BẢNG CHÂN DỰ KIẾN]
+- L298N: ENA(3), IN1(4), IN2(5), ENB(6), IN3(7), IN4(8)
+- 5 Mắt IR: Out1(A0) → Out5(A4)
+
+[YÊU CẦU CHI TIẾT]
+1. Liệt kê tất cả linh kiện cần: Arduino, L298N, mảng IR, pin, công tắc, dây jumper.
+2. Bảng đấu dây chi tiết dạng bảng: "Từ chân ... → đến chân ...". Kèm màu dây gợi ý.
+3. Cảnh báo: KHÔNG dùng chân 0, 1 (RX/TX). ENA/ENB phải vào chân PWM (3, 5, 6, 9, 10, 11).
+4. Sơ đồ cấp nguồn an toàn:
+   - Pin Li-ion 7.4V → cọc 12V của L298N.
+   - L298N có jumper 5V → xuất 5V nuôi Arduino qua chân Vin.
+   - Mảng IR ăn 5V từ Arduino.
+5. Cách kiểm tra trước khi bật nguồn: đo VOM, kiểm tra ngắn mạch.
+6. Code Arduino test đầu tiên: quay từng bánh 1 giây để kiểm tra chiều quay đúng.`
                     },
                     {
                         id: "m5-l2",
-                        title: "5.2 Né Vật Cản Với HC-SR04 & FSM",
-                        time: "60 Phút",
-                        summary: "Lắp HC-SR04 đo khoảng cách Non-blocking (millis) và thiết kế FSM rẽ né vật cản rồi tự bắt lại line.",
-                        aiPrompt: `[VAI TRÒ & BỐI CẢNH]
-Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
-
-[KIẾN TRÚC FSM]
-- State 0: Dò line PID/On-Off
-- State 1: Phát hiện vật cản < 15cm → Rẽ trái né
-- State 2: Chạy thẳng song song vật cản
-- State 3: Rẽ phải hướng về lại đường line
-- State 4: Quét mắt IR gặp lại vạch đen → về State 0
+                        title: "5.2 Tự Động Calibrate Cảm Biến IR — Chống Nhiễu Ánh Sáng",
+                        time: "50 Phút",
+                        summary: "Viết hàm calibrate 3 giây đầu: người dùng lia xe qua lại trên vạch đen/trắng, xe tự tính ngưỡng Threshold cho từng mắt — chống nhiễu ánh sáng phòng lab.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Phòng lab HCMUTE có ánh sáng thay đổi, sàn không đồng nhất. Tôi cần calibrate cảm biến IR để xe chạy ổn định.
 
 [YÊU CẦU CHI TIẾT]
-1. Viết hàm đọc HC-SR04 Non-blocking (millis) + bộ lọc trung bình động 3-5 mẫu.
-2. Viết chương trình C++ Switch-Case điều khiển FSM 5 trạng thái.
-3. Hướng dẫn căn chỉnh thời gian chuyển pha.`
+1. Giải thích tại sao cần calibrate: cùng 1 mắt IR, khi trời sáng đọc 200, khi trời tối đọc 400 — nếu dùng ngưỡng cố định thì sai.
+2. Ý tưởng "Dynamic Threshold": đo Min (nền trắng) và Max (vạch đen) của từng mắt → Threshold = (Min+Max)/2.
+3. Viết hàm Arduino \`calibrate()\`:
+   - Chạy trong 3 giây khi nhấn Reset.
+   - LED nháy báo hiệu đang calibrate.
+   - Lưu Min[5], Max[5] cho từng mắt.
+   - Tính Threshold[5].
+4. Viết hàm \`docCamBien()\` dùng Threshold đã calibrate.
+5. Cách kiểm tra: in Min/Max/Threshold ra Serial Monitor, lia xe qua lại để xem giá trị thay đổi.
+6. Mẹo: calibrate trên đúng loại sàn sẽ thi đấu.`
+                    }
+                ]
+            },
+            {
+                id: "mod-6",
+                title: "Module 6: Nâng Cao — PID & Né Vật Cản",
+                desc: "Dành cho xe đã chạy ổn. Nâng cấp tốc độ bằng PID và né vật cản bằng HC-SR04.",
+                lessons: [
+                    {
+                        id: "m6-l1",
+                        title: "6.1 PID Cho Người Mới — Hiểu Bằng Ví Von Lái Xe",
+                        time: "60 Phút",
+                        summary: "Hiểu PID bằng ví von tay lái xe đạp: P là phản ứng tức thì, I là nhớ lỗi cũ, D là phanh trước khi văng. Tuning 3 bước đơn giản.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Xe tôi đã chạy dò line ổn với if-else. Giờ tôi muốn chạy NHANH hơn mà không bị văng khỏi line — tôi nghe nói cần PID nhưng chưa hiểu gì.
+
+[NGUYÊN TẮC GIẢNG DẠY]
+- Giải thích PID bằng ví von lái xe đạp, KHÔNG dùng công thức toán trước.
+- Sau khi hiểu ý tưởng mới đưa công thức.
+- Tuning từng bước nhỏ, dễ làm.
+- Code là ARDUINO C++ (setup/loop), không phải C++ máy tính.
+
+[YÊU CẦU CHI TIẾT]
+1. Ví von PID:
+   - P (Proportional - Tỷ lệ): "Thấy lệch bao nhiêu thì bẻ lái bấy nhiêu". Lệch nhiều bẻ mạnh.
+   - I (Integral - Tích lũy): "Nhớ dai — nếu xe cứ lệch mãi về 1 phía thì tăng lực bù".
+   - D (Derivative - Đạo hàm): "Phanh trước khi văng — thấy xe đang lệch nhanh thì ghìm lại".
+2. Sai số Error từ 5 mắt IR: gán vị trí -4, -2, 0, +2, +4 tương ứng 5 mắt.
+3. Công thức PID: output = Kp*error + Ki*tổngLỗi + Kd*(error - errorTrước).
+4. Viết hàm Arduino \`calculatePID()\` và \`dieuKhienDongCo()\` với constrain(-255, 255).
+5. Chống tích lũy quá mức (Anti-windup): giới hạn tổng lỗi.
+6. Quy trình Tuning 3 bước:
+   - Bước 1: Chỉnh Kp đến khi xe bám line nhưng còn lắc.
+   - Bước 2: Thêm Kd để hết lắc.
+   - Bước 3: Thêm Ki (nhỏ) để hết lệch tĩnh.
+7. Bảng gợi ý giá trị Kp/Ki/Kd khởi đầu cho xe 2WD 0.5kg.`
+                    },
+                    {
+                        id: "m6-l2",
+                        title: "6.2 Né Vật Cản Với HC-SR04 & Máy Trạng Thái FSM",
+                        time: "60 Phút",
+                        summary: "Gắn cảm biến siêu âm HC-SR04, dùng switch-case xây dựng máy trạng thái 5 bước né vật cản rồi tự tìm lại line — giải thích FSM bằng ví von đèn giao thông.",
+                        aiPrompt: `[VAI TRÒ & ĐỐI TƯỢNG]
+Xe tôi đã dò line tốt. Giờ tôi muốn thêm chức năng né vật cản bằng HC-SR04 — nhưng tôi chưa biết "máy trạng thái" là gì.
+
+[NGUYÊN TẮC]
+- Giải thích FSM (Finite State Machine) bằng ví von đèn giao thông: Đỏ → Xanh → Vàng → Đỏ...
+- Mỗi trạng thái là 1 hành động riêng, chuyển trạng thái khi có điều kiện.
+- Code là ARDUINO C++ (setup/loop), không phải C++ máy tính.
+
+[KIẾN TRÚC FSM]
+- State 0: Đang dò line bình thường.
+- State 1: Phát hiện vật cản < 15cm → rẽ trái né.
+- State 2: Chạy thẳng song song vật cản.
+- State 3: Rẽ phải quay về line cũ.
+- State 4: Quét mắt IR, thấy vạch đen → quay về State 0.
+
+[YÊU CẦU CHI TIẾT]
+1. HC-SR04 là gì? Ví von: giống con dơi phát siêu âm, đo thời gian vọng lại để tính khoảng cách.
+2. Đấu dây HC-SR04: VCC(5V), GND, Trig(D12), Echo(D13).
+3. Viết hàm Arduino đọc HC-SR04 KHÔNG chặn (non-blocking):
+   - Dùng millis() thay vì delay().
+   - Lọc trung bình động 3-5 mẫu để tránh nhiễu.
+4. Viết chương trình switch-case cho FSM 5 trạng thái.
+5. Giải thích biến \`trangThaiHienTai\` và cách chuyển trạng thái.
+6. Hướng dẫn căn chỉnh thời gian: mỗi trạng thái kéo dài bao lâu thì hợp lý.
+7. Mẹo debug: in trạng thái ra Serial Monitor để biết xe đang ở bước nào.`
                     }
                 ]
             }
@@ -483,9 +568,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             restoreFromCloud();
         });
 
-        /* ══════════════════════════════════════════════════════
-           PERSIST / RESTORE
-           ══════════════════════════════════════════════════════ */
         function persistState() {
             try {
                 localStorage.setItem(LS_KEYS.completed, JSON.stringify(completedLessons));
@@ -517,9 +599,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             });
         }
 
-        /* ══════════════════════════════════════════════════════
-           DRAWER (mobile)
-           ══════════════════════════════════════════════════════ */
         function toggleDrawer() {
             const drawer = document.getElementById('mobileDrawer');
             const backdrop = document.getElementById('drawerBackdrop');
@@ -535,9 +614,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             document.getElementById('drawerBackdrop').classList.remove('open');
         }
 
-        /* ══════════════════════════════════════════════════════
-           SIDEBAR
-           ══════════════════════════════════════════════════════ */
         function buildMenuHTML() {
             let html = '';
             courseData.forEach((mod) => {
@@ -577,9 +653,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             closeDrawer();
         }
 
-        /* ══════════════════════════════════════════════════════
-           LESSON CONTENT
-           ══════════════════════════════════════════════════════ */
         function loadLesson(id) {
             let targetLesson = null;
             let targetModule = null;
@@ -631,7 +704,7 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
                     <div class="bg-slate-950 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-slate-800 font-mono text-[10px] sm:text-xs text-cyan-200 whitespace-pre-wrap leading-relaxed select-all max-h-72 sm:max-h-96 overflow-y-auto" id="prompt-lesson-text-${targetLesson.id}">${targetLesson.aiPrompt}</div>
 
                     <div class="mt-3 text-[10px] sm:text-[11px] text-slate-400 leading-relaxed">
-                        💡 Mẹo: Yêu cầu AI giải thích lại từng dòng code hoặc sửa lỗi biên dịch PlatformIO.
+                        💡 Mẹo: Nếu AI trả lời khó hiểu, hãy nhắn tiếp "Giải thích lại như cho học sinh cấp 2" hoặc "Cho ví dụ cụ thể hơn".
                     </div>
                 </div>
 
@@ -653,9 +726,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             `;
         }
 
-        /* ══════════════════════════════════════════════════════
-           COPY
-           ══════════════════════════════════════════════════════ */
         function copyLessonPrompt(lessonId) {
             const promptText = document.getElementById(`prompt-lesson-text-${lessonId}`).innerText;
             fallbackCopy(promptText);
@@ -677,9 +747,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             document.body.removeChild(textarea);
         }
 
-        /* ══════════════════════════════════════════════════════
-           COMPLETION
-           ══════════════════════════════════════════════════════ */
         function toggleLessonCompletion(id) {
             if (completedLessons.includes(id)) {
                 completedLessons = completedLessons.filter(item => item !== id);
@@ -723,9 +790,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             showToast("🔄 Đã reset tiến độ!");
         }
 
-        /* ══════════════════════════════════════════════════════
-           TOAST
-           ══════════════════════════════════════════════════════ */
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
@@ -738,9 +802,6 @@ Thiết kế bài thi Né Vật Cản bằng HC-SR04 (Trig Pin 12, Echo Pin 13).
             }, 3000);
         }
 
-        /* ══════════════════════════════════════════════════════
-           PWA
-           ══════════════════════════════════════════════════════ */
         if ('serviceWorker' in navigator && location.protocol !== 'file:') {
             navigator.serviceWorker.register('sw.js').catch(() => {});
         }
